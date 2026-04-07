@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONS CONSULTÓRIO</title>
+
+<style>
+:root {
+  --primary: #0c3f5a;    /* Azul ONS */
+  --accent: #f0b606;     /* Amarelo ONS */
+  --bg: #f4f7f9;         
+  --white: #ffffff;
+  --success: #1e8f4c;
+}
+
+* { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+body { margin: 0; background: var(--bg); color: #333; padding-bottom: 90px; }
+
+header {
+  background: var(--primary);
+  color: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  border-bottom: 4px solid var(--accent);
+}
+header img { height: 50px; border-radius: 4px; }
+.header-text h2 { margin: 0; color: var(--accent); font-size: 1.4rem; letter-spacing: 1px; }
+
+.container { padding: 15px; max-width: 600px; margin: auto; }
+
+#notificacao-pendente {
+    background: var(--accent);
+    color: var(--primary);
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    display: none;
+    box-shadow: 0 4px 10px rgba(240, 182, 6, 0.3);
+    cursor: pointer;
+}
+
+.tabs-cliente { display: flex; margin-bottom: 20px; border-radius: 10px; overflow: hidden; border: 1px solid var(--primary); }
+.tab-btn { flex: 1; padding: 14px; border: none; background: #e0e0e0; cursor: pointer; font-weight: bold; color: var(--primary); }
+.tab-btn.active { background: var(--primary); color: white; }
+
+.section-box { background: var(--white); padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
+.accordion { background: var(--white); border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; }
+.accordion-header { padding: 15px; background: #f8f9fa; cursor: pointer; font-weight: bold; color: var(--primary); display: flex; justify-content: space-between; border-bottom: 1px solid #eee; }
+.accordion-content { display: none; padding: 15px; }
+
+input, select, textarea { width: 100%; padding: 12px; margin-top: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; }
+
+.servico-item { background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid var(--accent); }
+.servico-item span { font-size: 0.85rem; color: #666; display: block; }
+
+.btn-enviar {
+  width: 100%; padding: 18px; background: var(--accent); color: var(--primary);
+  border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer;
+  box-shadow: 0 4px 0 #c49505; transition: 0.2s;
+}
+
+.hist-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; position: relative; }
+.status-tag { position: absolute; top: 15px; right: 15px; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+.status-aberto { background: #eee; color: #666; }
+.status-andamento { background: #fff3cd; color: #856404; }
+.status-finalizado { background: #d4edda; color: #155724; }
+
+.hist-field { margin-bottom: 10px; border-bottom: 1px inset #f0f0f0; padding-bottom: 5px; }
+.hist-label { font-size: 10px; color: #999; text-transform: uppercase; font-weight: bold; }
+.hist-value { font-size: 15px; color: var(--primary); }
+
+.btn-encerrar {
+    background: var(--success); color: white; border: none; padding: 12px; 
+    border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px;
+}
+
+.btn-whatsapp {
+    position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white;
+    width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    text-decoration: none; z-index: 1000;
+}
+
+.hidden { display: none; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="LOGO Odontotecnica.jpg" alt="ONS" onerror="this.style.display='none'">
+  <div class="header-text"><h2>ONS CONSULTÓRIO</h2></div>
+</header>
+
+<div class="container">
+    <div id="login-box" class="section-box">
+        <label style="color: var(--primary); font-weight: bold;">Identificação da Clínica / Dr(a):</label>
+        <input type="text" id="clinica-input" placeholder="Ex: Clínica Sorriso">
+        <button class="btn-enviar" onclick="salvarAcesso()" style="margin-top:15px; font-size:16px;">Acessar Painel</button>
+    </div>
+
+    <div id="app-content" class="hidden">
+        <div id="notificacao-pendente" onclick="mudarAba('hist')">⚠️ VOCÊ POSSUI ORDENS EM ABERTO</div>
+
+        <div class="tabs-cliente">
+            <button class="tab-btn active" id="tab-n" onclick="mudarAba('novo')">Novo Chamado</button>
+            <button class="tab-btn" id="tab-h" onclick="mudarAba('hist')">Meus Chamados</button>
+        </div>
+
+        <div id="aba-novo">
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAcc(this)">Equipamento <span>▼</span></div>
+                <div class="accordion-content">
+                    <select id="equipamento">
+                        <option value="">Selecione o equipamento...</option>
+                        <option>Cadeira odontológica</option>
+                        <option>Compressor</option>
+                        <option>Sugador / sistema de sucção</option>
+                        <option>Autoclave</option>
+                        <option>Raio-X</option>
+                        <option>Fotopolimerizador</option>
+                        <option>Bomba a vácuo</option>
+                        <option>Sistema hidráulico</option>
+                        <option>Sistema pneumático</option>
+                        <option>Sistema elétrico</option>
+                        <option>Outros</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAcc(this)">Problema e Urgência <span>▼</span></div>
+                <div class="accordion-content">
+                    <textarea id="detalhe" rows="3" placeholder="Descreva o que está acontecendo..."></textarea>
+                    <select id="prioridade" style="margin-top:10px;">
+                        <option value="">Nível de Prioridade...</option>
+                        <option value="Alta">Alta (Urgente)</option>
+                        <option value="Média">Média (Hoje)</option>
+                        <option value="Baixa">Baixa (Até 24h)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAcc(this)">Solicitar Limpeza/Higienização <span>▼</span></div>
+                <div class="accordion-content">
+                    <div class="servico-item">
+                        <label><input type="checkbox" class="extra" value="Geral"> Serviços Gerais de Higienização</label>
+                        <span>(caixa d’água, filtros, desentupimentos)</span>
+                    </div>
+                    <div class="servico-item">
+                        <label><input type="checkbox" class="extra" value="Hidro"> Higienização Hidrossanitária</label>
+                        <span>(ar-condicionado, sistemas complexos, sanitização)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAcc(this)">Laudo e Observações <span>▼</span></div>
+                <div class="accordion-content">
+                    <label style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                        <input type="checkbox" id="laudo" style="width:auto; margin:0;"> Solicitar laudo técnico profissional
+                    </label>
+                    <textarea id="obs" rows="2" placeholder="Observações adicionais..."></textarea>
+                </div>
+            </div>
+
+            <button class="btn-enviar" onclick="enviar()">ABRIR ORDEM DE MANUTENÇÃO</button>
+        </div>
+
+        <div id="aba-hist" class="hidden">
+            <div id="lista-historico"></div>
+        </div>
+    </div>
+</div>
+
+<a href="#" id="wa-link" class="btn-whatsapp" target="_blank">📱</a>
+
+<script>
+function toggleAcc(h) {
+    const c = h.nextElementSibling;
+    c.style.display = c.style.display === "block" ? "none" : "block";
+}
+
+function mudarAba(a) {
+    document.getElementById('aba-novo').style.display = a === 'novo' ? 'block' : 'none';
+    document.getElementById('aba-hist').style.display = a === 'hist' ? 'block' : 'none';
+    document.getElementById('tab-n').classList.toggle('active', a === 'novo');
+    document.getElementById('tab-h').classList.toggle('active', a === 'hist');
+    if(a === 'hist') carregarHist();
+}
+
+window.onload = () => {
+    const user = localStorage.getItem("ONS_USER");
+    if(user) mostrarApp();
+}
+
+function salvarAcesso() {
+    const n = document.getElementById("clinica-input").value;
+    if(!n) return alert("Por favor, identifique a clínica.");
+    localStorage.setItem("ONS_USER", n);
+    mostrarApp();
+}
+
+function mostrarApp() {
+    const user = localStorage.getItem("ONS_USER");
+    document.getElementById("login-box").classList.add("hidden");
+    document.getElementById("app-content").classList.remove("hidden");
+    
+    // Configura WhatsApp Personalizado
+    const waMsg = encodeURIComponent(`Olá ONS, aqui é da clínica ${user}. Gostaria de informações sobre meu chamado.`);
+    document.getElementById("wa-link").href = `https://wa.me/5535920004813?text=${waMsg}`;
+    
+    verificarPendencias();
+}
+
+function verificarPendencias() {
+    const banco = JSON.parse(localStorage.getItem("ONS_DB")) || [];
+    const user = localStorage.getItem("ONS_USER");
+    const temAberta = banco.some(o => o.clinica === user && o.status !== "Finalizado");
+    document.getElementById('notificacao-pendente').style.display = temAberta ? 'block' : 'none';
+}
+
+function enviar() {
+    const eq = document.getElementById("equipamento").value;
+    const pr = document.getElementById("prioridade").value;
+    if(!eq || !pr) return alert("Preencha Equipamento e Prioridade!");
+
+    const chamado = {
+        id: Date.now(),
+        clinica: localStorage.getItem("ONS_USER"),
+        equipamento: eq,
+        detalhe: document.getElementById("detalhe").value,
+        prioridade: pr,
+        servicos: [...document.querySelectorAll(".extra:checked")].map(c => c.parentElement.innerText.split('\n')[0]),
+        laudo: document.getElementById("laudo").checked ? "Sim" : "Não",
+        obs: document.getElementById("obs").value,
+        status: "Aberto",
+        data: new Date().toLocaleString()
+    };
+
+    let banco = JSON.parse(localStorage.getItem("ONS_DB")) || [];
+    banco.push(chamado);
+    localStorage.setItem("ONS_DB", JSON.stringify(banco));
+    alert("Ordem aberta com sucesso!");
+    location.reload();
+}
+
+function encerrar(id) {
+    if(!confirm("Deseja marcar este serviço como concluído e encerrar a ordem?")) return;
+    let banco = JSON.parse(localStorage.getItem("ONS_DB")) || [];
+    banco = banco.map(o => { if(o.id === id) o.status = "Finalizado"; return o; });
+    localStorage.setItem("ONS_DB", JSON.stringify(banco));
+    carregarHist();
+    verificarPendencias();
+}
+
+function carregarHist() {
+    const lista = document.getElementById("lista-historico");
+    const banco = JSON.parse(localStorage.getItem("ONS_DB")) || [];
+    const user = localStorage.getItem("ONS_USER");
+    lista.innerHTML = "";
+
+    banco.filter(o => o.clinica === user).reverse().forEach(o => {
+        const sClass = o.status === "Aberto" ? "status-aberto" : (o.status === "Finalizado" ? "status-finalizado" : "status-andamento");
+        lista.innerHTML += `
+            <div class="hist-card">
+                <span class="status-tag ${sClass}">${o.status}</span>
+                <div class="hist-field"><div class="hist-label">Data</div><div class="hist-value">${o.data}</div></div>
+                <div class="hist-field"><div class="hist-label">Equipamento</div><div class="hist-value">${o.equipamento}</div></div>
+                <div class="hist-field"><div class="hist-label">Problema</div><div class="hist-value">${o.detalhe || "-"}</div></div>
+                <div class="hist-field"><div class="hist-label">Prioridade</div><div class="hist-value">${o.prioridade}</div></div>
+                <div class="hist-field"><div class="hist-label">Serviços</div><div class="hist-value">${o.servicos.join(", ") || "Nenhum"}</div></div>
+                <div class="hist-field"><div class="hist-label">Laudo</div><div class="hist-value">${o.laudo}</div></div>
+                <div class="hist-field"><div class="hist-label">Obs</div><div class="hist-value">${o.obs || "-"}</div></div>
+                ${o.status !== "Finalizado" ? `<button class="btn-encerrar" onclick="encerrar(${o.id})">✅ Marcar como Concluído</button>` : ""}
+            </div>
+        `;
+    });
+}
+</script>
+</body>
+</html>
