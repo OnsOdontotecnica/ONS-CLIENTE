@@ -1,0 +1,17 @@
+{
+  "name": "ONS Consultório",
+  "short_name": "ONS",
+  "description": "Sistema Profissional de Chamados ONS OdontoTécnica",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0c3f5a",
+  "theme_color": "#0c3f5a",
+  "icons": [
+    {
+      "src": "icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
