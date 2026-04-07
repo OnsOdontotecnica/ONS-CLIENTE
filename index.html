@@ -24,13 +24,9 @@
 
         header {
           background: var(--primary);
-          color: white;
-          padding: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 15px;
-          border-bottom: 4px solid var(--accent);
+          color: white; padding: 20px;
+          display: flex; align-items: center; justify-content: center;
+          gap: 15px; border-bottom: 4px solid var(--accent);
         }
         header img { height: 50px; border-radius: 4px; }
         .header-text h2 { margin: 0; color: var(--accent); font-size: 1.4rem; letter-spacing: 1px; }
@@ -38,51 +34,33 @@
         .container { padding: 15px; max-width: 600px; margin: auto; }
 
         #notificacao-pendente {
-            background: var(--accent);
-            color: var(--primary);
-            padding: 12px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            display: none;
-            cursor: pointer;
+            background: var(--accent); color: var(--primary);
+            padding: 12px; margin-bottom: 15px; border-radius: 8px;
+            text-align: center; font-weight: bold; display: none;
             box-shadow: 0 4px 10px rgba(240, 182, 6, 0.3);
         }
 
         .tabs-cliente { display: flex; margin-bottom: 20px; border-radius: 10px; overflow: hidden; border: 1px solid var(--primary); }
-        .tab-btn { flex: 1; padding: 14px; border: none; background: #e0e0e0; cursor: pointer; font-weight: bold; color: var(--primary); }
+        .tab-btn { flex: 1; padding: 14px; border: none; background: #e0e0e0; font-weight: bold; color: var(--primary); cursor: pointer; }
         .tab-btn.active { background: var(--primary); color: white; }
 
         .section-box { background: var(--white); padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
         .accordion { background: var(--white); border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; }
-        .accordion-header { padding: 15px; background: #f8f9fa; cursor: pointer; font-weight: bold; color: var(--primary); display: flex; justify-content: space-between; border-bottom: 1px solid #eee; }
+        .accordion-header { padding: 15px; background: #f8f9fa; cursor: pointer; font-weight: bold; color: var(--primary); display: flex; justify-content: space-between; }
         .accordion-content { display: none; padding: 15px; }
 
         input, select, textarea { width: 100%; padding: 12px; margin-top: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; }
 
-        .servico-item { background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid var(--accent); }
-        .servico-item span { font-size: 0.85rem; color: #666; display: block; }
-
         .btn-enviar {
           width: 100%; padding: 18px; background: var(--accent); color: var(--primary);
           border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer;
-          box-shadow: 0 4px 0 #c49505; transition: 0.2s;
+          box-shadow: 0 4px 0 #c49505; margin-top: 10px;
         }
 
-        .hist-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; position: relative; }
-        .status-tag { position: absolute; top: 15px; right: 15px; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
-        .status-aberto { background: #eee; color: #666; }
+        .hist-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #ddd; position: relative; }
+        .status-tag { position: absolute; top: 10px; right: 10px; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; }
+        .status-aberto { background: #fff3cd; color: #856404; }
         .status-finalizado { background: #d4edda; color: #155724; }
-
-        .hist-field { margin-bottom: 10px; border-bottom: 1px inset #f0f0f0; padding-bottom: 5px; }
-        .hist-label { font-size: 10px; color: #999; text-transform: uppercase; font-weight: bold; }
-        .hist-value { font-size: 15px; color: var(--primary); }
-
-        .btn-encerrar {
-            background: var(--success); color: white; border: none; padding: 12px; 
-            border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px;
-        }
 
         .btn-whatsapp {
             position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white;
@@ -94,7 +72,6 @@
         .hidden { display: none; }
     </style>
 </head>
-
 <body>
 
 <header>
@@ -104,53 +81,52 @@
 
 <div class="container">
     <div id="login-box" class="section-box">
-        <label style="color: var(--primary); font-weight: bold;">Identificação da Clínica / Dr(a):</label>
-        <input type="text" id="clinica-input" placeholder="Ex: Clínica Sorriso">
-        <button class="btn-enviar" onclick="salvarAcesso()" style="margin-top:15px; font-size:16px;">Acessar Painel</button>
+        <label><b>Nome da Clínica / Dr(a):</b></label>
+        <input type="text" id="clinica-input" placeholder="Ex: Odonto Sorriso">
+        <button class="btn-enviar" onclick="salvarAcesso()">ENTRAR NO APP</button>
     </div>
 
     <div id="app-content" class="hidden">
-        <div id="notificacao-pendente" onclick="mudarAba('hist')">⚠️ VOCÊ POSSUI ORDENS EM ABERTO</div>
+        <div id="notificacao-pendente">⚠️ VOCÊ TEM CHAMADOS EM ABERTO</div>
 
         <div class="tabs-cliente">
             <button class="tab-btn active" id="tab-n" onclick="mudarAba('novo')">Novo Chamado</button>
-            <button class="tab-btn" id="tab-h" onclick="mudarAba('hist')">Meus Chamados</button>
+            <button class="tab-btn" id="tab-h" onclick="mudarAba('hist')">Histórico</button>
         </div>
 
         <div id="aba-novo">
             <div class="accordion">
-                <div class="accordion-header" onclick="toggleAcc(this)">Equipamento <span>▼</span></div>
-                <div class="accordion-content">
+                <div class="accordion-header" onclick="toggleAcc(this)">O que precisa de reparo? <span>▼</span></div>
+                <div class="accordion-content" style="display:block">
                     <select id="equipamento">
                         <option value="">Selecione o equipamento...</option>
-                        <option>Cadeira odontológica</option>
+                        <option>Cadeira Odontológica</option>
                         <option>Compressor</option>
-                        <option>Sugador / sistema de sucção</option>
+                        <option>Bomba de Vácuo</option>
                         <option>Autoclave</option>
                         <option>Raio-X</option>
                         <option>Outros</option>
                     </select>
+                    <textarea id="detalhe" rows="3" placeholder="Descreva o defeito aqui..." style="margin-top:10px"></textarea>
                 </div>
             </div>
 
             <div class="accordion">
-                <div class="accordion-header" onclick="toggleAcc(this)">Problema e Urgência <span>▼</span></div>
+                <div class="accordion-header" onclick="toggleAcc(this)">Qual a urgência? <span>▼</span></div>
                 <div class="accordion-content">
-                    <textarea id="detalhe" rows="3" placeholder="O que está acontecendo?"></textarea>
-                    <select id="prioridade" style="margin-top:10px;">
-                        <option value="">Nível de Prioridade...</option>
-                        <option value="Alta">Alta (Urgente)</option>
-                        <option value="Média">Média (Hoje)</option>
-                        <option value="Baixa">Baixa (Até 24h)</option>
+                    <select id="prioridade">
+                        <option value="Baixa">Baixa (Pode esperar)</option>
+                        <option value="Média">Média (Preciso para hoje)</option>
+                        <option value="Alta">Alta (Urgente / Parado)</option>
                     </select>
                 </div>
             </div>
 
-            <button class="btn-enviar" onclick="enviar()">ABRIR ORDEM DE MANUTENÇÃO</button>
+            <button class="btn-enviar" id="btn-submit" onclick="enviar()">SOLICITAR TÉCNICO AGORA</button>
         </div>
 
         <div id="aba-hist" class="hidden">
-            <div id="lista-historico"></div>
+            <div id="lista-historico">Buscando chamados...</div>
         </div>
     </div>
 </div>
@@ -158,17 +134,13 @@
 <a href="#" id="wa-link" class="btn-whatsapp" target="_blank">📱</a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
-// --- CONFIGURAÇÃO DO BANCO DE DADOS ---
-const _supabase = supabase.createClient('COLE_AQUI_SUA_URL_DO_SUPABASE', 'COLE_AQUI_SUA_KEY_ANON_DO_SUPABASE');
+// --- CONFIGURAÇÃO AUTOMÁTICA ---
+const SUPABASE_URL = 'https://npfbnfunbyn2dachmdgzy.supabase.co'; 
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wZmJuZnVibnluZGFjaG1kZ3p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjQ5ODksImV4cCI6MjA5MTEwMDk4OX0.bTKgcUAKt_2A4FcVJSEOZ2rEVNpGxCj8bHpXw0Lh7Vw';
 
-async function salvarNoBanco(chamado) {
-    const { error } = await _supabase.from('chamados').insert([chamado]);
-    if (error) throw error;
-}
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// --- FUNÇÕES DO APLICATIVO ---
 function toggleAcc(h) {
     const c = h.nextElementSibling;
     c.style.display = c.style.display === "block" ? "none" : "block";
@@ -182,14 +154,9 @@ function mudarAba(a) {
     if(a === 'hist') carregarHist();
 }
 
-window.onload = () => {
-    const user = localStorage.getItem("ONS_USER");
-    if(user) mostrarApp();
-}
-
 function salvarAcesso() {
     const n = document.getElementById("clinica-input").value;
-    if(!n) return alert("Por favor, identifique a clínica.");
+    if(!n) return alert("Digite o nome da clínica!");
     localStorage.setItem("ONS_USER", n);
     mostrarApp();
 }
@@ -198,77 +165,66 @@ function mostrarApp() {
     const user = localStorage.getItem("ONS_USER");
     document.getElementById("login-box").classList.add("hidden");
     document.getElementById("app-content").classList.remove("hidden");
-    
-    const waMsg = encodeURIComponent(`Olá ONS, aqui é da clínica ${user}. Gostaria de informações sobre meu chamado.`);
-    document.getElementById("wa-link").href = `https://wa.me/5535920004813?text=${waMsg}`;
-    
+    document.getElementById("wa-link").href = `https://wa.me/5535920004813?text=Olá, sou da clínica ${user}`;
     verificarPendencias();
-}
-
-function verificarPendencias() {
-    const banco = JSON.parse(localStorage.getItem("ONS_DB")) || [];
-    const user = localStorage.getItem("ONS_USER");
-    const temAberta = banco.some(o => o.clinica === user && o.status !== "Finalizado");
-    document.getElementById('notificacao-pendente').style.display = temAberta ? 'block' : 'none';
 }
 
 async function enviar() {
     const eq = document.getElementById("equipamento").value;
-    const pr = document.getElementById("prioridade").value;
-    if(!eq || !pr) return alert("Preencha Equipamento e Prioridade!");
-
-    const chamado = {
-        clinica: localStorage.getItem("ONS_USER"),
-        equipamento: eq,
-        detalhe: document.getElementById("detalhe").value,
-        prioridade: pr,
-        status: "Aberto"
-    };
-
-    try {
-        await salvarNoBanco(chamado);
-        
-        // Salva local também para o histórico carregar rápido
-        let bancoLocal = JSON.parse(localStorage.getItem("ONS_DB")) || [];
-        chamado.data = new Date().toLocaleString();
-        bancoLocal.push(chamado);
-        localStorage.setItem("ONS_DB", JSON.stringify(bancoLocal));
-
-        alert("Ordem aberta com sucesso!");
-        location.reload();
-    } catch (e) {
-        alert("Erro ao enviar para o banco de dados: " + e.message);
-    }
-}
-
-function encerrar(id_local) {
-    if(!confirm("Deseja encerrar a ordem?")) return;
-    let banco = JSON.parse(localStorage.getItem("ONS_DB")) || [];
-    // Aqui no futuro faremos o update no Supabase também
-    banco = banco.map((o, idx) => { if(idx === id_local) o.status = "Finalizado"; return o; });
-    localStorage.setItem("ONS_DB", JSON.stringify(banco));
-    carregarHist();
-    verificarPendencias();
-}
-
-function carregarHist() {
-    const lista = document.getElementById("lista-historico");
-    const banco = JSON.parse(localStorage.getItem("ONS_DB")) || [];
+    const det = document.getElementById("detalhe").value;
+    const prio = document.getElementById("prioridade").value;
     const user = localStorage.getItem("ONS_USER");
-    lista.innerHTML = "";
 
-    banco.filter(o => o.clinica === user).reverse().forEach((o, index) => {
-        const sClass = o.status === "Aberto" ? "status-aberto" : "status-finalizado";
-        lista.innerHTML += `
+    if(!eq) return alert("Selecione o equipamento!");
+
+    const btn = document.getElementById("btn-submit");
+    btn.disabled = true;
+    btn.innerText = "ENVIANDO...";
+
+    const { error } = await _supabase.from('chamados').insert([
+        { clinica: user, equipamento: eq, detalhe: det, prioridade: prio, status: 'Aberto' }
+    ]);
+
+    if(error) {
+        alert("Erro ao enviar: " + error.message);
+    } else {
+        alert("Chamado enviado com sucesso!");
+        location.reload();
+    }
+    btn.disabled = false;
+}
+
+async function carregarHist() {
+    const user = localStorage.getItem("ONS_USER");
+    const container = document.getElementById("lista-historico");
+    
+    const { data, error } = await _supabase
+        .from('chamados')
+        .select('*')
+        .eq('clinica', user)
+        .order('id', { ascending: false });
+
+    if(error) return container.innerHTML = "Erro ao carregar histórico.";
+    
+    container.innerHTML = data.length ? "" : "Nenhum chamado encontrado.";
+    data.forEach(o => {
+        container.innerHTML += `
             <div class="hist-card">
-                <span class="status-tag ${sClass}">${o.status}</span>
-                <div class="hist-field"><div class="hist-label">Equipamento</div><div class="hist-value">${o.equipamento}</div></div>
-                <div class="hist-field"><div class="hist-label">Problema</div><div class="hist-value">${o.detalhe || "-"}</div></div>
-                ${o.status !== "Finalizado" ? `<button class="btn-encerrar" onclick="encerrar(${banco.length - 1 - index})">✅ Concluir e Encerrar</button>` : ""}
+                <span class="status-tag ${o.status === 'Aberto' ? 'status-aberto' : 'status-finalizado'}">${o.status}</span>
+                <b>${o.equipamento}</b><br>
+                <small>${o.detalhe || ""}</small>
             </div>
         `;
     });
 }
+
+async function verificarPendencias() {
+    const user = localStorage.getItem("ONS_USER");
+    const { data } = await _supabase.from('chamados').select('id').eq('clinica', user).eq('status', 'Aberto');
+    if(data && data.length > 0) document.getElementById('notificacao-pendente').style.display = 'block';
+}
+
+window.onload = () => { if(localStorage.getItem("ONS_USER")) mostrarApp(); }
 </script>
 </body>
 </html>
