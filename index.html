@@ -507,12 +507,12 @@
     let ordensServico = [];
     let usuarioAtual = null;
 
-    function loadData() {
-        const storedUser = localStorage.getItem('ons_usuario');
-        if(storedUser) usuarioAtual = JSON.parse(storedUser);
-        if(storedOrdens) ordensServico = JSON.parse(storedOrdens);
-        else ordensServico = [];
-    }
+   function loadData() {
+    const storedUser = localStorage.getItem('ons_usuario');
+    if(storedUser) usuarioAtual = JSON.parse(storedUser);
+
+    ordensServico = []; // agora vem do banco
+}
     
     function saveUser() {
         if(usuarioAtual) localStorage.setItem('ons_usuario', JSON.stringify(usuarioAtual));
