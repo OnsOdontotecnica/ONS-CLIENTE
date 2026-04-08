@@ -520,19 +520,22 @@
     }
 
     function updateUIByLogin() {
-        const loginDiv = document.getElementById('loginArea');
-        const mainDiv = document.getElementById('mainSystem');
-        if(usuarioAtual) {
-            loginDiv.classList.add('hidden');
-            mainDiv.classList.remove('hidden');
-            document.getElementById('displayNomeClinica').innerHTML = usuarioAtual.clinicaNome + ' ' + usuarioAtual.telefone;
-            renderRelatorios();
-        } else {
-            loginDiv.classList.remove('hidden');
-            mainDiv.classList.add('hidden');
-        }
-    }
+    const loginDiv = document.getElementById('loginArea');
+    const mainDiv = document.getElementById('mainSystem');
 
+    if(usuarioAtual) {
+        loginDiv.classList.add('hidden');
+        mainDiv.classList.remove('hidden');
+
+        document.getElementById('displayNomeClinica').innerHTML =
+            usuarioAtual.clinicaNome + ' ' + usuarioAtual.telefone;
+
+        carregarOS(); // 🔥 OBRIGATÓRIO
+    } else {
+        loginDiv.classList.remove('hidden');
+        mainDiv.classList.add('hidden');
+    }
+}
    async function criarOS() {
         if(!usuarioAtual) return;
         
