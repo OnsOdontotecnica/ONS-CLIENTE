@@ -442,6 +442,7 @@
                         <option>Motor de Endodontia</option>
                         <option>Seladora</option>
                         <option>Seringa Triplice</option>
+                         <option>Outros</option>
                     </select>
                 </div>
                 <div class="field-group">
@@ -468,7 +469,7 @@
                         <label>Data agendada para servico extra</label>
                         <input type="date" id="dataAgendamento" style="font-size:0.85rem;">
                     </div>
-                    <small class="hint">Geral: limpeza caixa d'agua/filtros / Tecnica: ar condicionado, sanitizacao</small>
+                    <small class="hint">Geral: limpeza caixa d'agua/filtros de detritos/ Tecnica: ar condicionado, sanitizacao</small>
                 </div>
 
                 <div class="field-group">
@@ -509,7 +510,6 @@
     function loadData() {
         const storedUser = localStorage.getItem('ons_usuario');
         if(storedUser) usuarioAtual = JSON.parse(storedUser);
-        const storedOrdens = localStorage.getItem('ons_ordens');
         if(storedOrdens) ordensServico = JSON.parse(storedOrdens);
         else ordensServico = [];
     }
@@ -517,10 +517,6 @@
     function saveUser() {
         if(usuarioAtual) localStorage.setItem('ons_usuario', JSON.stringify(usuarioAtual));
         else localStorage.removeItem('ons_usuario');
-    }
-    
-    function saveOrdens() {
-        localStorage.setItem('ons_ordens', JSON.stringify(ordensServico));
     }
 
     function updateUIByLogin() {
@@ -657,7 +653,6 @@
         if(index !== -1 && ordensServico[index].status === 'Aberto') {
             ordensServico[index].status = "Finalizada";
             ordensServico[index].dataFinalizacao = new Date().toLocaleString('pt-BR');
-            saveOrdens();
             renderRelatorios();
             alert("OS finalizada com sucesso!");
         }
@@ -665,7 +660,6 @@
     
     function excluirOS(id) {
         ordensServico = ordensServico.filter(os => os.id !== id);
-        saveOrdens();
         renderRelatorios();
     }
     
