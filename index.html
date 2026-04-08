@@ -500,7 +500,7 @@
     </div>
 </div>
 
-<script>
+<script>                         
     const SUPABASE_URL = 'https://npfbnfubnyndachmdgzy.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wZmJuZnVibnluZGFjaG1kZ3p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjQ5ODksImV4cCI6MjA5MTEwMDk4OX0.bTKgcUAKt_2A4FcVJSEOZ2rEVNpGxCj8bHpXw0Lh7Vw';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -525,13 +525,13 @@ async function carregarOS() {
         .from('chamados')
         .select('*')
         .order('created_at', { ascending: false });
-
+    
     if(error) {
-        console.error("Erro ao carregar:", error);
-        alert("Erro ao carregar dados");
-        return;
-    }
-
+    console.error("Erro real:", error);
+    alert("Erro: " + error.message);
+    return;
+}
+   
     ordensServico = data;
     renderRelatorios();
 }
