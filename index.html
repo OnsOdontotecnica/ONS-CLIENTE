@@ -521,11 +521,10 @@
 async function carregarOS() {
     if(!usuarioAtual) return;
 
-    const { data, error } = await _supabase
-        .from('chamados')
-        .select('*')
-        .order('created_at', { ascending: false });
-    
+   const { data, error } = await _supabase
+    .from('chamados')
+    .select('*');
+       
     if(error) {
     console.error("Erro real:", error);
     alert("Erro: " + error.message);
