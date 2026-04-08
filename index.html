@@ -518,7 +518,23 @@
         if(usuarioAtual) localStorage.setItem('ons_usuario', JSON.stringify(usuarioAtual));
         else localStorage.removeItem('ons_usuario');
     }
+async function carregarOS() {
+    if(!usuarioAtual) return;
 
+    const { data, error } = await _supabase
+        .from('chamados')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if(error) {
+        console.error("Erro ao carregar:", error);
+        alert("Erro ao carregar dados");
+        return;
+    }
+
+    ordensServico = data;
+    renderRelatorios();
+}
     function updateUIByLogin() {
     const loginDiv = document.getElementById('loginArea');
     const mainDiv = document.getElementById('mainSystem');
@@ -578,7 +594,7 @@
             document.querySelectorAll('input[name="prioridade"]:checked').forEach(cb => cb.checked = false);
             
             // Recarrega para atualizar
-            location.reload();
+            carregarOS();
 
         } catch (err) {
             console.error("Erro:", err);
