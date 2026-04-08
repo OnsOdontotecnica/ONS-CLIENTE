@@ -374,6 +374,7 @@
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div class="app-container" id="appContainer">
@@ -497,6 +498,10 @@
 </div>
 
 <script>
+    
+    const SUPABASE_URL = 'https://npfbnfunbyn2dachmdgzy.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wZmJuZnVibnluZGFjaG1kZ3p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjQ5ODksImV4cCI6MjA5MTEwMDk4OX0.bTKgcUAKt_2A4FcVJSEOZ2rEVNpGxCj8bHpXw0Lh7Vw';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     let ordensServico = [];
     let usuarioAtual = null;
 
@@ -531,63 +536,61 @@
         }
     }
 
-    function criarOS() {
+   async function criarOS() {
         if(!usuarioAtual) return;
         
-        let equipamento = document.getElementById('equipamentoSelect').value;
+        // 1. Pegando os dados do formulário
+        let eqBase = document.getElementById('equipamentoSelect').value;
         let obsEquip = document.getElementById('obsEquipamento').value;
-        if(obsEquip.trim() !== "") equipamento = equipamento ? equipamento + ' (' + obsEquip + ')' : obsEquip;
-        if(equipamento === "") equipamento = "Nao informado";
+        let equipamentoFinal = obsEquip.trim() !== "" ? (eqBase ? eqBase + ' (' + obsEquip + ')' : obsEquip) : eqBase;
+        if(!equipamentoFinal) equipamentoFinal = "Não informado";
         
         let prioridades = [];
         document.querySelectorAll('input[name="prioridade"]:checked').forEach(cb => prioridades.push(cb.value));
-        let prioridadeTxt = prioridades.length ? prioridades.join(', ') : "Nao definida";
+        let prioridadeTxt = prioridades.length ? prioridades.join(', ') : "Normal";
         
-        let servicos = [];
-        if(document.getElementById('servHigGeral').checked) servicos.push("Higienizacao geral");
-        if(document.getElementById('servHigTecnica').checked) servicos.push("Higienizacao tecnica");
-        let servicosTxt = servicos.length ? servicos.join(" + ") : "Nenhum adicional";
-        
-        let dataAgendamento = document.getElementById('dataAgendamento').value;
-        if(dataAgendamento) {
-            let dataFormatada = new Date(dataAgendamento).toLocaleDateString('pt-BR');
-            servicosTxt = servicosTxt + ' | Agendado: ' + dataFormatada;
-        }
-        
-        let incluirLaudo = document.getElementById('incluirLaudo').checked ? "Sim" : "Nao";
         let obsGerais = document.getElementById('observacoesGerais').value || "---";
-        
-        const now = new Date();
-        const dataCriacao = now.toLocaleString('pt-BR');
-        
-        const novaOS = {
-            id: Date.now(),
-            clinicaNome: usuarioAtual.clinicaNome,
-            telefone: usuarioAtual.telefone,
-            dataCriacao: dataCriacao,
-            dataFinalizacao: null,
-            status: "Aberto",
-            equipamento: equipamento,
-            prioridade: prioridadeTxt,
-            servicos: servicosTxt,
-            incluirLaudo: incluirLaudo,
-            obsGerais: obsGerais,
-        };
-        ordensServico.unshift(novaOS);
-        saveOrdens();
-        renderRelatorios();
-        
-        document.getElementById('equipamentoSelect').value = "";
-        document.getElementById('obsEquipamento').value = "";
-        document.querySelectorAll('input[name="prioridade"]:checked').forEach(cb => cb.checked = false);
-        document.getElementById('servHigGeral').checked = false;
-        document.getElementById('servHigTecnica').checked = false;
-        document.getElementById('dataAgendamento').value = "";
-        document.getElementById('incluirLaudo').checked = false;
-        document.getElementById('observacoesGerais').value = "";
-        
-        alert("Ordem de Servico criada com sucesso!");
+
+        // 2. Mudando o botão para indicar que está enviando
+        const btn = document.getElementById('btnCriarOS');
+        if(btn) {
+            btn.disabled = true;
+            btn.innerText = "ENVIANDO PARA ONS...";
+        }
+
+        try {
+            // 3. ENVIO REAL PARA O BANCO DE DADOS (SUPABASE)
+            const { error } = await _supabase.from('chamados').insert([{
+                clinica: usuarioAtual.clinicaNome,
+                equipamento: equipamentoFinal,
+                prioridade: prioridadeTxt,
+                detalhe: obsGerais,
+                status: 'Aberto'
+            }]);
+
+            if (error) throw error;
+
+            alert("✅ Chamado enviado com sucesso para a ONS!");
+
+            // Limpa os campos
+            document.getElementById('obsEquipamento').value = "";
+            document.getElementById('observacoesGerais').value = "";
+            document.querySelectorAll('input[name="prioridade"]:checked').forEach(cb => cb.checked = false);
+            
+            // Recarrega para atualizar
+            location.reload();
+
+        } catch (err) {
+            console.error("Erro:", err);
+            alert("Erro ao salvar no banco: " + err.message);
+        } finally {
+            if(btn) {
+                btn.disabled = false;
+                btn.innerText = "Criar Ordem de Servico";
+            }
+        }
     }
+    
 
     function renderRelatorios() {
         const container = document.getElementById('listaOSContainer');
