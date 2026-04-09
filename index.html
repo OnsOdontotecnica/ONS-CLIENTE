@@ -665,8 +665,7 @@ async function carregarOS() {
             });
         });
     }
-
-    function finalizarOS(id) {
+       function finalizarOS(id) {
         const index = ordensServico.findIndex(os => os.id === id);
         if(index !== -1 && ordensServico[index].status === 'Aberto') {
             ordensServico[index].status = "Finalizada";
@@ -680,47 +679,48 @@ async function carregarOS() {
         ordensServico = ordensServico.filter(os => os.id !== id);
         renderRelatorios();
     }
-    
+
     function visualizarOS(id) {
         const os = ordensServico.find(o => o.id === id);
         if(os) {
             let msg = "DETALHES DA OS\n\n";
-            msg += "Clinica: " + os.clinicaNome + "\n";
-            msg += "Telefone: " + os.telefone + "\n";
+            msg += "Clinica: " + (os.clinica || "Nao informada") + "\n";
             msg += "Criacao: " + new Date(os.created_at).toLocaleString() + "\n";
-            msg += "Status: " + os.status + "\n";
-            msg += "Equipamento: " + os.equipamento + "\n";
-            msg += "Prioridade: " + os.prioridade + "\n";
-            msg += "Servicos: " + os.servicos + "\n";
-            msg += "Laudo: " + os.incluirLaudo + "\n";
-            msg += "Observacoes: " + os.obsGerais;
+            msg += "Status: " + (os.status || "Aberto") + "\n";
+            msg += "Equipamento: " + (os.equipamento || "Nao informado") + "\n";
+            msg += "Prioridade: " + (os.prioridade || "Normal") + "\n";
+            msg += "Observacoes: " + (os.detalhe || "Sem observacoes") + "\n";
+            msg += "Laudo: " + (os.incluirLaudo ? "SIM - Levar laudo" : "NAO - Sem laudo") + "\n";
             if(os.dataFinalizacao) msg += "\nFinalizada em: " + os.dataFinalizacao;
             alert(msg);
+        } else {
+            alert("OS nao encontrada!");
         }
-    }
-    
-    function gerarTextoOS(os) {
-        let text = "ONS ODONTOTECNICA - ORDEM DE SERVICO\n\n";
-        text += "Cliente: " + os.clinicaNome + "\n";
-        text += "Telefone: " + os.telefone + "\n";
-        text += "Criacao: " + os.created_at + "\n";
-        text += "Status: " + os.status + "\n";
-        text += "Equipamento: " + os.equipamento + "\n";
-        text += "Prioridade: " + os.prioridade + "\n";
-        text += "Servicos: " + os.servicos + "\n";
-        text += "Incluir Laudo: " + os.incluirLaudo + "\n";
-        text += "Observacoes: " + os.obsGerais + "\n";
-        if(os.dataFinalizacao) text += "Finalizada em: " + os.dataFinalizacao + "\n";
-        text += "\nEnviado via sistema ONS OdontoTecnica";
-        return encodeURIComponent(text);
     }
     
     function enviarOSWhatsApp(id) {
         const os = ordensServico.find(o => o.id === id);
-        if(!os) return;
-        let telefone = os.telefone.replace(/\D/g, '');
-        if(telefone.length === 0) telefone = '';
-        const url = "https://wa.me/55" + telefone + "?text=" + gerarTextoOS(os);
+        if(!os) {
+            alert("OS não encontrada!");
+            return;
+        }
+
+        const telefoneONS = "5535920004813";
+        
+        const texto = `ONS ODONTOTECNICA - ORDEM DE SERVICO
+
+🏥 Clinica: ${os.clinica || "Nao informada"}
+🔧 Equipamento: ${os.equipamento || "Nao informado"}
+⚡ Prioridade: ${os.prioridade || "Normal"}
+📝 Observacoes: ${os.detalhe || "Sem observacoes"}
+📊 Status: ${os.status || "Aberto"}
+📋 Laudo tecnico: ${os.incluirLaudo ? "SIM - Levar laudo" : "NAO - Sem laudo"}
+📅 Data: ${new Date(os.created_at).toLocaleString()}
+
+---
+Enviado automaticamente pelo sistema ONS`;
+
+        const url = "https://wa.me/" + telefoneONS + "?text=" + encodeURIComponent(texto);
         window.open(url, '_blank');
     }
     
