@@ -721,16 +721,14 @@ async function carregarOS() {
 Enviado automaticamente pelo sistema ONS`;
 
         const url = "https://wa.me/" + telefoneONS + "?text=" + encodeURIComponent(texto);
-        window.open(url, '_blank');
-    }
-    
-    function enviarUltimaOS() {
-        if(ordensServico.length === 0) { 
-            alert("OBRIGADO! VOCÊ É PRIORIDADE."); 
-            return; 
+        
+        // Mensagem personalizada sem título feio
+        const userConfirmed = confirm("📱 OBRIGADO! VOCÊ É PRIORIDADE!\n\n✅ Clique em OK para enviar via WhatsApp\n❌ Cancelar para voltar");
+        
+        if(userConfirmed) {
+            window.open(url, '_blank');
         }
-        enviarOSWhatsApp(ordensServico[0].id);
-    }
+  
     
     function fazerLogin() {
         alert("Login executado");
