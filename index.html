@@ -626,7 +626,7 @@ async function carregarOS() {
                         <span class="status-badge ${statusClass}">${os.status}</span>
                     </div>
                     <div class="os-info-mini">
-                        <span>Criacao: ${new Date(os.created_at).toLocaleDateString()}</span>
+                        <span>Criacao: ${os.created_at ? new Date(os.created_at).toLocaleDateString() : 'Sem data'}</span>
                         <span>Prioridade: ${os.prioridade}</span>
                     </div>
                     <div class="os-actions-compact">
