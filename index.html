@@ -626,7 +626,7 @@ async function carregarOS() {
                         <span class="status-badge ${statusClass}">${os.status}</span>
                     </div>
                     <div class="os-info-mini">
-                        <span>Criacao: ${os.dataCriacao.substring(0,10)}</span>
+                        <span>Criacao: ${new Date(os.created_at).toLocaleDateString()}</span>
                         <span>Prioridade: ${os.prioridade}</span>
                     </div>
                     <div class="os-actions-compact">
@@ -687,7 +687,7 @@ async function carregarOS() {
             let msg = "DETALHES DA OS\n\n";
             msg += "Clinica: " + os.clinicaNome + "\n";
             msg += "Telefone: " + os.telefone + "\n";
-            msg += "Criacao: " + os.dataCriacao + "\n";
+            msg += "Criacao: " + new Date(os.created_at).toLocaleString() + "\n";
             msg += "Status: " + os.status + "\n";
             msg += "Equipamento: " + os.equipamento + "\n";
             msg += "Prioridade: " + os.prioridade + "\n";
@@ -703,7 +703,7 @@ async function carregarOS() {
         let text = "ONS ODONTOTECNICA - ORDEM DE SERVICO\n\n";
         text += "Cliente: " + os.clinicaNome + "\n";
         text += "Telefone: " + os.telefone + "\n";
-        text += "Criacao: " + os.dataCriacao + "\n";
+        text += "Criacao: " + os.created_at + "\n";
         text += "Status: " + os.status + "\n";
         text += "Equipamento: " + os.equipamento + "\n";
         text += "Prioridade: " + os.prioridade + "\n";
