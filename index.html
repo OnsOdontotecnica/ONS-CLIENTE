@@ -1,101 +1,85 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1e3a5f">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/jpeg" href="icon.jpg">
-    <link rel="apple-touch-icon" href="logo.jpg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>ONS OdontoTecnica - Cliente</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Roboto, sans-serif; background: #b4b4b4; color: #1a2e3a; line-height: 1.3; }
-        .app-container { max-width: 768px; margin: 0 auto; background: #b4b4b4; min-height: 100vh; position: relative; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #b4b4b4; }
+        .app-container { max-width: 768px; margin: 0 auto; background: #b4b4b4; min-height: 100vh; }
         .header { background: #0c3f5a; padding: 18px 16px; border-radius: 0 0 20px 20px; margin-bottom: 12px; }
-        .logo-area { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-        .logo-title h1 { color: #f0b606; font-size: 1.2rem; font-weight: 700; letter-spacing: -0.3px; }
-        .logo-title p { color: rgba(240,182,6,0.85); font-size: 0.65rem; font-weight: 500; margin-top: 2px; }
-        .user-info { background: rgba(240,182,6,0.15); padding: 5px 10px; border-radius: 20px; display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: #f0b606; }
-        .logout-btn { background: rgba(240,182,6,0.25); border: none; color: #f0b606; padding: 4px 10px; border-radius: 16px; font-size: 0.65rem; font-weight: 600; cursor: pointer; }
-        .nav-tabs { display: flex; background: white; margin: 12px 12px 0 12px; border-radius: 30px; padding: 3px; box-shadow: 0 1px 6px rgba(0,0,0,0.08); }
-        .tab-btn { flex: 1; text-align: center; padding: 8px 0; font-size: 0.8rem; font-weight: 600; background: transparent; border: none; border-radius: 28px; color: #5a6e7a; cursor: pointer; transition: all 0.2s ease; }
-        .tab-btn.active { background: #0c3f5a; color: #f0b606; }
-        .tab-content { display: none; padding: 16px 12px 20px 12px; }
+        .logo-title h1 { color: #f0b606; font-size: 1.2rem; }
+        .logo-title p { color: rgba(240,182,6,0.85); font-size: 0.65rem; }
+        .user-info { background: rgba(240,182,6,0.15); padding: 5px 10px; border-radius: 20px; display: flex; align-items: center; gap: 8px; color: #f0b606; }
+        .logout-btn { background: rgba(240,182,6,0.25); border: none; color: #f0b606; padding: 4px 10px; border-radius: 16px; cursor: pointer; }
+        .nav-tabs { display: flex; background: white; margin: 12px; border-radius: 30px; padding: 3px; }
+        .tab-btn { flex: 1; text-align: center; padding: 8px; background: transparent; border: none; border-radius: 28px; cursor: pointer; }
+        .tab-btn.active { background: #0c3f5a; color: #f0b606; font-weight: bold; }
+        .tab-content { display: none; padding: 16px 12px; }
         .tab-content.active { display: block; }
-        .card { background: white; border-radius: 16px; padding: 14px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+        .card { background: white; border-radius: 16px; padding: 14px; margin-bottom: 14px; }
         .field-group { margin-bottom: 14px; }
-        label { font-size: 0.75rem; font-weight: 700; color: #0c3f5a; display: block; margin-bottom: 4px; }
-        select, input, textarea { width: 100%; padding: 10px 12px; font-size: 0.85rem; border: 1px solid #d4dce0; border-radius: 12px; background: #ffffff; font-family: inherit; }
-        select:focus, input:focus, textarea:focus { outline: none; border-color: #f0b606; }
-        textarea { border-radius: 12px; resize: vertical; }
-        .checkbox-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-        .checkbox-item { background: #f5f7f8; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; display: flex; align-items: center; gap: 6px; border: 1px solid #e0e6ea; }
-        .checkbox-item input { width: 16px; height: 16px; margin: 0; accent-color: #f0b606; }
-        .btn-primary { background: #0c3f5a; color: #f0b606; border: none; padding: 12px; width: 100%; border-radius: 30px; font-size: 0.85rem; font-weight: 700; cursor: pointer; margin-top: 6px; }
-        .btn-secondary { background: #fef5e0; color: #0c3f5a; border: 1px solid #f0b606; padding: 10px; border-radius: 30px; font-size: 0.8rem; font-weight: 600; cursor: pointer; margin-top: 6px; }
-        .os-item-compact { background: white; border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; border-left: 3px solid #f0b606; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-        .os-header-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
-        .os-equipamento { font-weight: 700; font-size: 0.8rem; color: #0c3f5a; background: #eef2f5; padding: 3px 10px; border-radius: 20px; }
-        .status-badge { font-size: 0.6rem; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
-        .status-aberto { background: #fef5e0; color: #c98f0a; border: 1px solid #f0b606; }
+        label { font-size: 0.75rem; font-weight: bold; color: #0c3f5a; display: block; margin-bottom: 4px; }
+        select, input, textarea { width: 100%; padding: 10px; border: 1px solid #d4dce0; border-radius: 12px; }
+        .btn-primary { background: #0c3f5a; color: #f0b606; border: none; padding: 12px; width: 100%; border-radius: 30px; font-weight: bold; cursor: pointer; }
+        .btn-secondary { background: #fef5e0; color: #0c3f5a; border: 1px solid #f0b606; padding: 10px; border-radius: 30px; cursor: pointer; }
+        .checkbox-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .checkbox-item { background: #f5f7f8; padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; }
+        .os-item-compact { background: white; border-radius: 12px; padding: 10px; margin-bottom: 8px; border-left: 3px solid #f0b606; }
+        .os-header-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .status-badge { font-size: 0.6rem; padding: 3px 10px; border-radius: 20px; }
+        .status-aberto { background: #fef5e0; color: #c98f0a; }
         .status-finalizado { background: #e0ece8; color: #0c3f5a; }
-        .os-info-mini { font-size: 0.65rem; color: #5a6e7a; margin-bottom: 4px; display: flex; flex-wrap: wrap; gap: 12px; }
-        .os-actions-compact { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-        .small-btn { background: #f0f2f4; border: none; padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 500; cursor: pointer; color: #0c3f5a; }
-        .footer { text-align: center; font-size: 0.6rem; color: #2c4a5a; background: rgba(12,63,90,0.08); padding: 16px; margin-top: 8px; }
-        .login-screen { padding: 20px 16px 30px; }
-        .login-card { background: white; border-radius: 24px; padding: 24px 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+        .small-btn { background: #f0f2f4; border: none; padding: 4px 10px; border-radius: 20px; cursor: pointer; margin-right: 5px; }
+        .login-screen { padding: 20px; }
+        .login-card { background: white; border-radius: 24px; padding: 24px; }
         .login-logo { text-align: center; margin-bottom: 24px; }
-        .login-logo h1 { color: #0c3f5a; font-size: 1.8rem; font-weight: 800; }
-        .login-logo .logo-accent { color: #f0b606; font-size: 0.9rem; letter-spacing: 1px; }
+        .login-logo h1 { color: #0c3f5a; font-size: 1.8rem; }
+        .login-logo .logo-accent { color: #f0b606; }
         .hidden { display: none; }
-        small.hint { font-size: 0.6rem; color: #8a9aa5; display: block; margin-top: 3px; }
-        @media (min-width: 600px) { .app-container { max-width: 600px; } .card { padding: 18px; } label { font-size: 0.8rem; } }
-        @media (max-width: 480px) { .header { padding: 14px 12px; } .logo-title h1 { font-size: 1rem; } .tab-btn { padding: 6px 0; font-size: 0.75rem; } }
+        .footer { text-align: center; font-size: 0.6rem; padding: 16px; }
     </style>
 </head>
 <body>
-<div class="app-container" id="appContainer">
+<div class="app-container">
+    <!-- TELA DE LOGIN -->
     <div id="loginArea" class="login-screen">
         <div class="login-card">
             <div class="login-logo">
                 <h1>ONS</h1>
                 <div class="logo-accent">OdontoTecnica</div>
-                <p style="font-size:0.7rem; color:#5a6e7a; margin-top:4px;">Manutencao de Qualidade</p>
+                <p style="font-size:0.7rem; color:#5a6e7a;">Manutenção de Qualidade</p>
             </div>
             <div class="field-group">
-                <label>Clinica / Consultorio</label>
-                <input type="text" id="loginClinica" placeholder="Ex: Sorriso Odonto" autocomplete="off">
+                <label>Clínica / Consultório</label>
+                <input type="text" id="loginClinica" placeholder="Ex: Sorriso Odonto">
             </div>
             <div class="field-group">
                 <label>Telefone (com DDD)</label>
-                <input type="tel" id="loginTelefone" placeholder="(11) 91234-5678" autocomplete="off">
+                <input type="tel" id="loginTelefone" placeholder="(11) 91234-5678">
             </div>
             <button class="btn-primary" id="btnLogin">Acessar Sistema</button>
         </div>
     </div>
 
+    <!-- SISTEMA PRINCIPAL -->
     <div id="mainSystem" class="hidden">
         <div class="header">
-            <div class="logo-area">
-                <div class="logo-title">
-                    <h1>ONS ODONTOTECNICA - ORDEM DE SERVICO</h1>
-                    <p>Manutencao de Equipamentos Odontologicos</p>
-                </div>
-                <div class="user-info">
-                    <span id="displayNomeClinica"></span>
-                    <button class="logout-btn" id="logoutBtn">Sair</button>
-                </div>
+            <div class="logo-title">
+                <h1>ONS ODONTOTECNICA</h1>
+                <p>Ordem de Serviço</p>
+            </div>
+            <div class="user-info">
+                <span id="displayNomeClinica"></span>
+                <button class="logout-btn" id="logoutBtn">Sair</button>
             </div>
         </div>
 
         <div class="nav-tabs">
             <button class="tab-btn active" data-tab="tabNovaOS">Nova OS</button>
-            <button class="tab-btn" data-tab="tabRelatorios">Relatorios</button>
+            <button class="tab-btn" data-tab="tabRelatorios">Relatórios</button>
         </div>
 
         <div id="tabNovaOS" class="tab-content active">
@@ -103,78 +87,49 @@
                 <div class="field-group">
                     <label>Equipamento</label>
                     <select id="equipamentoSelect">
-                        <option value="">Selecione um equipamento</option>
-                        <option>Cadeira Odontologica</option>
-                        <option>Caneta Alta Rotacao</option>
-                        <option>Caneta Baixa Rotacao</option>
-                        <option>Micromotor Eletrico</option>
-                        <option>Ultrassom Odontologico</option>
-                        <option>Jato de Bicarbonato</option>
+                        <option value="">Selecione</option>
+                        <option>Cadeira Odontológica</option>
+                        <option>Caneta Alta Rotação</option>
+                        <option>Caneta Baixa Rotação</option>
                         <option>Compressor</option>
-                        <option>Aspirador / Suctora</option>
-                        <option>Fotopolimerizadora</option>
-                        <option>Raio-X Intraoral</option>
                         <option>Autoclave</option>
-                        <option>Motor de Endodontia</option>
-                        <option>Seladora</option>
-                        <option>Seringa Triplice</option>
+                        <option>Raio-X Intraoral</option>
                         <option>Outros</option>
                     </select>
                 </div>
                 <div class="field-group">
-                    <label>Observacao do equipamento</label>
-                    <textarea id="obsEquipamento" rows="2" placeholder="Caso nao esteja na lista ou detalhes adicionais..."></textarea>
+                    <label>Observação do equipamento</label>
+                    <textarea id="obsEquipamento" rows="2" placeholder="Detalhes adicionais..."></textarea>
                 </div>
-
                 <div class="field-group">
                     <label>Prioridade</label>
                     <div class="checkbox-grid">
-                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Alta"> Alta (parado)</label>
-                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Media"> Media (falhas)</label>
-                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Baixa"> Baixa (preventiva)</label>
+                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Alta"> Alta</label>
+                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Média"> Média</label>
+                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Baixa"> Baixa</label>
                     </div>
                 </div>
-
                 <div class="field-group">
-                    <label>Agendar Servicos Extra</label>
-                    <div class="checkbox-grid">
-                        <label class="checkbox-item"><input type="checkbox" id="servHigGeral"> Higienizacao geral</label>
-                        <label class="checkbox-item"><input type="checkbox" id="servHigTecnica"> Higienizacao tecnica</label>
-                    </div>
-                    <div class="field-group" style="margin-top: 10px;">
-                        <label>Data agendada para servico extra</label>
-                        <input type="date" id="dataAgendamento" style="font-size:0.85rem;">
-                    </div>
-                    <small class="hint">Geral: limpeza caixa d'agua/filtros de detritos/ Tecnica: ar condicionado, sanitizacao</small>
+                    <label class="checkbox-item"><input type="checkbox" id="incluirLaudo"> Incluir laudo técnico</label>
                 </div>
-
                 <div class="field-group">
-                    <div class="checkbox-grid">
-                        <label class="checkbox-item"><input type="checkbox" id="incluirLaudo"> Incluir laudo tecnico</label>
-                    </div>
+                    <label>Observações gerais</label>
+                    <textarea id="observacoesGerais" rows="2"></textarea>
                 </div>
-
-                <div class="field-group">
-                    <label>Observacoes gerais da OS</label>
-                    <textarea id="observacoesGerais" rows="2" placeholder="Informacoes adicionais..."></textarea>
-                </div>
-
-                <button class="btn-primary" id="btnCriarOS">Criar Ordem de Servico</button>
-                <button class="btn-secondary" id="btnWhatsAppRapido">Enviar emergencia via WhatsApp</button>
+                <button class="btn-primary" id="btnCriarOS">Criar Ordem de Serviço</button>
+                <button class="btn-secondary" id="btnWhatsAppRapido">Enviar via WhatsApp</button>
             </div>
         </div>
 
         <div id="tabRelatorios" class="tab-content">
             <div id="listaOSContainer"></div>
         </div>
-
-        <div class="footer">
-            ONS OdontoTecnica - Manutencao de Equipamentos Odontologicos
-        </div>
+        <div class="footer">ONS OdontoTecnica - Suporte 24h</div>
     </div>
 </div>
 
 <script>
+    // CONFIGURAÇÃO DO SUPABASE
     const SUPABASE_URL = 'https://npfbnfubnyndachmdgzy.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wZmJuZnVibnluZGFjaG1kZ3p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjQ5ODksImV4cCI6MjA5MTEwMDk4OX0.bTKgcUAKt_2A4FcVJSEOZ2rEVNpGxCj8bHpXw0Lh7Vw';
     const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -182,42 +137,89 @@
     let ordensServico = [];
     let usuarioAtual = null;
 
-    function saveUser() {
-        if(usuarioAtual) localStorage.setItem('ons_usuario', JSON.stringify(usuarioAtual));
-        else localStorage.removeItem('ons_usuario');
+    // SALVAR USUÁRIO NO LOCALSTORAGE
+    function salvarUsuario() {
+        if (usuarioAtual) {
+            localStorage.setItem('usuario_ons', JSON.stringify(usuarioAtual));
+            console.log('Usuário salvo:', usuarioAtual);
+        } else {
+            localStorage.removeItem('usuario_ons');
+        }
     }
 
-    function loadData() {
-        const storedUser = localStorage.getItem('ons_usuario');
-        if(storedUser) usuarioAtual = JSON.parse(storedUser);
+    // CARREGAR USUÁRIO DO LOCALSTORAGE
+    function carregarUsuarioSalvo() {
+        const salvo = localStorage.getItem('usuario_ons');
+        if (salvo) {
+            try {
+                usuarioAtual = JSON.parse(salvo);
+                console.log('Usuário carregado:', usuarioAtual);
+                return true;
+            } catch(e) {
+                console.error('Erro ao parsear usuário:', e);
+            }
+        }
+        return false;
     }
 
+    // ATUALIZAR INTERFACE BASEADO NO LOGIN
+    function atualizarInterface() {
+        const loginDiv = document.getElementById('loginArea');
+        const mainDiv = document.getElementById('mainSystem');
+        const displayNome = document.getElementById('displayNomeClinica');
+
+        if (usuarioAtual && usuarioAtual.clinicaNome) {
+            loginDiv.classList.add('hidden');
+            mainDiv.classList.remove('hidden');
+            if (displayNome) {
+                displayNome.innerHTML = `${usuarioAtual.clinicaNome} - ${usuarioAtual.telefone}`;
+            }
+            console.log('Interface atualizada para usuário logado');
+            carregarOS(); // Carrega as OS do banco
+        } else {
+            loginDiv.classList.remove('hidden');
+            mainDiv.classList.add('hidden');
+            console.log('Interface atualizada para LOGOUT');
+        }
+    }
+
+    // CARREGAR OS DO SUPABASE (APENAS DA CLÍNICA LOGADA)
     async function carregarOS() {
-        if(!usuarioAtual) return;
+        if (!usuarioAtual || !usuarioAtual.clinicaNome) {
+            console.log('Sem usuário logado, não carrega OS');
+            return;
+        }
+
+        console.log('Buscando OS para clínica:', usuarioAtual.clinicaNome);
         
-        // Buscar APENAS os chamados da clínica logada
         const { data, error } = await supabase
             .from('chamados')
             .select('*')
-            .eq('clinica', usuarioAtual.clinicaNome);
+            .eq('clinica', usuarioAtual.clinicaNome)
+            .order('created_at', { ascending: false });
         
-        if(error) {
-            console.error("Erro ao carregar OS:", error);
-            alert("Erro ao carregar OS: " + error.message);
+        if (error) {
+            console.error('Erro ao carregar OS:', error);
+            alert('Erro ao carregar OS: ' + error.message);
             return;
         }
         
         ordensServico = data || [];
+        console.log(`${ordensServico.length} OS carregadas`);
         renderRelatorios();
     }
 
+    // CRIAR NOVA OS
     async function criarOS() {
-        if(!usuarioAtual) return;
+        if (!usuarioAtual) {
+            alert('Faça login primeiro!');
+            return;
+        }
         
         let eqBase = document.getElementById('equipamentoSelect').value;
         let obsEquip = document.getElementById('obsEquipamento').value;
-        let equipamentoFinal = obsEquip.trim() !== "" ? (eqBase ? eqBase + ' (' + obsEquip + ')' : obsEquip) : eqBase;
-        if(!equipamentoFinal) equipamentoFinal = "Não informado";
+        let equipamentoFinal = obsEquip.trim() ? (eqBase ? eqBase + ' (' + obsEquip + ')' : obsEquip) : eqBase;
+        if (!equipamentoFinal) equipamentoFinal = "Não informado";
         
         let prioridades = [];
         document.querySelectorAll('input[name="prioridade"]:checked').forEach(cb => prioridades.push(cb.value));
@@ -227,9 +229,9 @@
         let incluirLaudo = document.getElementById('incluirLaudo').checked;
         
         const btn = document.getElementById('btnCriarOS');
-        if(btn) {
+        if (btn) {
             btn.disabled = true;
-            btn.innerText = "ENVIANDO PARA ONS...";
+            btn.innerText = "Enviando...";
         }
 
         try {
@@ -244,236 +246,203 @@
 
             if (error) throw error;
 
-            alert("✅ Chamado enviado com sucesso para a ONS!");
-
-            // Limpa os campos
+            alert("✅ Chamado enviado com sucesso!");
+            
+            // Limpar formulário
             document.getElementById('obsEquipamento').value = "";
             document.getElementById('observacoesGerais').value = "";
             document.getElementById('incluirLaudo').checked = false;
-            document.querySelectorAll('input[name="prioridade"]:checked').forEach(cb => cb.checked = false);
+            document.querySelectorAll('input[name="prioridade"]').forEach(cb => cb.checked = false);
             document.getElementById('equipamentoSelect').value = "";
-            document.getElementById('servHigGeral').checked = false;
-            document.getElementById('servHigTecnica').checked = false;
-            document.getElementById('dataAgendamento').value = "";
             
             await carregarOS();
+            
+            // Mudar para aba de relatórios
+            document.querySelector('[data-tab="tabRelatorios"]').click();
 
         } catch (err) {
             console.error("Erro:", err);
-            alert("Erro ao salvar no banco: " + err.message);
+            alert("Erro ao salvar: " + err.message);
         } finally {
-            if(btn) {
+            if (btn) {
                 btn.disabled = false;
-                btn.innerText = "Criar Ordem de Servico";
+                btn.innerText = "Criar Ordem de Serviço";
             }
         }
     }
 
+    // FINALIZAR OS
     async function finalizarOS(id) {
-        const os = ordensServico.find(o => o.id === id);
-        if(!os || os.status !== 'Aberto') return;
+        if (!confirm('Finalizar esta OS?')) return;
         
-        if(confirm(`Finalizar OS #${id} da clínica ${os.clinica}?`)) {
-            const { error } = await supabase
-                .from('chamados')
-                .update({ status: 'Finalizado', dataFinalizacao: new Date().toISOString() })
-                .eq('id', id);
-            
-            if(error) {
-                alert("Erro ao finalizar: " + error.message);
-                return;
-            }
-            
-            alert("OS finalizada com sucesso!");
-            await carregarOS();
+        const { error } = await supabase
+            .from('chamados')
+            .update({ status: 'Finalizado', dataFinalizacao: new Date().toISOString() })
+            .eq('id', id);
+        
+        if (error) {
+            alert("Erro ao finalizar: " + error.message);
+            return;
         }
+        
+        alert("OS finalizada!");
+        await carregarOS();
     }
 
+    // EXCLUIR OS
     async function excluirOS(id) {
-        if(confirm(`Tem certeza que deseja EXCLUIR permanentemente a OS #${id}?`)) {
-            const { error } = await supabase
-                .from('chamados')
-                .delete()
-                .eq('id', id);
-            
-            if(error) {
-                alert("Erro ao excluir: " + error.message);
-                return;
-            }
-            
-            alert("OS excluída com sucesso!");
-            await carregarOS();
+        if (!confirm('Excluir permanentemente esta OS?')) return;
+        
+        const { error } = await supabase
+            .from('chamados')
+            .delete()
+            .eq('id', id);
+        
+        if (error) {
+            alert("Erro ao excluir: " + error.message);
+            return;
         }
+        
+        alert("OS excluída!");
+        await carregarOS();
     }
 
+    // VISUALIZAR OS
     function visualizarOS(id) {
         const os = ordensServico.find(o => o.id === id);
-        if(os) {
-            let msg = "📋 DETALHES DA OS\n\n";
-            msg += "ID: " + os.id + "\n";
-            msg += "Clínica: " + os.clinica + "\n";
-            msg += "Criação: " + new Date(os.created_at).toLocaleString() + "\n";
-            msg += "Status: " + os.status + "\n";
-            msg += "Equipamento: " + os.equipamento + "\n";
-            msg += "Prioridade: " + os.prioridade + "\n";
-            msg += "Laudo técnico: " + (os.incluirLaudo ? "✅ Sim" : "❌ Não") + "\n";
-            msg += "Observações: " + (os.detalhe || "---") + "\n";
-            if(os.dataFinalizacao) msg += "Finalizada em: " + new Date(os.dataFinalizacao).toLocaleString() + "\n";
-            alert(msg);
-        }
+        if (!os) return;
+        
+        let msg = "📋 DETALHES DA OS\n\n";
+        msg += "ID: " + os.id + "\n";
+        msg += "Clínica: " + os.clinica + "\n";
+        msg += "Data: " + new Date(os.created_at).toLocaleString() + "\n";
+        msg += "Status: " + os.status + "\n";
+        msg += "Equipamento: " + os.equipamento + "\n";
+        msg += "Prioridade: " + os.prioridade + "\n";
+        msg += "Laudo: " + (os.incluirLaudo ? "Sim" : "Não") + "\n";
+        msg += "Obs: " + (os.detalhe || "---") + "\n";
+        alert(msg);
     }
 
-    function gerarTextoOS(os) {
-        let text = "🏥 ONS ODONTOTECNICA - ORDEM DE SERVIÇO\n\n";
-        text += "Cliente: " + os.clinica + "\n";
-        text += "Data: " + new Date(os.created_at).toLocaleString() + "\n";
-        text += "Status: " + os.status + "\n";
-        text += "Equipamento: " + os.equipamento + "\n";
-        text += "Prioridade: " + os.prioridade + "\n";
-        text += "Laudo técnico: " + (os.incluirLaudo ? "Sim" : "Não") + "\n";
-        text += "Observações: " + (os.detalhe || "---") + "\n";
-        if(os.dataFinalizacao) text += "Finalizada em: " + new Date(os.dataFinalizacao).toLocaleString() + "\n";
-        text += "\nEnviado via sistema ONS OdontoTecnica";
-        return encodeURIComponent(text);
-    }
-
-    function enviarOSWhatsApp(id) {
+    // ENVIAR WHATSAPP
+    function enviarWhatsApp(id) {
         const os = ordensServico.find(o => o.id === id);
-        if(!os) return;
-        // Número fixo do administrativo (como no prompt)
-        const telefoneAdmin = "5535920004813";
-        const url = "https://wa.me/" + telefoneAdmin + "?text=" + gerarTextoOS(os);
+        if (!os) return;
+        
+        const texto = `🏥 ONS ODONTOTECNICA\nCliente: ${os.clinica}\nEquipamento: ${os.equipamento}\nPrioridade: ${os.prioridade}\nLaudo: ${os.incluirLaudo ? 'Sim' : 'Não'}\nObs: ${os.detalhe || '---'}`;
+        const url = "https://wa.me/5535920004813?text=" + encodeURIComponent(texto);
         window.open(url, '_blank');
     }
 
-    function enviarUltimaOS() {
-        if(ordensServico.length === 0) { 
-            alert("Nenhuma OS criada ainda."); 
-            return; 
-        }
-        // Envia a mais recente (última criada)
-        const ultimaOS = [...ordensServico].sort((a,b) => new Date(b.created_at) - new Date(a.created_at))[0];
-        enviarOSWhatsApp(ultimaOS.id);
-    }
-
+    // RENDERIZAR LISTA DE OS
     function renderRelatorios() {
         const container = document.getElementById('listaOSContainer');
-        if(!container) return;
+        if (!container) return;
         
-        if(ordensServico.length === 0) {
-            container.innerHTML = '<div class="card" style="text-align:center; color:#8a9aa5;">Nenhuma ordem de serviço registrada.</div>';
+        if (ordensServico.length === 0) {
+            container.innerHTML = '<div class="card" style="text-align:center;">Nenhuma OS encontrada.</div>';
             return;
         }
         
         let html = '';
         ordensServico.forEach(os => {
             const statusClass = os.status === 'Aberto' ? 'status-aberto' : 'status-finalizado';
-            const statusText = os.status === 'Aberto' ? 'Aberto' : 'Finalizado';
             html += `
-                <div class="os-item-compact" data-id="${os.id}">
+                <div class="os-item-compact">
                     <div class="os-header-line">
-                        <span class="os-equipamento">${os.equipamento.length > 35 ? os.equipamento.substring(0,32)+'...' : os.equipamento}</span>
-                        <span class="status-badge ${statusClass}">${statusText}</span>
+                        <strong>${os.equipamento.substring(0, 30)}</strong>
+                        <span class="status-badge ${statusClass}">${os.status}</span>
                     </div>
-                    <div class="os-info-mini">
-                        <span>📅 ${os.created_at ? new Date(os.created_at).toLocaleDateString() : 'Sem data'}</span>
-                        <span>⚡ Prioridade: ${os.prioridade}</span>
-                        <span>📄 Laudo: ${os.incluirLaudo ? 'Sim' : 'Não'}</span>
+                    <div style="font-size:0.7rem; margin:5px 0;">
+                        📅 ${new Date(os.created_at).toLocaleDateString()} | ⚡ ${os.prioridade} | 📄 ${os.incluirLaudo ? 'Laudo' : 'Sem laudo'}
                     </div>
-                    <div class="os-actions-compact">
-                        <button class="small-btn verOS" data-id="${os.id}">Visualizar</button>
-                        <button class="small-btn excluirOS" data-id="${os.id}">Excluir</button>
-                        <button class="small-btn whatsOS" data-id="${os.id}">WhatsApp</button>
-                        ${os.status === 'Aberto' ? `<button class="small-btn finalizarOS" data-id="${os.id}">Finalizar</button>` : ''}
+                    <div>
+                        <button class="small-btn" onclick="visualizarOS(${os.id})">Ver</button>
+                        <button class="small-btn" onclick="enviarWhatsApp(${os.id})">Whats</button>
+                        ${os.status === 'Aberto' ? `<button class="small-btn" onclick="finalizarOS(${os.id})">Finalizar</button>` : ''}
+                        <button class="small-btn" onclick="excluirOS(${os.id})">Excluir</button>
                     </div>
                 </div>
             `;
         });
         container.innerHTML = html;
-        
-        document.querySelectorAll('.verOS').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(btn.getAttribute('data-id'));
-                visualizarOS(id);
-            });
-        });
-        document.querySelectorAll('.excluirOS').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(btn.getAttribute('data-id'));
-                excluirOS(id);
-            });
-        });
-        document.querySelectorAll('.whatsOS').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(btn.getAttribute('data-id'));
-                enviarOSWhatsApp(id);
-            });
-        });
-        document.querySelectorAll('.finalizarOS').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(btn.getAttribute('data-id'));
-                finalizarOS(id);
-            });
-        });
     }
 
+    // FUNÇÃO DE LOGIN
     function fazerLogin() {
+        console.log('=== FAZENDO LOGIN ===');
         const clinica = document.getElementById('loginClinica').value.trim();
         const telefone = document.getElementById('loginTelefone').value.trim();
         
-        if(!clinica || !telefone) { 
-            alert("Preencha o nome da clínica e o telefone."); 
-            return; 
+        if (!clinica) {
+            alert('Preencha o nome da clínica');
+            return;
+        }
+        if (!telefone) {
+            alert('Preencha o telefone');
+            return;
         }
         
-        usuarioAtual = { clinicaNome: clinica, telefone: telefone };
-        saveUser();
-        updateUIByLogin();
+        usuarioAtual = {
+            clinicaNome: clinica,
+            telefone: telefone
+        };
+        
+        salvarUsuario();
+        atualizarInterface();
+        console.log('Login realizado com sucesso!');
     }
-    
-    function logout() {
+
+    // LOGOUT
+    function fazerLogout() {
         usuarioAtual = null;
-        saveUser();
-        updateUIByLogin();
+        salvarUsuario();
+        atualizarInterface();
+        console.log('Logout realizado');
     }
 
-    function updateUIByLogin() {
-        const loginDiv = document.getElementById('loginArea');
-        const mainDiv = document.getElementById('mainSystem');
-
-        if(usuarioAtual) {
-            loginDiv.classList.add('hidden');
-            mainDiv.classList.remove('hidden');
-            document.getElementById('displayNomeClinica').innerHTML = `${usuarioAtual.clinicaNome} - ${usuarioAtual.telefone}`;
-            carregarOS();
-        } else {
-            loginDiv.classList.remove('hidden');
-            mainDiv.classList.add('hidden');
-        }
-    }
-    
-    function initTabs() {
-        const btns = document.querySelectorAll('.tab-btn');
-        btns.forEach(btn => {
+    // INICIAR TABS
+    function iniciarTabs() {
+        const botoes = document.querySelectorAll('.tab-btn');
+        botoes.forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabId = btn.getAttribute('data-tab');
-                btns.forEach(b => b.classList.remove('active'));
+                botoes.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
                 document.getElementById(tabId).classList.add('active');
-                if(tabId === 'tabRelatorios') renderRelatorios();
+                if (tabId === 'tabRelatorios') {
+                    renderRelatorios();
+                }
             });
         });
     }
-    
+
+    // INICIAR APP
     document.addEventListener('DOMContentLoaded', () => {
-        loadData();
-        updateUIByLogin();
-        initTabs();
-        document.getElementById('btnLogin')?.addEventListener('click', fazerLogin);
-        document.getElementById('logoutBtn')?.addEventListener('click', logout);
-        document.getElementById('btnCriarOS')?.addEventListener('click', criarOS);
-        document.getElementById('btnWhatsAppRapido')?.addEventListener('click', enviarUltimaOS);
+        console.log('=== APP INICIADO ===');
+        
+        // Carregar usuário salvo
+        const usuarioExistente = carregarUsuarioSalvo();
+        
+        // Configurar eventos
+        document.getElementById('btnLogin').addEventListener('click', fazerLogin);
+        document.getElementById('logoutBtn').addEventListener('click', fazerLogout);
+        document.getElementById('btnCriarOS').addEventListener('click', criarOS);
+        document.getElementById('btnWhatsAppRapido').addEventListener('click', () => {
+            if (ordensServico.length > 0) {
+                enviarWhatsApp(ordensServico[0].id);
+            } else {
+                alert('Nenhuma OS para enviar');
+            }
+        });
+        
+        iniciarTabs();
+        
+        // Atualizar interface
+        atualizarInterface();
+        
+        console.log('App pronto! Usuário logado?', !!usuarioAtual);
     });
 </script>
 </body>
