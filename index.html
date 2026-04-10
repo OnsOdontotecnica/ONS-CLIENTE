@@ -395,7 +395,7 @@
             </div>
             <div class="field-group">
                 <label>Telefone (com DDD)</label>
-                <input type="tel" id="loginTelefone" placeholder="5535920004813" autocomplete="off">
+                <input type="tel" id="loginTelefone" placeholder="(11) 91234-5678" autocomplete="off">
             </div>
             <button class="btn-primary" id="btnLogin">Acessar Sistema</button>
         </div>
@@ -499,65 +499,25 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
+<script>                         
+    const SUPABASE_URL = 'https://npfbnfubnyndachmdgzy.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wZmJuZnVibnluZGFjaG1kZ3p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjQ5ODksImV4cCI6MjA5MTEwMDk4OX0.bTKgcUAKt_2A4FcVJSEOZ2rEVNpGxCj8bHpXw0Lh7Vw';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    let ordensServico = [];
+    let usuarioAtual = null;
 
-const SUPABASE_URL = 'https://npfbnfubnyndachmdgzy.supabase.co';
-const SUPABASE_KEY = 'SUA_KEY_AQUI';
+   function loadData() {
+    const storedUser = localStorage.getItem('ons_usuario');
+    if(storedUser) usuarioAtual = JSON.parse(storedUser);
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-async function carregarOS(){
-
-    const { data, error } = await supabase
-        .from('chamados')
-        .select('*');
-
-    console.log("DADOS:", data);
-    console.log("ERRO:", error);
-
-    const div = document.getElementById('listaOSContainer'); // 🔥 CORRIGIDO
-
-    if(!div){
-        alert("Div não encontrada");
-        return;
-    }
-
-    div.innerHTML = '';
-
-    if(error){
-        div.innerHTML = "<h3>Erro: " + error.message + "</h3>";
-        return;
-    }
-
-    if(!data || data.length === 0){
-        div.innerHTML = "<h3>Nenhuma OS encontrada</h3>";
-        return;
-    }
-
-    data.forEach(os => {
-
-        const el = document.createElement('div');
-        el.style.background = "white";
-        el.style.padding = "10px";
-        el.style.margin = "10px";
-        el.style.borderRadius = "10px";
-
-        el.innerHTML = `
-            <b>ID:</b> ${os.id}<br>
-            <b>Equipamento:</b> ${os.equipamento || '-'}<br>
-            <b>Status:</b> ${os.status || '-'}<br>
-        `;
-
-        div.appendChild(el);
-    });
+    ordensServico = []; // agora vem do banco
 }
-
-// iniciar
-carregarOS();
-
-</script>
+    
+    function saveUser() {
+        if(usuarioAtual) localStorage.setItem('ons_usuario', JSON.stringify(usuarioAtual));
+        else localStorage.removeItem('ons_usuario');
+    }
 async function carregarOS() {
     if(!usuarioAtual) return;
 
@@ -705,7 +665,8 @@ async function carregarOS() {
             });
         });
     }
-       function finalizarOS(id) {
+
+    function finalizarOS(id) {
         const index = ordensServico.findIndex(os => os.id === id);
         if(index !== -1 && ordensServico[index].status === 'Aberto') {
             ordensServico[index].status = "Finalizada";
@@ -719,54 +680,48 @@ async function carregarOS() {
         ordensServico = ordensServico.filter(os => os.id !== id);
         renderRelatorios();
     }
-
+    
     function visualizarOS(id) {
         const os = ordensServico.find(o => o.id === id);
         if(os) {
             let msg = "DETALHES DA OS\n\n";
-            msg += "Clinica: " + (os.clinica || "Nao informada") + "\n";
+            msg += "Clinica: " + os.clinicaNome + "\n";
+            msg += "Telefone: " + os.telefone + "\n";
             msg += "Criacao: " + new Date(os.created_at).toLocaleString() + "\n";
-            msg += "Status: " + (os.status || "Aberto") + "\n";
-            msg += "Equipamento: " + (os.equipamento || "Nao informado") + "\n";
-            msg += "Prioridade: " + (os.prioridade || "Normal") + "\n";
-            msg += "Observacoes: " + (os.detalhe || "Sem observacoes") + "\n";
-            msg += "Laudo: " + (os.incluirLaudo ? "SIM - Levar laudo" : "NAO - Sem laudo") + "\n";
+            msg += "Status: " + os.status + "\n";
+            msg += "Equipamento: " + os.equipamento + "\n";
+            msg += "Prioridade: " + os.prioridade + "\n";
+            msg += "Servicos: " + os.servicos + "\n";
+            msg += "Laudo: " + os.incluirLaudo + "\n";
+            msg += "Observacoes: " + os.obsGerais;
             if(os.dataFinalizacao) msg += "\nFinalizada em: " + os.dataFinalizacao;
             alert(msg);
-        } else {
-            alert("OS nao encontrada!");
         }
+    }
+    
+    function gerarTextoOS(os) {
+        let text = "ONS ODONTOTECNICA - ORDEM DE SERVICO\n\n";
+        text += "Cliente: " + os.clinicaNome + "\n";
+        text += "Telefone: " + os.telefone + "\n";
+        text += "Criacao: " + os.created_at + "\n";
+        text += "Status: " + os.status + "\n";
+        text += "Equipamento: " + os.equipamento + "\n";
+        text += "Prioridade: " + os.prioridade + "\n";
+        text += "Servicos: " + os.servicos + "\n";
+        text += "Incluir Laudo: " + os.incluirLaudo + "\n";
+        text += "Observacoes: " + os.obsGerais + "\n";
+        if(os.dataFinalizacao) text += "Finalizada em: " + os.dataFinalizacao + "\n";
+        text += "\nEnviado via sistema ONS OdontoTecnica";
+        return encodeURIComponent(text);
     }
     
     function enviarOSWhatsApp(id) {
         const os = ordensServico.find(o => o.id === id);
-        if(!os) {
-            alert("OS não encontrada!");
-            return;
-        }
-
-        const telefoneONS = "5535920004813";
-        
-        const texto = `ONS ODONTOTECNICA - ORDEM DE SERVICO
-
-🏥 Clinica: ${os.clinica || "Nao informada"}
-🔧 Equipamento: ${os.equipamento || "Nao informado"}
-⚡ Prioridade: ${os.prioridade || "Normal"}
-📝 Observacoes: ${os.detalhe || "Sem observacoes"}
-📊 Status: ${os.status || "Aberto"}
-📋 Laudo tecnico: ${os.incluirLaudo ? "SIM - Levar laudo" : "NAO - Sem laudo"}
-📅 Data: ${new Date(os.created_at).toLocaleString()}
-
----
-Enviado automaticamente pelo sistema ONS`;
-
-        const url = "https://wa.me/" + telefoneONS + "?text=" + encodeURIComponent(texto);
-        
-        const userConfirmed = confirm("📱 OBRIGADO! VOCÊ É PRIORIDADE!\n\n✅ Clique em OK para enviar via WhatsApp\n❌ Cancelar para voltar");
-        
-        if(userConfirmed) {
-            window.open(url, '_blank');
-        }
+        if(!os) return;
+        let telefone = os.telefone.replace(/\D/g, '');
+        if(telefone.length === 0) telefone = '';
+        const url = "https://wa.me/55" + telefone + "?text=" + gerarTextoOS(os);
+        window.open(url, '_blank');
     }
     
     function enviarUltimaOS() {
@@ -778,6 +733,7 @@ Enviado automaticamente pelo sistema ONS`;
     }
     
     function fazerLogin() {
+        alert("Login executado");
         const clinica = document.getElementById('loginClinica').value.trim();
         const telefone = document.getElementById('loginTelefone').value.trim();
         if(!clinica || !telefone) { 
