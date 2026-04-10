@@ -9,10 +9,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
         .app-container { max-width: 768px; margin: 0 auto; background: #f5f5f5; min-height: 100vh; }
-        .header { background: #1a3a4f; padding: 20px 16px; border-radius: 0 0 25px 25px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .logo-title h1 { color: #f5b042; font-size: 1.4rem; margin: 0; }
+        .header { background: #1a3a4f; padding: 20px 16px; border-radius: 0 0 25px 25px; margin-bottom: 15px; }
+        .logo-title h1 { color: #f5b042; font-size: 1.4rem; }
         .logo-title p { color: rgba(245,176,66,0.85); font-size: 0.7rem; }
-        .user-info { background: rgba(245,176,66,0.15); padding: 6px 12px; border-radius: 25px; display: flex; align-items: center; gap: 10px; color: #f5b042; font-size: 0.75rem; }
+        .user-info { background: rgba(245,176,66,0.15); padding: 6px 12px; border-radius: 25px; display: flex; align-items: center; gap: 10px; color: #f5b042; }
         .logout-btn { background: rgba(245,176,66,0.25); border: none; color: #f5b042; padding: 5px 12px; border-radius: 20px; cursor: pointer; }
         .nav-tabs { display: flex; background: white; margin: 12px 15px; border-radius: 40px; padding: 4px; }
         .tab-btn { flex: 1; text-align: center; padding: 10px; background: transparent; border: none; border-radius: 35px; cursor: pointer; font-weight: 600; color: #6b7a85; }
@@ -44,13 +44,13 @@
         .hidden { display: none !important; }
         .footer { text-align: center; font-size: 0.6rem; padding: 20px; color: #8a9aa5; }
         .error-msg { color: #d32f2f; font-size: 0.7rem; margin-top: 10px; text-align: center; }
-        .admin-response { background: #e8f0f5; padding: 10px; border-radius: 12px; margin-top: 8px; font-size: 0.7rem; color: #1a3a4f; }
+        .admin-response { background: #e8f0f5; padding: 10px; border-radius: 12px; margin-top: 8px; font-size: 0.7rem; }
         .header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .laudo-badge { background: #fef5e8; color: #f5b042; padding: 2px 8px; border-radius: 12px; font-size: 0.6rem; margin-left: 5px; }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <!-- TELA DE LOGIN -->
     <div id="loginArea" class="login-screen">
         <div class="login-card">
             <div class="login-logo">
@@ -71,7 +71,6 @@
         </div>
     </div>
 
-    <!-- SISTEMA PRINCIPAL -->
     <div id="mainSystem" class="hidden">
         <div class="header">
             <div class="header-flex">
@@ -92,7 +91,6 @@
             <button class="tab-btn" data-tab="tabRespostas">💬 Respostas</button>
         </div>
 
-        <!-- ABA NOVA OS -->
         <div id="tabNovaOS" class="tab-content active">
             <div class="card">
                 <div class="field-group">
@@ -109,7 +107,6 @@
                         <option>Fotopolimerizadora</option>
                         <option>Raio-X Intraoral</option>
                         <option>Autoclave</option>
-                        <option>Motor de Endodontia</option>
                         <option>Outros</option>
                     </select>
                 </div>
@@ -137,12 +134,10 @@
             </div>
         </div>
 
-        <!-- ABA MEUS CHAMADOS -->
         <div id="tabRelatorios" class="tab-content">
             <div id="listaOSContainer"></div>
         </div>
 
-        <!-- ABA RESPOSTAS DO ADM -->
         <div id="tabRespostas" class="tab-content">
             <div id="respostasContainer"></div>
         </div>
@@ -153,7 +148,7 @@
 
 <script>
     (function() {
-        console.log('🚀 ONS OdontoTecnica Cliente - Versão Completa');
+        console.log('🚀 ONS OdontoTecnica Cliente');
         
         const SUPABASE_URL = 'https://npfbnfubnyndachmdgzy.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wZmJuZnVibnluZGFjaG1kZ3p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjQ5ODksImV4cCI6MjA5MTEwMDk4OX0.bTKgcUAKt_2A4FcVJSEOZ2rEVNpGxCj8bHpXw0Lh7Vw';
@@ -161,8 +156,28 @@
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         let ordensServico = [];
         let usuarioAtual = null;
+        let colunasDisponiveis = [];
 
-        // Funções de usuário
+        // VERIFICAR QUAIS COLUNAS EXISTEM NA TABELA
+        async function verificarColunas() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('chamados')
+                    .select('*')
+                    .limit(1);
+                
+                if (data && data.length > 0) {
+                    colunasDisponiveis = Object.keys(data[0]);
+                } else if (error && error.message.includes('column')) {
+                    // Tabela vazia, vamos tentar inserir um registro temporário
+                    console.log('Tabela vazia, tentando descobrir colunas...');
+                }
+                console.log('Colunas disponíveis:', colunasDisponiveis);
+            } catch (e) {
+                console.error('Erro ao verificar colunas:', e);
+            }
+        }
+
         function salvarUsuario() {
             if (usuarioAtual) {
                 localStorage.setItem('usuario_ons', JSON.stringify(usuarioAtual));
@@ -199,7 +214,6 @@
             }
         }
 
-        // CARREGAR OS DO CLIENTE (SOMENTE AS DO CLIENTE LOGADO)
         async function carregarOS() {
             if (!usuarioAtual) return;
             
@@ -218,7 +232,6 @@
             renderRelatorios();
         }
 
-        // CARREGAR RESPOSTAS DO ADM
         async function carregarRespostas() {
             if (!usuarioAtual) return;
             
@@ -237,7 +250,7 @@
             renderRespostas(data || []);
         }
 
-        // CRIAR NOVA OS (com todas as colunas)
+        // CRIAR OS - Versão adaptativa (só envia colunas que existem)
         async function criarOS() {
             if (!usuarioAtual) {
                 alert('Faça login primeiro!');
@@ -261,19 +274,32 @@
             btn.innerText = "⏳ Enviando...";
 
             try {
-                const { error } = await supabaseClient.from('chamados').insert([{
+                // Construir objeto apenas com colunas que existem
+                let novoChamado = {
                     clinica: usuarioAtual.clinicaNome,
-                    telefone_cliente: usuarioAtual.telefone,
                     equipamento: equipamentoFinal,
                     prioridade: prioridadeTxt,
                     detalhe: obsGerais,
-                    status: 'Aberto',
-                    incluirLaudo: incluirLaudo
-                }]);
+                    status: 'Aberto'
+                };
+                
+                // Só adicionar telefone_cliente se a coluna existir
+                if (colunasDisponiveis.includes('telefone_cliente')) {
+                    novoChamado.telefone_cliente = usuarioAtual.telefone;
+                }
+                
+                // Só adicionar incluirLaudo se a coluna existir
+                if (colunasDisponiveis.includes('incluirLaudo')) {
+                    novoChamado.incluirLaudo = incluirLaudo;
+                } else {
+                    console.log('Coluna incluirLaudo não existe, ignorando...');
+                }
+
+                const { error } = await supabaseClient.from('chamados').insert([novoChamado]);
 
                 if (error) throw error;
 
-                alert("✅ Chamado enviado com sucesso! A ONS responderá em breve.");
+                alert("✅ Chamado enviado com sucesso!");
                 
                 // Limpar formulário
                 document.getElementById('obsEquipamento').value = "";
@@ -284,8 +310,6 @@
                 
                 await carregarOS();
                 await carregarRespostas();
-                
-                alert("📱 Você receberá a resposta do técnico no WhatsApp e nesta aba 'Respostas'");
 
             } catch (err) {
                 console.error(err);
@@ -296,13 +320,18 @@
             }
         }
 
-        // FINALIZAR OS (cliente confirma que o serviço foi concluído)
         async function finalizarOS(id) {
-            if (!confirm('✅ Confirmar que este serviço foi concluído? Esta ação notificará a ONS.')) return;
+            if (!confirm('✅ Confirmar que este serviço foi concluído?')) return;
+            
+            let updateData = { status: 'Finalizado' };
+            
+            if (colunasDisponiveis.includes('dataFinalizacao')) {
+                updateData.dataFinalizacao = new Date().toISOString();
+            }
             
             const { error } = await supabaseClient
                 .from('chamados')
-                .update({ status: 'Finalizado', dataFinalizacao: new Date().toISOString() })
+                .update(updateData)
                 .eq('id', id);
             
             if (error) {
@@ -310,13 +339,12 @@
                 return;
             }
             
-            alert("✅ OS finalizada! Obrigado por utilizar nossos serviços.");
+            alert("✅ OS finalizada!");
             await carregarOS();
         }
 
-        // EXCLUIR OS (cliente pode cancelar)
         async function excluirOS(id) {
-            if (!confirm('⚠️ Tem certeza que deseja CANCELAR e EXCLUIR esta OS? Esta ação não pode ser desfeita.')) return;
+            if (!confirm('⚠️ Tem certeza que deseja EXCLUIR esta OS?')) return;
             
             const { error } = await supabaseClient
                 .from('chamados')
@@ -328,7 +356,7 @@
                 return;
             }
             
-            alert("🗑️ OS cancelada e excluída!");
+            alert("🗑️ OS excluída!");
             await carregarOS();
             await carregarRespostas();
         }
@@ -340,19 +368,13 @@
             let msg = "📋 DETALHES DA OS\n\n";
             msg += "ID: " + os.id + "\n";
             msg += "Clínica: " + os.clinica + "\n";
-            msg += "Telefone: " + (os.telefone_cliente || usuarioAtual.telefone) + "\n";
             msg += "Data: " + new Date(os.created_at).toLocaleString() + "\n";
             msg += "Status: " + os.status + "\n";
             msg += "Equipamento: " + os.equipamento + "\n";
             msg += "Prioridade: " + os.prioridade + "\n";
-            msg += "Laudo: " + (os.incluirLaudo ? "✅ Sim" : "❌ Não") + "\n";
+            if (os.incluirLaudo !== undefined) msg += "Laudo: " + (os.incluirLaudo ? "✅ Sim" : "❌ Não") + "\n";
             msg += "Observações: " + (os.detalhe || "---") + "\n";
-            if (os.admin_response) {
-                msg += "\n💬 RESPOSTA DA ONS:\n" + os.admin_response + "\n";
-            }
-            if (os.dataFinalizacao) {
-                msg += "\n✅ Finalizada em: " + new Date(os.dataFinalizacao).toLocaleString();
-            }
+            if (os.admin_response) msg += "\n💬 RESPOSTA DA ONS:\n" + os.admin_response + "\n";
             alert(msg);
         }
 
@@ -360,21 +382,21 @@
             const os = ordensServico.find(o => o.id === id);
             if (!os) return;
             
-            const texto = `🏥 ONS ODONTOTECNICA - ORDEM DE SERVIÇO #${os.id}\n\n` +
+            let texto = `🏥 ONS ODONTOTECNICA - ORDEM DE SERVIÇO #${os.id}\n\n` +
                 `Cliente: ${os.clinica}\n` +
-                `Telefone: ${os.telefone_cliente || usuarioAtual.telefone}\n` +
                 `Equipamento: ${os.equipamento}\n` +
                 `Prioridade: ${os.prioridade}\n` +
-                `Laudo: ${os.incluirLaudo ? 'Sim' : 'Não'}\n` +
                 `Observações: ${os.detalhe || '---'}\n\n` +
-                `Status: ${os.status}\n` +
-                `Aberto em: ${new Date(os.created_at).toLocaleString()}`;
+                `Status: ${os.status}`;
+            
+            if (os.incluirLaudo !== undefined) {
+                texto += `\nLaudo: ${os.incluirLaudo ? 'Sim' : 'Não'}`;
+            }
             
             const url = "https://wa.me/5535920004813?text=" + encodeURIComponent(texto);
             window.open(url, '_blank');
         }
 
-        // RENDERIZAR LISTA DE OS DO CLIENTE
         function renderRelatorios() {
             const container = document.getElementById('listaOSContainer');
             if (!container) return;
@@ -390,14 +412,16 @@
                 if (os.status === 'Finalizado') statusClass = 'status-finalizado';
                 if (os.status === 'Em andamento') statusClass = 'status-andamento';
                 
+                const laudoHtml = (os.incluirLaudo !== undefined && os.incluirLaudo) ? '<span class="laudo-badge">📄 Laudo</span>' : '';
+                
                 html += `
                     <div class="os-item-compact">
                         <div class="os-header-line">
                             <strong>🔧 ${os.equipamento.substring(0, 35)}</strong>
-                            <span class="status-badge ${statusClass}">${os.status}</span>
+                            <span class="status-badge ${statusClass}">${os.status} ${laudoHtml}</span>
                         </div>
                         <div style="font-size:0.7rem; margin:5px 0;">
-                            📅 ${new Date(os.created_at).toLocaleDateString()} | ⚡ ${os.prioridade} | 📄 ${os.incluirLaudo ? 'Laudo Sim' : 'Sem Laudo'}
+                            📅 ${new Date(os.created_at).toLocaleDateString()} | ⚡ ${os.prioridade}
                         </div>
                         ${os.admin_response ? `<div class="admin-response">💬 Resposta: ${os.admin_response.substring(0, 80)}${os.admin_response.length > 80 ? '...' : ''}</div>` : ''}
                         <div>
@@ -412,7 +436,6 @@
             container.innerHTML = html;
         }
 
-        // RENDERIZAR RESPOSTAS DO ADM
         function renderRespostas(respostas) {
             const container = document.getElementById('respostasContainer');
             if (!container) return;
@@ -433,7 +456,7 @@
                         <div style="font-size:0.7rem; margin:5px 0;">
                             📅 ${new Date(resp.created_at).toLocaleString()}
                         </div>
-                        <div class="admin-response" style="background: #fef5e8; border-left-color: #f5b042;">
+                        <div class="admin-response" style="background: #fef5e8;">
                             💬 <strong>Resposta da ONS:</strong><br>
                             ${resp.admin_response}
                         </div>
@@ -446,7 +469,6 @@
             container.innerHTML = html;
         }
 
-        // LOGIN
         function fazerLogin() {
             const clinica = document.getElementById('loginClinica').value.trim();
             const telefone = document.getElementById('loginTelefone').value.trim();
@@ -489,14 +511,13 @@
             });
         }
 
-        // EXPOR FUNÇÕES GLOBAIS
         window.visualizarOS = visualizarOS;
         window.enviarWhatsApp = enviarWhatsApp;
         window.finalizarOS = finalizarOS;
         window.excluirOS = excluirOS;
 
-        // INICIAR
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await verificarColunas();
             carregarUsuarioSalvo();
             
             document.getElementById('btnLogin').addEventListener('click', fazerLogin);
@@ -513,7 +534,6 @@
             iniciarTabs();
             atualizarInterface();
             
-            // Recarregar respostas a cada 30 segundos
             setInterval(() => {
                 if (usuarioAtual) {
                     carregarRespostas();
