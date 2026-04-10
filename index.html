@@ -341,8 +341,8 @@
                             <span class="status-badge ${statusClass}">${os.status}</span>
                         </div>
                         <div style="font-size:0.7rem; margin:5px 0;">
-                            📅 ${new Date(os.created_at).toLocaleDateString()} | ⚡ Prioridade: ${os.prioridade}
-                        </div>
+                            📅 ${new Date(os.created_at).toLocaleDateString()} | ⚡ ${os.prioridade}
+                            </div>
                         <div>
                             <button class="small-btn" onclick="window.visualizarOS(${os.id})">👁️ Ver</button>
                             <button class="small-btn" onclick="window.enviarWhatsApp(${os.id})">📱 WhatsApp</button>
