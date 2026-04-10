@@ -499,25 +499,65 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>                         
-    const SUPABASE_URL = 'https://npfbnfubnyndachmdgzy.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wZmJuZnVibnluZGFjaG1kZ3p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MjQ5ODksImV4cCI6MjA5MTEwMDk4OX0.bTKgcUAKt_2A4FcVJSEOZ2rEVNpGxCj8bHpXw0Lh7Vw';
-    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    let ordensServico = [];
-    let usuarioAtual = null;
+<script>
 
-   function loadData() {
-    const storedUser = localStorage.getItem('ons_usuario');
-    if(storedUser) usuarioAtual = JSON.parse(storedUser);
+const SUPABASE_URL = 'https://npfbnfubnyndachmdgzy.supabase.co';
+const SUPABASE_KEY = 'SUA_KEY_AQUI';
 
-    ordensServico = []; // agora vem do banco
-}
-    
-    function saveUser() {
-        if(usuarioAtual) localStorage.setItem('ons_usuario', JSON.stringify(usuarioAtual));
-        else localStorage.removeItem('ons_usuario');
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function carregarOS(){
+
+    const { data, error } = await supabase
+        .from('chamados')
+        .select('*');
+
+    console.log("DADOS:", data);
+    console.log("ERRO:", error);
+
+    const div = document.getElementById('listaOSContainer'); // 🔥 CORRIGIDO
+
+    if(!div){
+        alert("Div não encontrada");
+        return;
     }
+
+    div.innerHTML = '';
+
+    if(error){
+        div.innerHTML = "<h3>Erro: " + error.message + "</h3>";
+        return;
+    }
+
+    if(!data || data.length === 0){
+        div.innerHTML = "<h3>Nenhuma OS encontrada</h3>";
+        return;
+    }
+
+    data.forEach(os => {
+
+        const el = document.createElement('div');
+        el.style.background = "white";
+        el.style.padding = "10px";
+        el.style.margin = "10px";
+        el.style.borderRadius = "10px";
+
+        el.innerHTML = `
+            <b>ID:</b> ${os.id}<br>
+            <b>Equipamento:</b> ${os.equipamento || '-'}<br>
+            <b>Status:</b> ${os.status || '-'}<br>
+        `;
+
+        div.appendChild(el);
+    });
+}
+
+// iniciar
+carregarOS();
+
+</script>
 async function carregarOS() {
     if(!usuarioAtual) return;
 
