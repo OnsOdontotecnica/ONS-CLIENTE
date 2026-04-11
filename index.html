@@ -523,7 +523,8 @@ async function carregarOS() {
 
    const { data, error } = await _supabase
     .from('chamados')
-    .select('*');
+    .select('*')
+    .eq('clinica', usuarioAtual.clinicaNome);  // 🔥 FILTRO ADICIONADO
        
     if(error) {
     console.error("Erro real:", error);
@@ -533,6 +534,7 @@ async function carregarOS() {
    
     ordensServico = data;
     renderRelatorios();
+
 }
     function updateUIByLogin() {
     const loginDiv = document.getElementById('loginArea');
