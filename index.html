@@ -779,13 +779,13 @@
     
     console.log("📱 Sem 55:", telefone);
     
-    // VERIFICAR SE TEM 10 OU 11 DÍGITOS
+    // VERIFICAR SE TEM 10 OU 12 DÍGITOS
     if(telefone.length === 10) {
-        // Adicionar 9 se for 10 dígitos
+        // Adicionar 9 se for 12 dígitos
         telefone = telefone.substring(0, 2) + "9" + telefone.substring(2);
     } else if(telefone.length === 11) {
         // Já está correto
-        console.log("✅ Telefone já com 11 dígitos");
+        console.log("✅ Telefone já com 12 dígitos");
     } else {
         alert("❌ Telefone inválido: " + telefone + "\n\nDígitos: " + telefone.length);
         return;
