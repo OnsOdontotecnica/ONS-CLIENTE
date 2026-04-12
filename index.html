@@ -754,7 +754,53 @@
             alert("Erro ao excluir OS: " + err.message);
         }
     }
+    // FUNÇÃO PARA VISUALIZAR OS (DETALHES)
+    function visualizarOS(os) {
+        let msg = "📋 ORDEM DE SERVIÇO\n";
+        msg += "━━━━━━━━━━━━━━━━━━━━━━\n";
+        msg += `Equipamento: ${os.equipamento}\n`;
+        msg += `Prioridade: ${os.prioridade}\n`;
+        msg += `Status: ${os.status}\n`;
+        msg += `Data: ${new Date(os.created_at).toLocaleDateString('pt-BR')}\n`;
+        msg += `Observações: ${os.detalhe || 'Nenhuma'}\n`;
+        msg += `Laudo: ${os.incluirlaudo ? 'Solicitado' : 'Não solicitado'}\n`;
+        if(os.data_agendamento) {
+            msg += `Agendamento: ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}\n`;
+        }
+        msg += "━━━━━━━━━━━━━━━━━━━━━━\n";
+        msg += "ONS OdontoTecnica";
+        
+        alert(msg);
+    }
 
+    // FUNÇÃO PARA ENVIAR OS VIA WHATSAPP
+    function enviarOSWhatsApp(os) {
+        if(!usuarioAtual) {
+            alert("Faça login primeiro!");
+            return;
+        }
+        
+        let texto = `🛠️ *ONS ODONTOTECNICA - ORDEM DE SERVIÇO* 🛠️\n\n`;
+        texto += `*Clínica:* ${usuarioAtual.clinicaNome}\n`;
+        texto += `*Telefone:* ${usuarioAtual.telefone}\n`;
+        texto += `*Equipamento:* ${os.equipamento}\n`;
+        texto += `*Prioridade:* ${os.prioridade}\n`;
+        texto += `*Status:* ${os.status}\n`;
+        texto += `*Data Abertura:* ${new Date(os.created_at).toLocaleDateString('pt-BR')}\n`;
+        
+        if(os.data_agendamento) {
+            texto += `*Data Agendamento:* ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}\n`;
+        }
+        
+        texto += `*Observações:* ${os.detalhe || 'Nenhuma'}\n`;
+        texto += `*Laudo Técnico:* ${os.incluirlaudo ? 'Solicitado' : 'Não solicitado'}\n\n`;
+        texto += `🔗 *Protocolo:* OS-${os.id}\n\n`;
+        texto += `---\nONS OdontoTecnica - Manutenção de Qualidade`;
+        
+        let telefone = "35920004813";
+        let url = `https://wa.me/55${telefone}?text=${encodeURIComponent(texto)}`;
+        window.open(url, '_blank');
+    }
     // FUNÇÃO PARA VISUALIZAR OS
    function enviarUltimaOS() {
     console.log("Botão EMERGENCIA clicado!");
