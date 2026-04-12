@@ -563,110 +563,115 @@
     let usuarioAtual = null;
 
     async function carregarOS() {
-        if(!usuarioAtual) return;
-        
-        const container = document.getElementById('listaOSContainer');
-        if(container) container.innerHTML = '<div class="loading">Carregando...</div>';
-        
-        try {
-            const { data, error } = await supabase
-                .from('chamados')
-                .select('*')
-                .eq('clinica', usuarioAtual.clinicaNome)
-                .order('created_at', { ascending: false });
-           
-            if(error) {
-                console.error("Erro ao carregar:", error);
-                alert("Erro ao carregar OS: " + error.message);
-                return;
-            }
-            
-            ordensServico = data || [];
-            renderRelatorios();
-        } catch(err) {
-            console.error("Erro:", err);
-            alert("Erro ao carregar dados: " + err.message);
-        }
-    }
-
-    async function criarOS() {
-        if(!usuarioAtual) {
-            alert("Faça login primeiro!");
+    if(!usuarioAtual) return;
+    if(!supabaseClient) return;
+    
+    const container = document.getElementById('listaOSContainer');
+    if(container) container.innerHTML = '<div class="loading">Carregando...</div>';
+    
+    try {
+        const { data, error } = await supabaseClient
+            .from('chamados')
+            .select('*')
+            .eq('clinica', usuarioAtual.clinicaNome)
+            .order('created_at', { ascending: false });
+       
+        if(error) {
+            console.error("Erro ao carregar:", error);
             return;
         }
         
-        const btn = document.getElementById('btnCriarOS');
-        if(btn) {
-            btn.disabled = true;
-            btn.innerText = "ENVIANDO...";
+        ordensServico = data || [];
+        renderRelatorios();
+    } catch(err) {
+        console.error("Erro:", err);
+    }
+} 
+
+    async function criarOS() {
+    if(!usuarioAtual) {
+        alert("Faça login primeiro!");
+        return;
+    }
+    
+    if(!supabaseClient) {
+        alert("Erro de conexão com o servidor.");
+        return;
+    }
+    
+    const btn = document.getElementById('btnCriarOS');
+    if(btn) {
+        btn.disabled = true;
+        btn.innerText = "ENVIANDO...";
+    }
+
+    try {
+        let eqBase = document.getElementById('equipamentoSelect').value;
+        let obsEquip = document.getElementById('obsEquipamento').value;
+        let equipamentoFinal = obsEquip.trim() !== "" ? (eqBase ? eqBase + ' (' + obsEquip + ')' : obsEquip) : eqBase;
+        if(!equipamentoFinal) equipamentoFinal = "Não informado";
+        
+        let prioridades = [];
+        document.querySelectorAll('input[name="prioridade"]:checked').forEach(cb => prioridades.push(cb.value));
+        let prioridadeTxt = prioridades.length ? prioridades.join(', ') : "Normal";
+        
+        let incluirLaudo = document.getElementById('incluirLaudo').checked ? true : false;
+        let observacoesGerais = document.getElementById('observacoesGerais').value || "---";
+        
+        let dataAgendamento = document.getElementById('dataAgendamento').value;
+        let dataFinal = (dataAgendamento && dataAgendamento !== "") ? dataAgendamento : null;
+
+        const novaOS = {
+            clinica: usuarioAtual.clinicaNome,
+            telefone_cliente: usuarioAtual.telefone,
+            equipamento: equipamentoFinal,
+            prioridade: prioridadeTxt,
+            detalhe: observacoesGerais,
+            status: 'Em andamento',
+            incluirlaudo: incluirLaudo,
+            created_at: new Date().toISOString(),
+            data_agendamento: dataFinal
+        };
+
+        console.log("📤 Enviando OS:", novaOS);
+
+        const { data, error } = await supabaseClient
+            .from('chamados')
+            .insert([novaOS])
+            .select();
+
+        if (error) {
+            console.error("❌ Erro:", error);
+            throw error;
         }
 
-        try {
-            let eqBase = document.getElementById('equipamentoSelect').value;
-            let obsEquip = document.getElementById('obsEquipamento').value;
-            let equipamentoFinal = obsEquip.trim() !== "" ? (eqBase ? eqBase + ' (' + obsEquip + ')' : obsEquip) : eqBase;
-            if(!equipamentoFinal) equipamentoFinal = "Não informado";
-            
-            let prioridades = [];
-            document.querySelectorAll('input[name="prioridade"]:checked').forEach(cb => prioridades.push(cb.value));
-            let prioridadeTxt = prioridades.length ? prioridades.join(', ') : "Normal";
-            
-            let servicos = [];
-            if(document.getElementById('servHigGeral').checked) servicos.push("Higienização Geral");
-            if(document.getElementById('servHigTecnica').checked) servicos.push("Higienização Técnica");
-            let servicosTxt = servicos.length ? servicos.join(", ") : "Nenhum";
-            
-            let dataAgendamento = document.getElementById('dataAgendamento').value || null;
-            let incluirLaudo = document.getElementById('incluirLaudo').checked ? "Sim" : "Não";
-            let observacoesGerais = document.getElementById('observacoesGerais').value || "---";
-
-            const novaOS = {
-                clinica: usuarioAtual.clinicaNome,
-                telefone: usuarioAtual.telefone,
-                equipamento: equipamentoFinal,
-                prioridade: prioridadeTxt,
-                servicos: servicosTxt,
-                data_agendamento: dataAgendamento,
-                incluir_laudo: incluirLaudo,
-                observacoes: observacoesGerais,
-                status: 'Em andamento',
-                created_at: new Date().toISOString()
-            };
-
-            const { data, error } = await supabase
-                .from('chamados')
-                .insert([novaOS])
-                .select();
-
-            if (error) throw error;
-
-            alert("✅ Ordem de Serviço criada com sucesso!");
-            
-            // Limpar campos
-            document.getElementById('equipamentoSelect').value = "";
-            document.getElementById('obsEquipamento').value = "";
-            document.getElementById('observacoesGerais').value = "";
-            document.getElementById('dataAgendamento').value = "";
-            document.getElementById('incluirLaudo').checked = false;
-            document.querySelectorAll('input[name="prioridade"]:checked').forEach(cb => cb.checked = false);
-            document.getElementById('servHigGeral').checked = false;
-            document.getElementById('servHigTecnica').checked = false;
-            
-            await carregarOS();
-            
-            // Mudar para aba de relatórios
-            document.querySelector('.tab-btn[data-tab="tabRelatorios"]').click();
-            
-        } catch (err) {
-            console.error("Erro ao criar OS:", err);
-            alert("Erro ao criar OS: " + err.message);
-        } finally {
-            if(btn) {
-                btn.disabled = false;
-                btn.innerText = "Criar Ordem de Servico";
-            }
+        alert("✅ Ordem de Serviço criada com sucesso!");
+        
+        // Limpar formulário
+        document.getElementById('equipamentoSelect').value = "";
+        document.getElementById('obsEquipamento').value = "";
+        document.getElementById('observacoesGerais').value = "";
+        document.getElementById('dataAgendamento').value = "";
+        document.getElementById('incluirLaudo').checked = false;
+        document.querySelectorAll('input[name="prioridade"]:checked').forEach(cb => cb.checked = false);
+        document.getElementById('servHigGeral').checked = false;
+        document.getElementById('servHigTecnica').checked = false;
+        
+        await carregarOS();
+        
+        const tabRelatorios = document.querySelector('.tab-btn[data-tab="tabRelatorios"]');
+        if(tabRelatorios) tabRelatorios.click();
+        
+    } catch (err) {
+        console.error("❌ Erro:", err);
+        alert("Erro ao criar OS: " + err.message);
+    } finally {
+        if(btn) {
+            btn.disabled = false;
+            btn.innerText = "Criar Ordem de Servico";
         }
     }
+} 
 
     async function atualizarStatus(id, novoStatus) {
         try {
@@ -707,20 +712,63 @@
     }
 
     function visualizarOS(os) {
-        let msg = "📋 DETALHES DA ORDEM DE SERVIÇO\n\n";
-        msg += "🏥 Clínica: " + os.clinica + "\n";
-        msg += "📞 Telefone: " + os.telefone + "\n";
-        msg += "📅 Criação: " + new Date(os.created_at).toLocaleString('pt-BR') + "\n";
-        msg += "🔄 Status: " + os.status + "\n";
-        msg += "🔧 Equipamento: " + os.equipamento + "\n";
-        msg += "⚠️ Prioridade: " + os.prioridade + "\n";
-        msg += "🛠️ Serviços: " + os.servicos + "\n";
-        if(os.data_agendamento) msg += "📆 Agendamento: " + new Date(os.data_agendamento).toLocaleDateString('pt-BR') + "\n";
-        msg += "📄 Laudo Técnico: " + os.incluir_laudo + "\n";
-        msg += "📝 Observações: " + os.observacoes + "\n";
-        
-        alert(msg);
+    // Definir cores da prioridade (via texto)
+    let prioridadeTexto = '';
+    if (os.prioridade === 'Alta') {
+        prioridadeTexto = '🔴🔴🔴 ALTA (URGENTE) 🔴🔴🔴';
+    } else if (os.prioridade === 'Media' || os.prioridade === 'Média') {
+        prioridadeTexto = '🟠🟠🟠 MÉDIA (ATENÇÃO) 🟠🟠🟠';
+    } else if (os.prioridade === 'Baixa') {
+        prioridadeTexto = '🟢🟢🟢 BAIXA (PREVENTIVA) 🟢🟢🟢';
+    } else {
+        prioridadeTexto = '⚪⚪⚪ NORMAL ⚪⚪⚪';
     }
+    
+    // Definir status colorido
+    let statusTexto = '';
+    if (os.status === 'Finalizado') {
+        statusTexto = '✅✅✅ FINALIZADO ✅✅✅';
+    } else if (os.status === 'Em andamento') {
+        statusTexto = '🔄🔄🔄 EM ANDAMENTO 🔄🔄🔄';
+    } else {
+        statusTexto = '📋📋📋 ' + os.status + ' 📋📋📋';
+    }
+    
+    let msg = "";
+    msg += "═══════════════════════════════\n";
+    msg += "     📋 ONS ODONTOTECNICA 📋\n";
+    msg += "═══════════════════════════════\n\n";
+    
+    // Ícones em PRETO E BRANCO (sem destaque de cor)
+    msg += "🏷️ ID: " + (os.id || 'N/A') + "\n";
+    msg += "🏥 CLÍNICA: " + (os.clinica || 'N/A') + "\n";
+    msg += "📞 TELEFONE: " + (os.telefone_cliente || os.telefone || 'N/A') + "\n";
+    msg += "📅 CRIAÇÃO: " + (os.created_at ? new Date(os.created_at).toLocaleString('pt-BR') : "N/A") + "\n";
+    msg += "🔧 EQUIPAMENTO: " + (os.equipamento || 'N/A') + "\n";
+    msg += "📝 OBSERVAÇÕES: " + (os.detalhe || '---') + "\n";
+    msg += "📄 LAUDO TÉCNICO: " + (os.incluirlaudo ? "✅ SIM" : "❌ NÃO") + "\n";
+    
+    if(os.data_agendamento) {
+        msg += "📆 AGENDAMENTO: " + new Date(os.data_agendamento).toLocaleDateString('pt-BR') + "\n";
+    }
+    
+    if(os.datafinalizacao) {
+        msg += "🏁 FINALIZADO EM: " + new Date(os.datafinalizacao).toLocaleString('pt-BR') + "\n";
+    }
+    
+    // PRIORIDADE COLORIDA (destaque)
+    msg += "\n───────────────────────────────\n";
+    msg += "⚠️  PRIORIDADE:\n";
+    msg += "    " + prioridadeTexto + "\n";
+    
+    // STATUS COLORIDO (destaque)
+    msg += "\n───────────────────────────────\n";
+    msg += "📊 STATUS:\n";
+    msg += "    " + statusTexto + "\n";
+    msg += "═══════════════════════════════\n";
+    
+    alert(msg);
+}
 
     function enviarOSWhatsApp(os) {
         let telefone = os.telefone.replace(/\D/g, '');
@@ -746,72 +794,71 @@
     }
 
     function renderRelatorios() {
-        const container = document.getElementById('listaOSContainer');
-        if(!container) return;
+    const container = document.getElementById('listaOSContainer');
+    if(!container) return;
+    
+    if(ordensServico.length === 0) {
+        container.innerHTML = '<div class="card" style="text-align:center; color:#8a9aa5;">Nenhuma ordem de serviço registrada.</div>';
+        return;
+    }
+    
+    let html = '';
+    ordensServico.forEach(os => {
+        let statusClass = '';
+        if(os.status === 'Aberto') statusClass = 'status-aberto';
+        else if(os.status === 'Em andamento') statusClass = 'status-em-andamento';
+        else statusClass = 'status-finalizado';
         
-        if(ordensServico.length === 0) {
-            container.innerHTML = '<div class="card" style="text-align:center; color:#8a9aa5;">Nenhuma ordem de serviço registrada.</div>';
-            return;
-        }
-        
-        let html = '';
-        ordensServico.forEach(os => {
-            let statusClass = '';
-            if(os.status === 'Aberto') statusClass = 'status-aberto';
-            else if(os.status === 'Em andamento') statusClass = 'status-em-andamento';
-            else statusClass = 'status-finalizado';
-            
-            html += `
-                <div class="os-item-compact" data-id="${os.id}">
-                    <div class="os-header-line">
-                        <span class="os-equipamento">${os.equipamento.length > 35 ? os.equipamento.substring(0,32)+'...' : os.equipamento}</span>
-                        <span class="status-badge ${statusClass}">${os.status}</span>
-                    </div>
-                    <div class="os-info-mini">
-                        <span>📅 ${new Date(os.created_at).toLocaleDateString('pt-BR')}</span>
-                        <span>⚠️ ${os.prioridade}</span>
-                        <span>🛠️ ${os.servicos}</span>
-                    </div>
-                    <div class="os-actions-compact">
-                        <button class="small-btn verOS" data-id='${JSON.stringify(os)}'>👁️ Visualizar</button>
-                        <button class="small-btn excluirOS" data-id="${os.id}">🗑️ Excluir</button>
-                        <button class="small-btn whatsOS" data-id='${JSON.stringify(os)}'>📱 WhatsApp</button>
-                        ${os.status !== 'Finalizado' ? `<button class="small-btn finalizarOS" data-id="${os.id}">✅ Finalizar</button>` : ''}
-                        ${os.status === 'Em andamento' ? `<button class="small-btn concluirOS" data-id="${os.id}">✔️ Concluir</button>` : ''}
-                    </div>
+        html += `
+            <div class="os-item-compact" data-id="${os.id}">
+                <div class="os-header-line">
+                    <span class="os-equipamento">${os.equipamento ? (os.equipamento.length > 35 ? os.equipamento.substring(0,32)+'...' : os.equipamento) : 'N/A'}</span>
+                    <span class="status-badge ${statusClass}">${os.status || 'Em andamento'}</span>
                 </div>
-            `;
+                <div class="os-info-mini">
+                    <span>📅 ${os.created_at ? new Date(os.created_at).toLocaleDateString('pt-BR') : 'N/A'}</span>
+                    <span>⚠️ ${os.prioridade || 'Normal'}</span>
+                    <span>📝 ${os.detalhe ? os.detalhe.substring(0, 30) : '---'}</span>
+                </div>
+                <div class="os-actions-compact">
+                    <button class="small-btn verOS" data-id='${JSON.stringify(os)}'>👁️ Visualizar</button>
+                    <button class="small-btn excluirOS" data-id="${os.id}">🗑️ Excluir</button>
+                    <button class="small-btn whatsOS" data-id='${JSON.stringify(os)}'>📱 WhatsApp</button>
+                    ${os.status !== 'Finalizado' ? `<button class="small-btn finalizarOS" data-id="${os.id}">✅ Finalizar</button>` : ''}
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
+    
+    document.querySelectorAll('.verOS').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const os = JSON.parse(this.getAttribute('data-id'));
+            visualizarOS(os);
         });
-        container.innerHTML = html;
-        
-        document.querySelectorAll('.verOS').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const os = JSON.parse(btn.getAttribute('data-id'));
-                visualizarOS(os);
-            });
+    });
+    
+    document.querySelectorAll('.excluirOS').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = parseInt(this.getAttribute('data-id'));
+            excluirOS(id);
         });
-        
-        document.querySelectorAll('.excluirOS').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = parseInt(btn.getAttribute('data-id'));
-                excluirOS(id);
-            });
+    });
+    
+    document.querySelectorAll('.whatsOS').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const os = JSON.parse(this.getAttribute('data-id'));
+            enviarOSWhatsApp(os);
         });
-        
-        document.querySelectorAll('.whatsOS').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const os = JSON.parse(btn.getAttribute('data-id'));
-                enviarOSWhatsApp(os);
-            });
+    });
+    
+    document.querySelectorAll('.finalizarOS').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = parseInt(this.getAttribute('data-id'));
+            atualizarStatus(id, 'Finalizado');
         });
-        
-        document.querySelectorAll('.finalizarOS').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = parseInt(btn.getAttribute('data-id'));
-                atualizarStatus(id, 'Finalizado');
-            });
-        });
-        
+    });
+}
         document.querySelectorAll('.concluirOS').forEach(btn => {
             btn.addEventListener('click', () => {
                 const id = parseInt(btn.getAttribute('data-id'));
