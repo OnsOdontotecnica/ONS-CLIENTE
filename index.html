@@ -756,44 +756,48 @@
     }
 
     // FUNÇÃO PARA VISUALIZAR OS
-    function enviarOSWhatsApp(os) {
-    console.log("📱 OS recebida:", os);
+   function enviarOSWhatsApp(os) {
+    console.log("🔵 Botão WhatsApp da OS clicado!");
+    console.log("📱 OS:", os);
     
-    // SEU TELEFONE FIXO (já completo)
-    let telefone = "5535920004813";
+    // TENTAR PEGAR TELEFONE DA OS
+    let telefone = os.telefone_cliente || os.telefone;
     
-    // Se a OS tiver telefone próprio, usa ele
-    if(os.telefone_cliente && os.telefone_cliente !== "") {
-        telefone = String(os.telefone_cliente).replace(/\D/g, '');
+    console.log("📱 Telefone da OS:", telefone);
+    
+    // SE NÃO TIVER TELEFONE NA OS, USA SEU TELEFONE
+    if(!telefone || telefone === "") {
+        telefone = "5535920004813";
+        console.log("📱 Usando telefone padrão:", telefone);
     }
     
-    console.log("📱 Telefone bruto:", telefone);
+    // LIMPAR TELEFONE
+    telefone = String(telefone).replace(/\D/g, '');
     
-    // REMOVER TUDO QUE NÃO É NÚMERO
-    telefone = telefone.replace(/\D/g, '');
+    console.log("📱 Telefone limpo:", telefone);
     
-    // REMOVER O 55 se já tiver (deixar apenas DDD + número)
+    // REMOVER 55 se tiver
     if(telefone.startsWith('55')) {
         telefone = telefone.substring(2);
     }
     
     console.log("📱 Sem 55:", telefone);
     
-    // VERIFICAR SE TEM 10 OU 12 DÍGITOS
+    // VERIFICAR SE TEM 10 OU 11 DÍGITOS
     if(telefone.length === 10) {
-        // Adicionar 9 se for 12 dígitos
+        // Adicionar 9 se for 10 dígitos
         telefone = telefone.substring(0, 2) + "9" + telefone.substring(2);
+        console.log("📱 Adicionado 9:", telefone);
     } else if(telefone.length === 11) {
-        // Já está correto
-        console.log("✅ Telefone já com 12 dígitos");
+        console.log("✅ Telefone já com 11 dígitos");
     } else {
-        alert("❌ Telefone inválido: " + telefone + "\n\nDígitos: " + telefone.length);
+        alert("❌ Telefone inválido: " + telefone + "\n\nDígitos encontrados: " + telefone.length);
         return;
     }
     
-    console.log("📱 Telefone final (sem 55):", telefone);
     console.log("📱 Telefone final (com 55):", "55" + telefone);
     
+    // MONTAR MENSAGEM COM DADOS DA OS
     let text = "🏥 *ONS ODONTOTECNICA - ORDEM DE SERVIÇO*\n\n";
     text += "*Cliente:* " + (os.clinica || 'N/A') + "\n";
     text += "*Data:* " + (os.created_at ? new Date(os.created_at).toLocaleString('pt-BR') : "N/A") + "\n";
@@ -807,8 +811,10 @@
     
     const url = "https://wa.me/55" + telefone + "?text=" + encodeURIComponent(text);
     console.log("🔗 URL final:", url);
+    
+    // ABRIR WHATSAPP
     window.open(url, '_blank');
-}
+} 
     // FUNÇÃO PARA RENDERIZAR RELATÓRIOS
     function renderRelatorios() {
         const container = document.getElementById('listaOSContainer');
