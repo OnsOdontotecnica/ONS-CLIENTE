@@ -756,38 +756,104 @@
     }
 
     // FUNÇÃO PARA VISUALIZAR OS
-   function enviarOSWhatsApp(os) {
-    console.log("🔵 Botão WhatsApp clicado!");
+   function enviarUltimaOS() {
+    console.log("Botão EMERGENCIA clicado!");
     
-    // FORÇAR SEU NÚMERO
-    let telefone = "35920004813";  // Apenas DDD + número (sem 55)
-    
-    console.log("📱 Telefone usado:", telefone);
-    
-    // VERIFICAR SE TEM 11 DÍGITOS
-    if(telefone.length !== 11) {
-        console.log("📱 Corrigindo telefone...");
-        if(telefone.length === 10) {
-            telefone = telefone.substring(0, 2) + "9" + telefone.substring(2);
-        }
+    // VERIFICAR SE TEM CLINICA LOGADA
+    if(!usuarioAtual) {
+        alert("Acesso negado. Realize o login primeiro para utilizar o atendimento de emergencia.");
+        return;
     }
     
-    console.log("📱 Telefone final:", telefone);
+    // POPUP DE CONFIRMACAO - ESTILO PROFISSIONAL
+    let confirmar = confirm(
+        "ATENDIMENTO PRIORITARIO\n\n" +
+        "Clinica: " + usuarioAtual.clinicaNome + "\n" +
+        "Telefone: " + usuarioAtual.telefone + "\n\n" +
+        "Ao confirmar, sua clinica recebera prioridade maxima na fila de atendimento.\n" +
+        "Um tecnico sera acionado imediatamente.\n\n" +
+        "Confirmar atendimento de emergencia?"
+    );
     
-    let text = "🏥 *ONS ODONTOTECNICA - ORDEM DE SERVIÇO*\n\n";
-    text += "*Cliente:* " + (os.clinica || 'N/A') + "\n";
-    text += "*Data:* " + (os.created_at ? new Date(os.created_at).toLocaleString('pt-BR') : "N/A") + "\n";
-    text += "*Status:* " + (os.status || 'Em andamento') + "\n";
-    text += "*Equipamento:* " + (os.equipamento || 'N/A') + "\n";
-    text += "*Prioridade:* " + (os.prioridade || 'Normal') + "\n";
-    text += "*Observações:* " + (os.detalhe || '---') + "\n";
-    text += "*Laudo Técnico:* " + (os.incluirlaudo ? "Sim" : "Não") + "\n";
-    if(os.data_agendamento) text += "*Agendamento:* " + new Date(os.data_agendamento).toLocaleDateString('pt-BR') + "\n";
-    text += "\n🔧 *ONS OdontoTecnica - Manutenção de Qualidade*";
+    if(!confirmar) {
+        alert("Atendimento de emergencia cancelado.");
+        return;
+    }
     
+    // DADOS DO ATENDIMENTO
+    let telefone = "35920004813";
+    let agora = new Date();
+    let dataHora = agora.toLocaleString('pt-BR');
+    let protocolo = "EMG" + agora.getFullYear() + 
+                    String(agora.getMonth() + 1).padStart(2,'0') + 
+                    String(agora.getDate()).padStart(2,'0') + 
+                    String(agora.getHours()).padStart(2,'0') +
+                    String(agora.getMinutes()).padStart(2,'0') +
+                    String(agora.getSeconds()).padStart(2,'0');
+    
+    // MENSAGEM PROFISSIONAL (SEM ICONES COLORIDOS)
+    let text = "ONS ODONTOTECNICA - ATENDIMENTO DE EMERGENCIA\n\n";
+    text += "----------------------------------------\n";
+    text += "PRIORIDADE: MAXIMA (NIVEL 1)\n";
+    text += "----------------------------------------\n\n";
+    
+    text += "INFORMACOES DO CLIENTE:\n";
+    text += "Clinica: " + usuarioAtual.clinicaNome + "\n";
+    text += "Telefone: " + usuarioAtual.telefone + "\n";
+    text += "Data/Hora: " + dataHora + "\n";
+    text += "Protocolo: " + protocolo + "\n\n";
+    
+    text += "----------------------------------------\n";
+    text += "STATUS DO ATENDIMENTO\n";
+    text += "----------------------------------------\n";
+    text += "Tipo: Emergencia\n";
+    text += "Prioridade: Alta\n";
+    text += "Acao: Acionamento imediato\n";
+    text += "Tempo de resposta: Até 30 minutos\n\n";
+    
+    text += "----------------------------------------\n";
+    text += "OBSERVACOES\n";
+    text += "----------------------------------------\n";
+    text += "Cliente aguarda atendimento presencial urgente.\n";
+    text += "Equipamento paralisado.\n";
+    text += "Necessita suporte tecnico imediato.\n\n";
+    
+    text += "----------------------------------------\n";
+    text += "ONS OdontoTecnica\n";
+    text += "Manutencao de Qualidade\n";
+    text += "----------------------------------------\n";
+    text += "Mensagem automatica de emergencia.\n";
+    text += "Priorizar este atendimento.";
+    
+    // CONSTRUIR URL
     const url = "https://wa.me/55" + telefone + "?text=" + encodeURIComponent(text);
-    console.log("🔗 URL:", url);
-    window.open(url, '_blank');
+    
+    console.log("Protocolo de emergencia:", protocolo);
+    console.log("URL gerada:", url);
+    
+    // ULTIMA CONFIRMACAO
+    let enviar = confirm(
+        "PRONTO PARA ENVIAR EMERGENCIA\n\n" +
+        "Protocolo: " + protocolo + "\n\n" +
+        "A mensagem de prioridade maxima sera enviada agora.\n\n" +
+        "Clique em OK para enviar."
+    );
+    
+    if(enviar) {
+        window.open(url, '_blank');
+        
+        // MENSAGEM DE FEEDBACK
+        setTimeout(function() {
+            alert(
+                "EMERGENCIA ENVIADA COM SUCESSO\n\n" +
+                "Protocolo: " + protocolo + "\n" +
+                "Clinica: " + usuarioAtual.clinicaNome + "\n\n" +
+                "Sua clinica foi marcada como prioridade.\n" +
+                "Aguarde em contato.\n\n" +
+                "ONS OdontoTecnica - Manutenção de Qualidade"
+            );
+        }, 500);
+    }
 }
     // FUNÇÃO PARA RENDERIZAR RELATÓRIOS
     function renderRelatorios() {
