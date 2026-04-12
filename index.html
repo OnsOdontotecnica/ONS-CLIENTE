@@ -812,40 +812,99 @@
 
     // FUNÇÃO PARA ENVIAR WHATSAPP
     function enviarOSWhatsApp(os) {
-        let telefone = os.telefone_cliente || os.telefone;
-        telefone = telefone.replace(/\D/g, '');
-        if(telefone.length === 0) {
-            alert("Telefone não cadastrado!");
-            return;
-        }
-        
-        if(telefone.length === 10) {
-            telefone = telefone.substring(0, 2) + "9" + telefone.substring(2);
-        }
-        
-        let text = "🏥 *ONS ODONTOTECNICA - ORDEM DE SERVIÇO*\n\n";
-        text += "*Cliente:* " + os.clinica + "\n";
-        text += "*Data:* " + (os.created_at ? new Date(os.created_at).toLocaleString('pt-BR') : "N/A") + "\n";
-        text += "*Status:* " + os.status + "\n";
-        text += "*Equipamento:* " + os.equipamento + "\n";
-        text += "*Prioridade:* " + os.prioridade + "\n";
-        text += "*Observações:* " + (os.detalhe || '---') + "\n";
-        text += "*Laudo Técnico:* " + (os.incluirlaudo ? "Sim" : "Não") + "\n";
-        if(os.data_agendamento) text += "*Agendamento:* " + new Date(os.data_agendamento).toLocaleDateString('pt-BR') + "\n";
-        text += "\n🔧 *ONS OdontoTecnica - Manutenção de Qualidade*";
-        
-        const url = "https://wa.me/55" + telefone + "?text=" + encodeURIComponent(text);
-        window.open(url, '_blank');
+    console.log("📱 OS recebida:", os);
+    
+    // SEU TELEFONE FIXO PARA TESTE
+    let telefone = "5535920004813";
+    
+    // Se a OS tiver telefone próprio, usa ele
+    if(os.telefone_cliente && os.telefone_cliente !== "") {
+        telefone = String(os.telefone_cliente).replace(/\D/g, '');
     }
-
-    // FUNÇÃO PARA ENVIAR ÚLTIMA OS
-    function enviarUltimaOS() {
-        if(ordensServico.length === 0) { 
-            alert("Nenhuma OS criada ainda."); 
-            return; 
-        }
-        enviarOSWhatsApp(ordensServico[0]);
+    
+    console.log("📱 Telefone usado:", telefone);
+    
+    if(!telefone || telefone === "") {
+        alert("❌ Telefone não cadastrado!");
+        return;
     }
+    
+    // REMOVER O 55 se já tiver (deixar só números)
+    telefone = telefone.replace(/\D/g, '');
+    if(telefone.startsWith('55')) {
+        telefone = telefone.substring(2);
+    }
+    
+    // ADICIONAR 9 se necessário
+    if(telefone.length === 10) {
+        telefone = telefone.substring(0, 2) + "9" + telefone.substring(2);
+    }
+    
+    console.log("📱 Telefone final: 55" + telefone);
+    
+    let text = "🏥 *ONS ODONTOTECNICA - ORDEM DE SERVIÇO*\n\n";
+    text += "*Cliente:* " + (os.clinica || 'N/A') + "\n";
+    text += "*Data:* " + (os.created_at ? new Date(os.created_at).toLocaleString('pt-BR') : "N/A") + "\n";
+    text += "*Status:* " + (os.status || 'Em andamento') + "\n";
+    text += "*Equipamento:* " + (os.equipamento || 'N/A') + "\n";
+    text += "*Prioridade:* " + (os.prioridade || 'Normal') + "\n";
+    text += "*Observações:* " + (os.detalhe || '---') + "\n";
+    text += "*Laudo Técnico:* " + (os.incluirlaudo ? "Sim" : "Não") + "\n";
+    if(os.data_agendamento) text += "*Agendamento:* " + new Date(os.data_agendamento).toLocaleDateString('pt-BR') + "\n";
+    text += "\n🔧 *ONS OdontoTecnica - Manutenção de Qualidade*";
+    
+    const url = "https://wa.me/55" + telefone + "?text=" + encodeURIComponent(text);
+    console.log("🔗 URL:", url);
+    window.open(url, '_blank');
+}
+    
+    
+   function enviarOSWhatsApp(os) {
+    console.log("📱 Telefone bruto:", os);
+    
+    // TENTAR DIFERENTES NOMES DE CAMPO
+    let telefone = os.telefone_cliente || os.telefone || os.telefoneCliente || usuarioAtual?.telefone;
+    
+    console.log("📱 Telefone encontrado:", telefone);
+    
+    if(!telefone || telefone === "") {
+        alert("❌ Telefone não cadastrado!\n\nPor favor, faça login novamente com um número de telefone válido.");
+        return;
+    }
+    
+    // LIMPAR TELEFONE (deixar apenas números)
+    telefone = String(telefone).replace(/\D/g, '');
+    
+    console.log("📱 Telefone limpo:", telefone);
+    
+    if(telefone.length < 10) {
+        alert("❌ Telefone inválido!\n\nNúmero deve ter pelo menos 10 dígitos.\nTelefone atual: " + telefone);
+        return;
+    }
+    
+    // ADICIONAR 9 se tiver 10 dígitos (DDD + 8 números)
+    if(telefone.length === 10) {
+        telefone = telefone.substring(0, 2) + "9" + telefone.substring(2);
+    }
+    
+    console.log("📱 Telefone final para WhatsApp:", telefone);
+    
+    let text = "🏥 *ONS ODONTOTECNICA - ORDEM DE SERVIÇO*\n\n";
+    text += "*Cliente:* " + (os.clinica || 'N/A') + "\n";
+    text += "*Data:* " + (os.created_at ? new Date(os.created_at).toLocaleString('pt-BR') : "N/A") + "\n";
+    text += "*Status:* " + (os.status || 'Em andamento') + "\n";
+    text += "*Equipamento:* " + (os.equipamento || 'N/A') + "\n";
+    text += "*Prioridade:* " + (os.prioridade || 'Normal') + "\n";
+    text += "*Observações:* " + (os.detalhe || os.observacoes || '---') + "\n";
+    text += "*Laudo Técnico:* " + (os.incluirlaudo ? "Sim" : "Não") + "\n";
+    if(os.data_agendamento) text += "*Agendamento:* " + new Date(os.data_agendamento).toLocaleDateString('pt-BR') + "\n";
+    text += "\n🔧 *ONS OdontoTecnica - Manutenção de Qualidade*";
+    
+    const url = "https://wa.me/55" + telefone + "?text=" + encodeURIComponent(text);
+    console.log("🔗 URL do WhatsApp:", url);
+    
+    window.open(url, '_blank');
+}
 
     // FUNÇÃO PARA RENDERIZAR RELATÓRIOS
     function renderRelatorios() {
