@@ -747,7 +747,9 @@
         msg += `Equipamento: ${os.equipamento}\n`;
         msg += `Prioridade: ${os.prioridade}\n`;
         msg += `Status: ${os.status}\n`;
-        msg += `Data: ${new Date(os.created_at).toLocaleDateString('pt-BR')}\n`;
+        msg += `Data: ${os.created_at && !isNaN(new Date(os.created_at)) 
+    ? new Date(os.created_at).toLocaleDateString('pt-BR') 
+    : 'N/A'}\n`;
         msg += `Observações: ${os.detalhe || 'Nenhuma'}\n`;
         msg += `Laudo: ${os.incluirlaudo ? 'Solicitado' : 'Não solicitado'}\n`;
         if(os.data_agendamento) {
@@ -802,7 +804,7 @@
         "ATENDIMENTO PRIORITARIO\n\n" +
         "Clinica: " + usuarioAtual.clinicaNome + "\n" +
         "Telefone: " + usuarioAtual.telefone + "\n\n" +
-        "Ao confirmar, sua clinica recebera prioridade maxima na fila de atendimento.\n" +
+        "Ao confirmar, sua clinica recebera prioridade de atendimento.\n" +
         "Um tecnico sera acionado imediatamente.\n\n" +
         "Confirmar atendimento de emergencia?"
     );
