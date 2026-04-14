@@ -27,51 +27,47 @@
         }
 
         .app-container {
-    max-width: 768px;
-    margin: 0 auto;
-    background: #b4b4b4;
-    min-height: 100vh;
-    position: relative;
-}
+            max-width: 768px;
+            margin: 0 auto;
+            background: #b4b4b4;
+            min-height: 100vh;
+            position: relative;
+        }
 
-.header {
-    background: #0c3f5a;
-    padding: 18px 16px;
-    border-radius: 0 0 20px 20px;
-    margin-bottom: 12px;
-}
+        .header {
+            background: #0c3f5a;
+            padding: 18px 16px;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 12px;
+        }
 
-/* ÁREA DO TOPO */
-.logo-area {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-}
+        .logo-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-/* TÍTULO PRINCIPAL */
-.logo-title h1 {
-    color: #f0b606;
-    font-size: 1.2rem;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-}
+        .logo-title h1 {
+            color: #f0b606;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
 
-/* SUBTÍTULO */
-.logo-title .subtitle {
-    color: #f0b606;
-    font-size: 0.72rem;
-    font-weight: 600;
-    margin-top: 3px;
-}
+        .logo-title .subtitle {
+            color: #f0b606;
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-top: 3px;
+        }
 
-/* LINHA EXTRA */
-.logo-title .sub2 {
-    color: rgba(240,182,6,0.7);
-    font-size: 0.6rem;
-    margin-top: 2px;
-}
+        .logo-title .sub2 {
+            color: rgba(240,182,6,0.7);
+            font-size: 0.6rem;
+            margin-top: 2px;
+        }
 
         .user-info {
             background: rgba(240,182,6,0.15);
@@ -84,16 +80,16 @@
             color: #f0b606;
         }
         
-      .logout-btn {
-    background: rgba(240,182,6,0.25);
-    border: none;
-    color: #f0b606;
-    padding: 4px 10px;
-    border-radius: 16px;
-    font-size: 0.65rem;
-    font-weight: 600;
-    cursor: pointer;
-}
+        .logout-btn {
+            background: rgba(240,182,6,0.25);
+            border: none;
+            color: #f0b606;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
         .nav-tabs {
             display: flex;
@@ -433,10 +429,10 @@
         <div class="header">
             <div class="logo-area">
                 <div class="logo-title">
-    <h1>ONS ODONTOTECNICA</h1>
-    <p class="subtitle">Sistema Técnico de Manutenção</p>
-    <p class="sub2">Controle de Ordens de Serviço</p>
-</div>
+                    <h1>ONS ODONTOTECNICA</h1>
+                    <p class="subtitle">Sistema Técnico de Manutenção</p>
+                    <p class="sub2">Controle de Ordens de Serviço</p>
+                </div>
                 <div class="user-info">
                     <span id="displayNomeClinica"></span>
                     <button class="logout-btn" id="logoutBtn" onclick="logout()">Sair</button>
@@ -545,7 +541,7 @@
     }
 
     // FUNÇÃO PARA MUDAR ABA
-    function mudarAba(abaId) {
+    window.mudarAba = function(abaId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         
@@ -560,7 +556,7 @@
     }
 
     // FUNÇÃO DE LOGIN
-    function fazerLogin() {
+    window.fazerLogin = function() {
         console.log("🔵 Botão login clicado!");
         
         const clinica = document.getElementById('loginClinica').value.trim();
@@ -583,7 +579,7 @@
     }
     
     // FUNÇÃO DE LOGOUT
-    function logout() {
+    window.logout = function() {
         usuarioAtual = null;
         localStorage.removeItem('ons_usuario');
         document.getElementById('loginArea').classList.remove('hidden');
@@ -593,7 +589,7 @@
     }
 
     // FUNÇÃO PARA CARREGAR OS
-    async function carregarOS() {
+    window.carregarOS = async function() {
         if(!usuarioAtual) return;
         if(!supabaseClient) return;
         
@@ -621,8 +617,8 @@
         }
     }
 
-    // FUNÇÃO PARA CRIAR OS
-    async function criarOS() {
+    // FUNÇÃO PARA CRIAR OS - CORRIGIDA
+    window.criarOS = async function() {
         if(!usuarioAtual) {
             alert("Faça login primeiro!");
             return;
@@ -640,33 +636,22 @@
         }
 
         try {
-    
+            let eqBase = document.getElementById('equipamentoSelect').value;
+            let obsEquip = document.getElementById('obsEquipamento').value;
 
-    // ✅ DECLARA PRIMEIRO
-    let eqBase = document.getElementById('equipamentoSelect').value;
-    let obsEquip = document.getElementById('obsEquipamento').value;
+            if (!eqBase && !obsEquip.trim()) {
+                alert("Selecione um equipamento ou descreva o problema.");
+                document.getElementById('equipamentoSelect').focus();
+                if(btn) {
+                    btn.disabled = false;
+                    btn.innerText = "Criar Ordem de Servico";
+                }
+                return;
+            }
 
-    // ✅ DEPOIS VALIDA
-    if (!eqBase && !obsEquip.trim()) {
-        alert("Selecione um equipamento ou descreva o problema.");
-
-        document.getElementById('equipamentoSelect').focus();
-
-        if(btn) {
-            btn.disabled = false;
-            btn.innerText = "Criar Ordem de Servico";
-        }
-
-        return;
-    }
-
-    // resto continua igual
-    let equipamentoFinal = obsEquip.trim() !== "" 
-        ? (eqBase ? eqBase + ' (' + obsEquip + ')' : obsEquip) 
-        : eqBase;
-
-    if(!equipamentoFinal) equipamentoFinal = "Não informado";       
-            let equipamentoFinal = obsEquip.trim() !== "" ? (eqBase ? eqBase + ' (' + obsEquip + ')' : obsEquip) : eqBase;
+            let equipamentoFinal = obsEquip.trim() !== "" 
+                ? (eqBase ? eqBase + ' (' + obsEquip + ')' : obsEquip) 
+                : eqBase;
             if(!equipamentoFinal) equipamentoFinal = "Não informado";
             
             let prioridades = [];
@@ -733,7 +718,7 @@
     }
 
     // FUNÇÃO PARA ATUALIZAR STATUS
-    async function atualizarStatus(id, novoStatus) {
+    window.atualizarStatus = async function(id, novoStatus) {
         if(!supabaseClient) return;
         
         try {
@@ -754,7 +739,7 @@
     }
 
     // FUNÇÃO PARA EXCLUIR OS
-    async function excluirOS(id) {
+    window.excluirOS = async function(id) {
         if(!confirm("Tem certeza que deseja excluir esta OS permanentemente?")) return;
         if(!supabaseClient) return;
         
@@ -774,16 +759,17 @@
             alert("Erro ao excluir OS: " + err.message);
         }
     }
+
     // FUNÇÃO PARA VISUALIZAR OS (DETALHES)
-    function visualizarOS(os) {
+    window.visualizarOS = function(os) {
         let msg = "📋 ORDEM DE SERVIÇO\n";
         msg += "━━━━━━━━━━━━━━━━━━━━━━\n";
         msg += `Equipamento: ${os.equipamento}\n`;
         msg += `Prioridade: ${os.prioridade}\n`;
         msg += `Status: ${os.status}\n`;
         msg += `Data: ${os.created_at && !isNaN(new Date(os.created_at)) 
-    ? new Date(os.created_at).toLocaleDateString('pt-BR') 
-    : 'N/A'}\n`;
+            ? new Date(os.created_at).toLocaleDateString('pt-BR') 
+            : 'N/A'}\n`;
         msg += `Observações: ${os.detalhe || 'Nenhuma'}\n`;
         msg += `Laudo: ${os.incluirlaudo ? 'Solicitado' : 'Não solicitado'}\n`;
         if(os.data_agendamento) {
@@ -796,7 +782,7 @@
     }
 
     // FUNÇÃO PARA ENVIAR OS VIA WHATSAPP
-    function enviarOSWhatsApp(os) {
+    window.enviarOSWhatsApp = function(os) {
         if(!usuarioAtual) {
             alert("Faça login primeiro!");
             return;
@@ -823,106 +809,101 @@
         let url = `https://wa.me/55${telefone}?text=${encodeURIComponent(texto)}`;
         window.open(url, '_blank');
     }
-    // FUNÇÃO PARA VISUALIZAR OS
-   function enviarUltimaOS() {
-    console.log("Botão EMERGENCIA clicado!");
-    
-    // VERIFICAR SE TEM CLINICA LOGADA
-    if(!usuarioAtual) {
-        alert("Acesso negado. Realize o login primeiro para utilizar o atendimento de emergencia.");
-        return;
-    }
-    
-    // POPUP DE CONFIRMACAO - ESTILO PROFISSIONAL
-    let confirmar = confirm(
-        "ATENDIMENTO PRIORITARIO\n\n" +
-        "Clinica: " + usuarioAtual.clinicaNome + "\n" +
-        "Telefone: " + usuarioAtual.telefone + "\n\n" +
-        "Ao confirmar, sua clinica recebera prioridade de atendimento.\n" +
-        "Um tecnico sera acionado imediatamente.\n\n" +
-        "Confirmar atendimento de emergencia?"
-    );
-    
-    if(!confirmar) {
-        alert("Atendimento de emergencia cancelado.");
-        return;
-    }
-    
-    // DADOS DO ATENDIMENTO
-    let telefone = "35920004813";
-    let agora = new Date();
-    let dataHora = agora.toLocaleString('pt-BR');
-    let protocolo = "EMG" + agora.getFullYear() + 
-                    String(agora.getMonth() + 1).padStart(2,'0') + 
-                    String(agora.getDate()).padStart(2,'0') + 
-                    String(agora.getHours()).padStart(2,'0') +
-                    String(agora.getMinutes()).padStart(2,'0') +
-                    String(agora.getSeconds()).padStart(2,'0');
-    
-    // MENSAGEM PROFISSIONAL (SEM ICONES COLORIDOS)
-    let text = "ONS ODONTOTECNICA - ATENDIMENTO DE EMERGENCIA\n\n";
-    text += "----------------------------------------\n";
-    text += "PRIORIDADE: MAXIMA (NIVEL 1)\n";
-    text += "----------------------------------------\n\n";
-    
-    text += "INFORMACOES DO CLIENTE:\n";
-    text += "Clinica: " + usuarioAtual.clinicaNome + "\n";
-    text += "Telefone: " + usuarioAtual.telefone + "\n";
-    text += "Data/Hora: " + dataHora + "\n";
-    text += "Protocolo: " + protocolo + "\n\n";
-    
-    text += "----------------------------------------\n";
-    text += "STATUS DO ATENDIMENTO\n";
-    text += "----------------------------------------\n";
-    text += "Tipo: Emergencia\n";
-    text += "Prioridade: Alta\n";
-    text += "Acao: Acionamento imediato\n";
-    text += "Tempo de resposta: Até 30 minutos\n\n";
-    
-    text += "----------------------------------------\n";
-    text += "OBSERVACOES\n";
-    text += "----------------------------------------\n";
-    text += "Cliente aguarda atendimento presencial urgente.\n";
-    text += "Equipamento paralisado.\n";
-    text += "Necessita suporte tecnico imediato.\n\n";
-    
-    text += "----------------------------------------\n";
-    text += "ONS OdontoTecnica\n";
-    text += "Manutencao de Qualidade\n";
-    text += "----------------------------------------\n";
-    text += "Mensagem automatica de emergencia.\n";
-    text += "Priorizar este atendimento.";
-    
-    // CONSTRUIR URL
-    const url = "https://wa.me/55" + telefone + "?text=" + encodeURIComponent(text);
-    
-    console.log("Protocolo de emergencia:", protocolo);
-    console.log("URL gerada:", url);
-    
-    // ULTIMA CONFIRMACAO
-    let enviar = confirm(
-        "PRONTO PARA ENVIAR EMERGENCIA\n\n" +
-        "Protocolo: " + protocolo + "\n\n" +
-        "A mensagem de prioridade maxima sera enviada agora.\n\n" +
-        "Clique em OK para enviar."
-    );
-    
-    if(enviar) {
-        window.open(url, '_blank');
+
+    // FUNÇÃO PARA ENVIAR EMERGÊNCIA
+    window.enviarUltimaOS = function() {
+        console.log("Botão EMERGENCIA clicado!");
         
-        // MENSAGEM DE FEEDBACK
-        setTimeout(function() {
-            alert(
-                "EMERGENCIA ENVIADA COM SUCESSO\n\n" +
-                "Protocolo: " + protocolo + "\n" +
-                "Clinica: " + usuarioAtual.clinicaNome + "\n\n" +
-                "Sua clinica foi marcada como prioridade.\n" +
-                "Aguarde em contato.\n\n" +
-                "ONS OdontoTecnica - Manutenção de Qualidade"
-            );
-        }, 500);
+        if(!usuarioAtual) {
+            alert("Acesso negado. Realize o login primeiro para utilizar o atendimento de emergencia.");
+            return;
+        }
+        
+        let confirmar = confirm(
+            "ATENDIMENTO PRIORITARIO\n\n" +
+            "Clinica: " + usuarioAtual.clinicaNome + "\n" +
+            "Telefone: " + usuarioAtual.telefone + "\n\n" +
+            "Ao confirmar, sua clinica recebera prioridade de atendimento.\n" +
+            "Um tecnico sera acionado imediatamente.\n\n" +
+            "Confirmar atendimento de emergencia?"
+        );
+        
+        if(!confirmar) {
+            alert("Atendimento de emergencia cancelado.");
+            return;
+        }
+        
+        let telefone = "35920004813";
+        let agora = new Date();
+        let dataHora = agora.toLocaleString('pt-BR');
+        let protocolo = "EMG" + agora.getFullYear() + 
+                        String(agora.getMonth() + 1).padStart(2,'0') + 
+                        String(agora.getDate()).padStart(2,'0') + 
+                        String(agora.getHours()).padStart(2,'0') +
+                        String(agora.getMinutes()).padStart(2,'0') +
+                        String(agora.getSeconds()).padStart(2,'0');
+        
+        let text = "ONS ODONTOTECNICA - ATENDIMENTO DE EMERGENCIA\n\n";
+        text += "----------------------------------------\n";
+        text += "PRIORIDADE: MAXIMA (NIVEL 1)\n";
+        text += "----------------------------------------\n\n";
+        
+        text += "INFORMACOES DO CLIENTE:\n";
+        text += "Clinica: " + usuarioAtual.clinicaNome + "\n";
+        text += "Telefone: " + usuarioAtual.telefone + "\n";
+        text += "Data/Hora: " + dataHora + "\n";
+        text += "Protocolo: " + protocolo + "\n\n";
+        
+        text += "----------------------------------------\n";
+        text += "STATUS DO ATENDIMENTO\n";
+        text += "----------------------------------------\n";
+        text += "Tipo: Emergencia\n";
+        text += "Prioridade: Alta\n";
+        text += "Acao: Acionamento imediato\n";
+        text += "Tempo de resposta: Até 30 minutos\n\n";
+        
+        text += "----------------------------------------\n";
+        text += "OBSERVACOES\n";
+        text += "----------------------------------------\n";
+        text += "Cliente aguarda atendimento presencial urgente.\n";
+        text += "Equipamento paralisado.\n";
+        text += "Necessita suporte tecnico imediato.\n\n";
+        
+        text += "----------------------------------------\n";
+        text += "ONS OdontoTecnica\n";
+        text += "Manutencao de Qualidade\n";
+        text += "----------------------------------------\n";
+        text += "Mensagem automatica de emergencia.\n";
+        text += "Priorizar este atendimento.";
+        
+        const url = "https://wa.me/55" + telefone + "?text=" + encodeURIComponent(text);
+        
+        console.log("Protocolo de emergencia:", protocolo);
+        console.log("URL gerada:", url);
+        
+        let enviar = confirm(
+            "PRONTO PARA ENVIAR EMERGENCIA\n\n" +
+            "Protocolo: " + protocolo + "\n\n" +
+            "A mensagem de prioridade maxima sera enviada agora.\n\n" +
+            "Clique em OK para enviar."
+        );
+        
+        if(enviar) {
+            window.open(url, '_blank');
+            
+            setTimeout(function() {
+                alert(
+                    "EMERGENCIA ENVIADA COM SUCESSO\n\n" +
+                    "Protocolo: " + protocolo + "\n" +
+                    "Clinica: " + usuarioAtual.clinicaNome + "\n\n" +
+                    "Sua clinica foi marcada como prioridade.\n" +
+                    "Aguarde em contato.\n\n" +
+                    "ONS OdontoTecnica - Manutenção de Qualidade"
+                );
+            }, 500);
+        }
     }
-}
+
     // FUNÇÃO PARA RENDERIZAR RELATÓRIOS
     function renderRelatorios() {
         const container = document.getElementById('listaOSContainer');
@@ -940,6 +921,9 @@
             else if(os.status === 'Em andamento') statusClass = 'status-em-andamento';
             else statusClass = 'status-finalizado';
             
+            // Escape para evitar problemas com aspas
+            const osJson = JSON.stringify(os).replace(/'/g, "&#39;").replace(/"/g, '&quot;');
+            
             html += `
                 <div class="os-item-compact" data-id="${os.id}">
                     <div class="os-header-line">
@@ -952,9 +936,9 @@
                         <span>📝 ${os.detalhe ? os.detalhe.substring(0, 30) : '---'}</span>
                     </div>
                     <div class="os-actions-compact">
-                        <button class="small-btn verOS" onclick='visualizarOS(${JSON.stringify(os).replace(/'/g, "&#39;")})'>👁️ Visualizar</button>
+                        <button class="small-btn verOS" onclick="visualizarOS(${osJson})">👁️ Visualizar</button>
                         <button class="small-btn excluirOS" onclick="excluirOS(${os.id})">🗑️ Excluir</button>
-                        <button class="small-btn whatsOS" onclick='enviarOSWhatsApp(${JSON.stringify(os).replace(/'/g, "&#39;")})'>📱 WhatsApp</button>
+                        <button class="small-btn whatsOS" onclick="enviarOSWhatsApp(${osJson})">📱 WhatsApp</button>
                         ${os.status !== 'Finalizado' ? `<button class="small-btn finalizarOS" onclick="atualizarStatus(${os.id}, 'Finalizado')">✅ Finalizar</button>` : ''}
                     </div>
                 </div>
