@@ -640,8 +640,32 @@
         }
 
         try {
-            let eqBase = document.getElementById('equipamentoSelect').value;
-            let obsEquip = document.getElementById('obsEquipamento').value;
+    
+
+    // ✅ DECLARA PRIMEIRO
+    let eqBase = document.getElementById('equipamentoSelect').value;
+    let obsEquip = document.getElementById('obsEquipamento').value;
+
+    // ✅ DEPOIS VALIDA
+    if (!eqBase && !obsEquip.trim()) {
+        alert("Selecione um equipamento ou descreva o problema.");
+
+        document.getElementById('equipamentoSelect').focus();
+
+        if(btn) {
+            btn.disabled = false;
+            btn.innerText = "Criar Ordem de Servico";
+        }
+
+        return;
+    }
+
+    // resto continua igual
+    let equipamentoFinal = obsEquip.trim() !== "" 
+        ? (eqBase ? eqBase + ' (' + obsEquip + ')' : obsEquip) 
+        : eqBase;
+
+    if(!equipamentoFinal) equipamentoFinal = "Não informado";       
             let equipamentoFinal = obsEquip.trim() !== "" ? (eqBase ? eqBase + ' (' + obsEquip + ')' : obsEquip) : eqBase;
             if(!equipamentoFinal) equipamentoFinal = "Não informado";
             
