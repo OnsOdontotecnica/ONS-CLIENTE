@@ -34,36 +34,45 @@
     position: relative;
 }
 
-       .header {
+.header {
     background: #0c3f5a;
     padding: 18px 16px;
     border-radius: 0 0 20px 20px;
     margin-bottom: 12px;
 }
-        
-        .logo-area {
+
+/* ÁREA DO TOPO */
+.logo-area {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 10px;
 }
-     
-        
-     .logo-title h1 {
+
+/* TÍTULO PRINCIPAL */
+.logo-title h1 {
     color: #f0b606;
     font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: -0.3px;
 }
-        
-        .logo-title p {
-            color: rgba(240,182,6,0.85);
-            font-size: 0.65rem;
-            font-weight: 500;
-            margin-top: 2px;
-        }
-        
+
+/* SUBTÍTULO */
+.logo-title .subtitle {
+    color: #f0b606;
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+/* LINHA EXTRA */
+.logo-title .sub2 {
+    color: rgba(240,182,6,0.7);
+    font-size: 0.6rem;
+    margin-top: 2px;
+}
+
         .user-info {
             background: rgba(240,182,6,0.15);
             padding: 5px 10px;
@@ -424,9 +433,10 @@
         <div class="header">
             <div class="logo-area">
                 <div class="logo-title">
-                    <h1>ONS ODONTOTECNICA</h1>
-                    <p>Acompanhamento de Ordens de Serviço</p>
-                </div>
+    <h1>ONS ODONTOTECNICA</h1>
+    <p class="subtitle">Sistema Técnico de Manutenção</p>
+    <p class="sub2">Controle de Ordens de Serviço</p>
+</div>
                 <div class="user-info">
                     <span id="displayNomeClinica"></span>
                     <button class="logout-btn" id="logoutBtn" onclick="logout()">Sair</button>
