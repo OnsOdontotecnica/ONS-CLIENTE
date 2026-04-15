@@ -543,6 +543,41 @@
         console.error("❌ Erro ao iniciar Supabase:", err);
         alert("Erro ao conectar com o servidor.");
     }
+        // ============================================
+    // FUNÇÃO PARA REGISTRAR ACESSO/INSTALAÇÃO
+    // ============================================
+    async function registrarAcessoApp() {
+        if (!usuarioAtual) return;
+        
+        const ultimoRegistro = localStorage.getItem('ons_ultimo_registro');
+        const hoje = new Date().toDateString();
+        
+        if (ultimoRegistro === hoje) return;
+        
+        try {
+            const dispositivoInfo = {
+                userAgent: navigator.userAgent,
+                plataforma: navigator.platform,
+                tela: `${window.screen.width}x${window.screen.height}`
+            };
+            
+            await supabaseClient
+                .from('instalacoes_app')
+                .insert([{
+                    clinica_nome: usuarioAtual.clinicaNome,
+                    telefone: usuarioAtual.telefone,
+                    ultimo_login: new Date().toISOString(),
+                    versao_app: "1.0.0",
+                    dispositivo_info: JSON.stringify(dispositivoInfo),
+                    status: 'ativo'
+                }]);
+            
+            localStorage.setItem('ons_ultimo_registro', hoje);
+            console.log("✅ Acesso registrado");
+        } catch(err) {
+            console.error("Erro ao registrar:", err);
+        }
+    }
 
     // FUNÇÃO PARA MUDAR ABA
     window.mudarAba = function(abaId) {
@@ -560,8 +595,8 @@
     }
 
     // FUNÇÃO DE LOGIN
-    window.fazerLogin = function() {
-        console.log("🔵 Botão login clicado!");
+           window.fazerLogin = async function() {
+               console.log("🔵 Botão login clicado!");
         
         const clinica = document.getElementById('loginClinica').value.trim();
         const telefone = document.getElementById('loginTelefone').value.trim();
@@ -578,7 +613,8 @@
         document.getElementById('mainSystem').classList.remove('hidden');
         document.getElementById('displayNomeClinica').innerHTML = clinica + '<br><small>' + telefone + '</small>';
         
-        carregarOS();
+              carregarOS();
+        await registrarAcessoApp();
         alert("✅ Login realizado com sucesso!");
     }
     
