@@ -21,7 +21,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Roboto, sans-serif;
-            background: #b4b4b4;
+            background: #e8edf2;
             color: #1a2e3a;
             line-height: 1.4;
             font-size: 16px;
@@ -30,17 +30,19 @@
         .app-container {
             max-width: 768px;
             margin: 0 auto;
-            background: #b4b4b4;
+            background: #e8edf2;
             min-height: 100vh;
             position: relative;
             font-size: 16px;
         }
 
+        /* Header */
         .header {
-            background: #0c3f5a;
-            padding: 18px 16px;
-            border-radius: 0 0 20px 20px;
-            margin-bottom: 12px;
+            background: linear-gradient(135deg, #0c3f5a 0%, #1a5a7a 100%);
+            padding: 20px 16px;
+            border-radius: 0 0 28px 28px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .logo-area {
@@ -53,31 +55,32 @@
 
         .logo-title h1 {
             color: #f0b606;
-            font-size: 1.4rem;
-            font-weight: 700;
-            letter-spacing: -0.3px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
         .logo-title .subtitle {
             color: #f0b606;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             margin-top: 3px;
+            opacity: 0.9;
         }
 
         .logo-title .sub2 {
-            color: rgba(240,182,6,0.7);
-            font-size: 0.68rem;
+            color: rgba(240,182,6,0.8);
+            font-size: 0.65rem;
             margin-top: 2px;
         }
 
         .user-info {
             background: rgba(240,182,6,0.15);
-            padding: 5px 10px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 24px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-size: 0.8rem;
             color: #f0b606;
         }
@@ -86,31 +89,37 @@
             background: rgba(240,182,6,0.25);
             border: none;
             color: #f0b606;
-            padding: 4px 10px;
-            border-radius: 16px;
-            font-size: 0.75rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(240,182,6,0.4);
         }
 
+        /* Navegação */
         .nav-tabs {
             display: flex;
             background: white;
             margin: 12px 12px 0 12px;
-            border-radius: 30px;
-            padding: 3px;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+            border-radius: 40px;
+            padding: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
         
         .tab-btn {
             flex: 1;
             text-align: center;
-            padding: 10px 0;
+            padding: 12px 0;
             font-size: 0.9rem;
             font-weight: 600;
             background: transparent;
             border: none;
-            border-radius: 28px;
+            border-radius: 36px;
             color: #5a6e7a;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -119,8 +128,10 @@
         .tab-btn.active {
             background: #0c3f5a;
             color: #f0b606;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
 
+        /* Conteúdo */
         .tab-content {
             display: none;
             padding: 16px 12px 20px 12px;
@@ -128,18 +139,25 @@
         
         .tab-content.active {
             display: block;
+            animation: fadeIn 0.3s ease;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
         .card {
             background: white;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 14px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         
         .field-group {
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
         
         label {
@@ -147,26 +165,28 @@
             font-weight: 700;
             color: #0c3f5a;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         
         select, input, textarea {
             width: 100%;
-            padding: 12px 12px;
+            padding: 12px 14px;
             font-size: 0.95rem;
-            border: 1px solid #d4dce0;
-            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
             background: #ffffff;
             font-family: inherit;
+            transition: all 0.2s;
         }
         
         select:focus, input:focus, textarea:focus {
             outline: none;
             border-color: #f0b606;
+            box-shadow: 0 0 0 3px rgba(240,182,6,0.1);
         }
         
         textarea {
-            border-radius: 12px;
+            border-radius: 14px;
             resize: vertical;
         }
         
@@ -174,18 +194,25 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 4px;
+            margin-top: 6px;
         }
         
         .checkbox-item {
-            background: #f5f7f8;
-            padding: 8px 14px;
-            border-radius: 20px;
+            background: #f8fafc;
+            padding: 8px 16px;
+            border-radius: 30px;
             font-size: 0.85rem;
             display: flex;
             align-items: center;
-            gap: 6px;
-            border: 1px solid #e0e6ea;
+            gap: 8px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .checkbox-item:hover {
+            background: #fef5e0;
+            border-color: #f0b606;
         }
         
         .checkbox-item input {
@@ -195,17 +222,29 @@
             accent-color: #f0b606;
         }
         
+        /* Botões */
         .btn-primary {
-            background: #0c3f5a;
+            background: linear-gradient(135deg, #0c3f5a 0%, #1a5a7a 100%);
             color: #f0b606;
             border: none;
             padding: 14px;
             width: 100%;
-            border-radius: 30px;
+            border-radius: 40px;
             font-size: 0.95rem;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 6px;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(12,63,90,0.3);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            transform: none;
         }
         
         .btn-secondary {
@@ -213,43 +252,56 @@
             color: #0c3f5a;
             border: 1px solid #f0b606;
             padding: 12px;
-            border-radius: 30px;
+            border-radius: 40px;
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 6px;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            background: #f0b606;
+            color: #0c3f5a;
         }
         
         .btn-reload {
             background: #f0b606;
             color: #0c3f5a;
             border: none;
-            padding: 10px 18px;
-            border-radius: 30px;
+            padding: 10px 20px;
+            border-radius: 40px;
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
-            margin-bottom: 12px;
-            width: auto;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         
+        /* Lista de OS */
         .os-item-compact {
             background: white;
-            border-radius: 12px;
-            padding: 12px 14px;
-            margin-bottom: 10px;
-            border-left: 3px solid #f0b606;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-left: 4px solid #f0b606;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            transition: all 0.2s;
+        }
+        
+        .os-item-compact:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         
         .os-header-line {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
         }
         
         .os-equipamento {
@@ -257,14 +309,14 @@
             font-size: 0.9rem;
             color: #0c3f5a;
             background: #eef2f5;
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 4px 14px;
+            border-radius: 30px;
         }
         
         .status-badge {
             font-size: 0.7rem;
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 4px 14px;
+            border-radius: 30px;
             font-weight: 600;
         }
         
@@ -288,7 +340,7 @@
         .os-info-mini {
             font-size: 0.75rem;
             color: #5a6e7a;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
@@ -297,109 +349,126 @@
         .os-actions-compact {
             display: flex;
             gap: 8px;
-            margin-top: 10px;
+            margin-top: 12px;
             flex-wrap: wrap;
         }
         
         .small-btn {
             background: #f0f2f4;
             border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 6px 14px;
+            border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 500;
             cursor: pointer;
             color: #0c3f5a;
+            transition: all 0.2s;
         }
         
         .small-btn:hover {
             background: #e0e4e8;
+            transform: translateY(-1px);
         }
         
+        /* Footer */
         .footer {
             text-align: center;
             font-size: 0.7rem;
-            color: #2c4a5a;
-            background: rgba(12,63,90,0.08);
+            color: #5a6e7a;
+            background: rgba(12,63,90,0.05);
             padding: 16px;
-            margin-top: 8px;
+            margin-top: 16px;
         }
         
+        /* Tela de Login */
         .login-screen {
             padding: 20px 16px 30px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .login-card {
             background: white;
-            border-radius: 24px;
-            padding: 24px 20px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border-radius: 32px;
+            padding: 32px 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
         }
         
         .login-logo {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
         
         .login-logo h1 {
             color: #0c3f5a;
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 800;
         }
         
         .login-logo .logo-accent {
             color: #f0b606;
-            font-size: 1rem;
-            letter-spacing: 1px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            font-weight: 600;
         }
         
+        /* Utilitários */
         .hidden {
-            display: none;
+            display: none !important;
         }
         
         small.hint {
             font-size: 0.7rem;
             color: #8a9aa5;
             display: block;
-            margin-top: 3px;
+            margin-top: 4px;
         }
         
         .loading {
             text-align: center;
-            padding: 20px;
+            padding: 30px;
             color: #5a6e7a;
             font-size: 0.9rem;
         }
         
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #f0b606;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsivo */
         @media (min-width: 600px) {
             .app-container {
                 max-width: 600px;
             }
             .card {
-                padding: 20px;
-            }
-            label {
-                font-size: 0.9rem;
-            }
-            .os-equipamento {
-                font-size: 0.95rem;
+                padding: 24px;
             }
         }
         
         @media (max-width: 480px) {
             .header {
-                padding: 14px 12px;
+                padding: 16px 12px;
             }
             .logo-title h1 {
                 font-size: 1.2rem;
             }
             .tab-btn {
-                padding: 8px 0;
+                padding: 10px 0;
                 font-size: 0.85rem;
-            }
-            .checkbox-item {
-                padding: 6px 12px;
-                font-size: 0.8rem;
             }
         }
     </style>
@@ -413,17 +482,22 @@
             <div class="login-logo">
                 <h1>ONS</h1>
                 <div class="logo-accent">OdontoTecnica</div>
-                <p style="font-size:0.8rem; color:#5a6e7a; margin-top:4px;">Manutencao de Qualidade</p>
+                <p style="font-size:0.8rem; color:#5a6e7a; margin-top:8px;">Manutenção de Qualidade</p>
             </div>
             <div class="field-group">
-                <label>Clinica / Consultorio</label>
+                <label>🏥 Clínica / Consultório</label>
                 <input type="text" id="loginClinica" placeholder="Ex: Sorriso Odonto" autocomplete="off">
             </div>
             <div class="field-group">
-                <label>Telefone (com DDD)</label>
+                <label>📞 Telefone (com DDD)</label>
                 <input type="tel" id="loginTelefone" placeholder="(11) 91234-5678" autocomplete="off">
             </div>
-            <button class="btn-primary" id="btnLogin" onclick="fazerLogin()">Acessar Sistema</button>
+            <button class="btn-primary" id="btnLogin" onclick="fazerLogin()">
+                <i class="fas fa-sign-in-alt"></i> Acessar Sistema
+            </button>
+            <p style="text-align: center; margin-top: 16px; font-size: 0.7rem; color: #8a9aa5;">
+                <i class="fas fa-shield-alt"></i> Ambiente seguro
+            </p>
         </div>
     </div>
 
@@ -444,21 +518,22 @@
         </div>
 
         <div class="nav-tabs">
-            <button class="tab-btn active" data-tab="tabNovaOS" onclick="mudarAba('tabNovaOS')">Nova OS</button>
-            <button class="tab-btn" data-tab="tabRelatorios" onclick="mudarAba('tabRelatorios')">Relatórios</button>
+            <button class="tab-btn active" data-tab="tabNovaOS" onclick="mudarAba('tabNovaOS')">📝 Nova OS</button>
+            <button class="tab-btn" data-tab="tabRelatorios" onclick="mudarAba('tabRelatorios')">📋 Relatórios</button>
         </div>
 
+        <!-- ABA NOVA OS -->
         <div id="tabNovaOS" class="tab-content active">
             <div class="card">
                 <div class="field-group">
-                    <label>Equipamento</label>
+                    <label>🔧 Equipamento</label>
                     <select id="equipamentoSelect">
                         <option value="">Selecione um equipamento</option>
-                        <option>Cadeira Odontologica</option>
-                        <option>Caneta Alta Rotacao</option>
-                        <option>Caneta Baixa Rotacao</option>
-                        <option>Micromotor Eletrico</option>
-                        <option>Ultrassom Odontologico</option>
+                        <option>Cadeira Odontológica</option>
+                        <option>Caneta Alta Rotação</option>
+                        <option>Caneta Baixa Rotação</option>
+                        <option>Micromotor Elétrico</option>
+                        <option>Ultrassom Odontológico</option>
                         <option>Jato de Bicarbonato</option>
                         <option>Compressor</option>
                         <option>Aspirador / Suctora</option>
@@ -472,65 +547,79 @@
                     </select>
                 </div>
                 <div class="field-group">
-                    <label>Observacao do equipamento</label>
-                    <textarea id="obsEquipamento" rows="2" placeholder="Caso nao esteja na lista ou detalhes adicionais..."></textarea>
+                    <label>📝 Observação do equipamento</label>
+                    <textarea id="obsEquipamento" rows="2" placeholder="Caso não esteja na lista ou detalhes adicionais..."></textarea>
                 </div>
 
                 <div class="field-group">
-                    <label>Prioridade</label>
+                    <label>⚠️ Prioridade</label>
                     <div class="checkbox-grid">
-                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Alta"> Alta (parado)</label>
-                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Media"> Media (falhas)</label>
-                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Baixa"> Baixa (preventiva)</label>
+                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Alta"> 🔴 Alta (parado)</label>
+                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Media"> 🟡 Média (falhas)</label>
+                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Baixa"> 🟢 Baixa (preventiva)</label>
                     </div>
                 </div>
 
-                <!-- SERVIÇOS EXTRA COM NOME ALTERADO PARA "AGENDAR VISITA TÉCNICA" -->
                 <div class="field-group">
-                    <label>Serviços Adicionais</label>
+                    <label>🛠️ Serviços Adicionais</label>
                     <div class="checkbox-grid">
-                        <label class="checkbox-item"><input type="checkbox" id="servHigGeral"> Higienizacao geral</label>
-                        <label class="checkbox-item"><input type="checkbox" id="servHigTecnica"> Higienizacao tecnica</label>
+                        <label class="checkbox-item"><input type="checkbox" id="servHigGeral"> Higienização geral</label>
+                        <label class="checkbox-item"><input type="checkbox" id="servHigTecnica"> Higienização técnica</label>
                     </div>
-                    <div class="field-group" style="margin-top: 10px;">
-                        <label>📅 Agendar Visita Técnica</label>
-                        <input type="date" id="dataAgendamento" style="font-size:0.95rem;">
-                    </div>
-                    <small class="hint">Geral: limpeza caixa d'agua/filtros de detritos / Tecnica: ar condicionado, sanitizacao</small>
+                </div>
+
+                <div class="field-group">
+                    <label>📅 Agendar Visita Técnica</label>
+                    <input type="date" id="dataAgendamento" style="font-size:0.95rem;">
+                    <small class="hint">Geral: limpeza caixa d'água/filtros / Técnica: ar condicionado, sanitização</small>
                 </div>
 
                 <div class="field-group">
                     <div class="checkbox-grid">
-                        <label class="checkbox-item"><input type="checkbox" id="incluirLaudo"> Incluir laudo tecnico</label>
+                        <label class="checkbox-item"><input type="checkbox" id="incluirLaudo"> 📄 Incluir laudo técnico</label>
                     </div>
                 </div>
 
                 <div class="field-group">
-                    <label>Observacoes gerais da OS</label>
-                    <textarea id="observacoesGerais" rows="2" placeholder="Informacoes adicionais..."></textarea>
+                    <label>📝 Observações gerais da OS</label>
+                    <textarea id="observacoesGerais" rows="2" placeholder="Informações adicionais..."></textarea>
                 </div>
 
-                <button class="btn-primary" id="btnCriarOS" onclick="criarOS()">Criar Ordem de Servico</button>
-                <button class="btn-secondary" id="btnWhatsAppRapido" onclick="enviarUltimaOS()">Enviar emergencia via WhatsApp</button>
+                <button class="btn-primary" id="btnCriarOS" onclick="criarOS()">
+                    <i class="fas fa-save"></i> Criar Ordem de Serviço
+                </button>
+                <button class="btn-secondary" id="btnWhatsAppRapido" onclick="enviarEmergencia()">
+                    <i class="fab fa-whatsapp"></i> Atendimento de Emergência
+                </button>
             </div>
         </div>
 
+        <!-- ABA RELATÓRIOS -->
         <div id="tabRelatorios" class="tab-content">
-            <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
-                <button class="btn-reload" id="btnRecarregarOS" onclick="carregarOS()">🔄 Recarregar</button>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; gap: 10px;">
+                <button class="btn-reload" id="btnRecarregarOS" onclick="carregarOS()">
+                    <i class="fas fa-sync-alt"></i> Recarregar
+                </button>
+                <button class="btn-reload" id="btnContatoSuporte" onclick="contatoSuporte()" style="background: #25D366; color: white;">
+                    <i class="fab fa-whatsapp"></i> Suporte
+                </button>
             </div>
             <div id="listaOSContainer"></div>
         </div>
 
         <div class="footer">
-            ONS OdontoTecnica - Manutencao de Equipamentos Odontologicos
+            ONS OdontoTecnica - Manutenção de Equipamentos Odontológicos
+            <br>
+            <small>Suporte: (35) 9 2000-4813</small>
         </div>
     </div>
 </div>
 
 <script>                         
+    // ==================== CONFIGURAÇÕES ====================
     const SUPABASE_URL = 'https://vckyxwonbpkdeqeoswxc.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZja3l4d29uYnBrZGVxZW9zd3hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMTY5NjMsImV4cCI6MjA5MTU5Mjk2M30.b5ni_vnIETHVuOs5Cy4982UUBq9Icm-Zc12W1FwQyvI';
+    
     let supabaseClient = null;
     let ordensServico = [];
     let usuarioAtual = null;
@@ -538,104 +627,93 @@
     // Inicializar Supabase
     try {
         supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        console.log("✅ Supabase inicializado com sucesso!");
+        console.log("✅ Supabase inicializado!");
     } catch(err) {
         console.error("❌ Erro ao iniciar Supabase:", err);
-        alert("Erro ao conectar com o servidor.");
     }
-        // ============================================
-    // FUNÇÃO PARA REGISTRAR ACESSO/INSTALAÇÃO
-    // ============================================
-  // ============================================
-// FUNÇÃO PARA REGISTRAR ACESSO/INSTALAÇÃO
-// ============================================
-async function registrarAcessoApp() {
-    if (!usuarioAtual) return;
-    
-    const ultimoRegistro = localStorage.getItem('ons_ultimo_registro');
-    const hoje = new Date().toDateString();
-    
-    // Evita registrar múltiplas vezes no mesmo dia
-    if (ultimoRegistro === hoje) return;
-    
-    try {
-        // Coletar informações do dispositivo
-        const dispositivoInfo = {
-            userAgent: navigator.userAgent,
-            plataforma: navigator.platform,
-            tela: `${window.screen.width}x${window.screen.height}`,
-            idioma: navigator.language,
-            online: navigator.onLine,
-            dataHora: new Date().toISOString()
-        };
+
+    // ==================== REGISTRO DE INSTALAÇÃO (MELHORADO) ====================
+    async function registrarAcessoApp() {
+        if (!usuarioAtual) return;
         
-        // Verificar se já existe registro para esta clínica
-        const { data: existing, error: searchError } = await supabaseClient
-            .from('instalacoes_app')
-            .select('id, status')
-            .eq('clinica_nome', usuarioAtual.clinicaNome)
-            .maybeSingle(); // Usar maybeSingle para não dar erro se não encontrar
+        const ultimoRegistro = localStorage.getItem('ons_ultimo_registro');
+        const hoje = new Date().toDateString();
         
-        if (searchError && searchError.code !== 'PGRST116') {
-            console.error("Erro na busca:", searchError);
-        }
+        // Evita registrar múltiplas vezes no mesmo dia
+        if (ultimoRegistro === hoje) return;
         
-        if (existing) {
-            // Verificar se está bloqueado
-            if (existing.status === 'bloqueado') {
-                alert('⚠️ Seu acesso foi bloqueado. Entre em contato com o suporte: (35) 9 2000-4813');
-                logout();
-                return;
-            }
+        try {
+            // Coletar informações do dispositivo
+            const dispositivoInfo = {
+                userAgent: navigator.userAgent,
+                plataforma: navigator.platform,
+                tela: `${window.screen.width}x${window.screen.height}`,
+                idioma: navigator.language,
+                online: navigator.onLine,
+                dataHora: new Date().toISOString()
+            };
             
-            // Atualizar registro existente
-            const { error: updateError } = await supabaseClient
+            // Verificar se já existe registro para esta clínica
+            const { data: existing, error: searchError } = await supabaseClient
                 .from('instalacoes_app')
-                .update({
-                    ultimo_login: new Date().toISOString(),
-                    dispositivo_info: JSON.stringify(dispositivoInfo),
-                    versao_app: "1.0.1",
-                    status: 'ativo'
-                })
-                .eq('id', existing.id);
+                .select('id, status')
+                .eq('clinica_nome', usuarioAtual.clinicaNome)
+                .maybeSingle();
             
-            if (updateError) console.error("Erro ao atualizar:", updateError);
-            else console.log("✅ Registro atualizado");
-            
-        } else {
-            // Criar novo registro
-            const { error: insertError } = await supabaseClient
-                .from('instalacoes_app')
-                .insert([{
-                    clinica_nome: usuarioAtual.clinicaNome,
-                    telefone: usuarioAtual.telefone,
-                    primeira_instalacao: new Date().toISOString(),
-                    ultimo_login: new Date().toISOString(),
-                    versao_app: "1.0.1",
-                    dispositivo_info: JSON.stringify(dispositivoInfo),
-                    status: 'ativo'
-                }]);
-            
-            if (insertError) {
-                console.error("Erro ao inserir:", insertError);
+            if (existing) {
+                // Verificar se está bloqueado
+                if (existing.status === 'bloqueado') {
+                    alert('⚠️ SEU ACESSO FOI BLOQUEADO!\n\nEntre em contato com o suporte:\n(35) 9 2000-4813');
+                    logout();
+                    return false;
+                }
+                
+                // Atualizar registro existente
+                await supabaseClient
+                    .from('instalacoes_app')
+                    .update({
+                        ultimo_login: new Date().toISOString(),
+                        dispositivo_info: JSON.stringify(dispositivoInfo),
+                        versao_app: "1.0.2",
+                        status: 'ativo'
+                    })
+                    .eq('id', existing.id);
+                
+                console.log("✅ Registro atualizado");
             } else {
+                // Criar novo registro
+                await supabaseClient
+                    .from('instalacoes_app')
+                    .insert([{
+                        clinica_nome: usuarioAtual.clinicaNome,
+                        telefone: usuarioAtual.telefone,
+                        primeira_instalacao: new Date().toISOString(),
+                        ultimo_login: new Date().toISOString(),
+                        versao_app: "1.0.2",
+                        dispositivo_info: JSON.stringify(dispositivoInfo),
+                        status: 'ativo'
+                    }]);
+                
                 console.log("✅ Nova instalação registrada");
-                // Mostrar mensagem apenas na primeira instalação
+                // Mostrar mensagem de boas-vindas apenas na primeira vez
                 setTimeout(() => {
-                    alert("✅ Instalação registrada com sucesso!\n\nA ONS OdontoTecnica agradece a preferência.");
+                    alert("✅ Bem-vindo ao sistema ONS OdontoTecnica!\n\nSeu acesso foi registrado com sucesso.");
                 }, 500);
             }
+            
+            localStorage.setItem('ons_ultimo_registro', hoje);
+            return true;
+            
+        } catch(err) {
+            console.error("Erro ao registrar acesso:", err);
+            // Não impede o login se o registro falhar
+            return true;
         }
-        
-        // Marcar que já registrou hoje
-        localStorage.setItem('ons_ultimo_registro', hoje);
-        
-    } catch(err) {
-        console.error("Erro geral ao registrar:", err);
     }
-}
 
-    // FUNÇÃO PARA MUDAR ABA
+    // ==================== FUNÇÕES PRINCIPAIS ====================
+    
+    // Mudar aba
     window.mudarAba = function(abaId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -650,31 +728,58 @@ async function registrarAcessoApp() {
         }
     }
 
-    // FUNÇÃO DE LOGIN
-           window.fazerLogin = async function() {
-               console.log("🔵 Botão login clicado!");
-        
+    // Fazer Login
+    window.fazerLogin = async function() {
         const clinica = document.getElementById('loginClinica').value.trim();
         const telefone = document.getElementById('loginTelefone').value.trim();
         
         if(!clinica || !telefone) { 
-            alert("Preencha o nome da clínica e o telefone."); 
+            alert("❌ Preencha o nome da clínica e o telefone."); 
             return; 
         }
         
-        usuarioAtual = { clinicaNome: clinica, telefone: telefone };
-        localStorage.setItem('ons_usuario', JSON.stringify(usuarioAtual));
+        // Mostrar loading
+        const btnLogin = document.getElementById('btnLogin');
+        const textoOriginal = btnLogin.innerHTML;
+        btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+        btnLogin.disabled = true;
         
-        document.getElementById('loginArea').classList.add('hidden');
-        document.getElementById('mainSystem').classList.remove('hidden');
-        document.getElementById('displayNomeClinica').innerHTML = clinica + '<br><small>' + telefone + '</small>';
-        
-              carregarOS();
-        await registrarAcessoApp();
-        alert("✅ Login realizado com sucesso!");
+        try {
+            usuarioAtual = { clinicaNome: clinica, telefone: telefone };
+            
+            // Verificar se pode acessar (registro de instalação)
+            const podeAcessar = await registrarAcessoApp();
+            
+            if (podeAcessar === false) {
+                // Usuário bloqueado
+                btnLogin.innerHTML = textoOriginal;
+                btnLogin.disabled = false;
+                return;
+            }
+            
+            // Salvar no localStorage
+            localStorage.setItem('ons_usuario', JSON.stringify(usuarioAtual));
+            
+            // Mostrar interface principal
+            document.getElementById('loginArea').classList.add('hidden');
+            document.getElementById('mainSystem').classList.remove('hidden');
+            document.getElementById('displayNomeClinica').innerHTML = clinica + '<br><small>' + telefone + '</small>';
+            
+            // Carregar dados
+            await carregarOS();
+            
+            alert("✅ Login realizado com sucesso!");
+            
+        } catch(err) {
+            console.error("Erro no login:", err);
+            alert("Erro ao fazer login. Tente novamente.");
+        } finally {
+            btnLogin.innerHTML = textoOriginal;
+            btnLogin.disabled = false;
+        }
     }
     
-    // FUNÇÃO DE LOGOUT
+    // Logout
     window.logout = function() {
         usuarioAtual = null;
         localStorage.removeItem('ons_usuario');
@@ -682,15 +787,19 @@ async function registrarAcessoApp() {
         document.getElementById('mainSystem').classList.add('hidden');
         document.getElementById('loginClinica').value = '';
         document.getElementById('loginTelefone').value = '';
+        mostrarNotificacao('Logout realizado com sucesso!', 'info');
     }
-
-    // FUNÇÃO PARA CARREGAR OS
+    
+    // Carregar OS do cliente
     window.carregarOS = async function() {
         if(!usuarioAtual) return;
-        if(!supabaseClient) return;
+        if(!supabaseClient) {
+            mostrarNotificacao('Erro de conexão com o servidor', 'erro');
+            return;
+        }
         
         const container = document.getElementById('listaOSContainer');
-        if(container) container.innerHTML = '<div class="loading">Carregando...</div>';
+        if(container) container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><br>Carregando...</div>';
         
         try {
             const { data, error } = await supabaseClient
@@ -701,19 +810,20 @@ async function registrarAcessoApp() {
            
             if(error) {
                 console.error("Erro ao carregar:", error);
-                if(container) container.innerHTML = '<div class="loading">Erro ao carregar OS.</div>';
+                if(container) container.innerHTML = '<div class="loading">❌ Erro ao carregar OS. Tente novamente.</div>';
                 return;
             }
             
             ordensServico = data || [];
             renderRelatorios();
+            
         } catch(err) {
             console.error("Erro:", err);
-            if(container) container.innerHTML = '<div class="loading">Erro de conexão.</div>';
+            if(container) container.innerHTML = '<div class="loading">❌ Erro de conexão.</div>';
         }
     }
 
-    // FUNÇÃO PARA CRIAR OS - CORRIGIDA (SEM servicos_extras)
+    // Criar OS
     window.criarOS = async function() {
         if(!usuarioAtual) {
             alert("Faça login primeiro!");
@@ -728,7 +838,7 @@ async function registrarAcessoApp() {
         const btn = document.getElementById('btnCriarOS');
         if(btn) {
             btn.disabled = true;
-            btn.innerText = "ENVIANDO...";
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVIANDO...';
         }
 
         try {
@@ -736,11 +846,11 @@ async function registrarAcessoApp() {
             let obsEquip = document.getElementById('obsEquipamento').value;
 
             if (!eqBase && !obsEquip.trim()) {
-                alert("Selecione um equipamento ou descreva o problema.");
+                alert("❌ Selecione um equipamento ou descreva o problema.");
                 document.getElementById('equipamentoSelect').focus();
                 if(btn) {
                     btn.disabled = false;
-                    btn.innerText = "Criar Ordem de Servico";
+                    btn.innerHTML = "Criar Ordem de Serviço";
                 }
                 return;
             }
@@ -754,20 +864,20 @@ async function registrarAcessoApp() {
             document.querySelectorAll('input[name="prioridade"]:checked').forEach(cb => prioridades.push(cb.value));
             let prioridadeTxt = prioridades.length ? prioridades.join(', ') : "Normal";
             
-            let incluirLaudo = document.getElementById('incluirLaudo').checked ? true : false;
+            let incluirLaudo = document.getElementById('incluirLaudo').checked;
             let observacoesGerais = document.getElementById('observacoesGerais').value || "---";
             
             let dataAgendamento = document.getElementById('dataAgendamento').value;
             let dataFinal = (dataAgendamento && dataAgendamento !== "") ? dataAgendamento : null;
 
-            // Capturar serviços extras e adicionar nas observações
+            // Capturar serviços extras
             let servicosExtras = [];
-            if(document.getElementById('servHigGeral').checked) servicosExtras.push("Higienizacao geral");
-            if(document.getElementById('servHigTecnica').checked) servicosExtras.push("Higienizacao tecnica");
+            if(document.getElementById('servHigGeral').checked) servicosExtras.push("Higienização geral");
+            if(document.getElementById('servHigTecnica').checked) servicosExtras.push("Higienização técnica");
             
             let observacaoCompleta = observacoesGerais;
             if(servicosExtras.length > 0) {
-                observacaoCompleta = observacoesGerais + "\n\n🛠️ SERVIÇOS EXTRAS SOLICITADOS: " + servicosExtras.join(', ');
+                observacaoCompleta = observacoesGerais + "\n\n🛠️ SERVIÇOS EXTRAS: " + servicosExtras.join(', ');
             }
 
             const novaOS = {
@@ -782,17 +892,12 @@ async function registrarAcessoApp() {
                 data_agendamento: dataFinal
             };
 
-            console.log("📤 Enviando OS:", novaOS);
-
             const { data, error } = await supabaseClient
                 .from('chamados')
                 .insert([novaOS])
                 .select();
 
-            if (error) {
-                console.error("❌ Erro:", error);
-                throw error;
-            }
+            if (error) throw error;
 
             alert("✅ Ordem de Serviço criada com sucesso!");
             
@@ -812,18 +917,21 @@ async function registrarAcessoApp() {
             const tabRelatorios = document.querySelector('.tab-btn[data-tab="tabRelatorios"]');
             if(tabRelatorios) tabRelatorios.click();
             
+            mostrarNotificacao('OS criada com sucesso!', 'sucesso');
+            
         } catch (err) {
             console.error("❌ Erro:", err);
             alert("Erro ao criar OS: " + err.message);
+            mostrarNotificacao('Erro ao criar OS', 'erro');
         } finally {
             if(btn) {
                 btn.disabled = false;
-                btn.innerText = "Criar Ordem de Servico";
+                btn.innerHTML = "Criar Ordem de Serviço";
             }
         }
     }
 
-    // FUNÇÃO PARA ATUALIZAR STATUS
+    // Atualizar status
     window.atualizarStatus = async function(id, novoStatus) {
         if(!supabaseClient) return;
         
@@ -836,17 +944,17 @@ async function registrarAcessoApp() {
             
             if(error) throw error;
             
-            alert(`Status atualizado para: ${novoStatus}`);
+            mostrarNotificacao(`Status atualizado para: ${novoStatus}`, 'sucesso');
             await carregarOS();
         } catch(err) {
             console.error("Erro ao atualizar:", err);
-            alert("Erro ao atualizar status: " + err.message);
+            mostrarNotificacao('Erro ao atualizar status', 'erro');
         }
     }
 
-    // FUNÇÃO PARA EXCLUIR OS
+    // Excluir OS
     window.excluirOS = async function(id) {
-        if(!confirm("Tem certeza que deseja excluir esta OS permanentemente?")) return;
+        if(!confirm("⚠️ Tem certeza que deseja excluir esta OS permanentemente?")) return;
         if(!supabaseClient) return;
         
         try {
@@ -858,15 +966,15 @@ async function registrarAcessoApp() {
             
             if(error) throw error;
             
-            alert("OS excluída com sucesso!");
+            mostrarNotificacao('OS excluída com sucesso!', 'sucesso');
             await carregarOS();
         } catch(err) {
             console.error("Erro ao excluir:", err);
-            alert("Erro ao excluir OS: " + err.message);
+            mostrarNotificacao('Erro ao excluir OS', 'erro');
         }
     }
 
-    // FUNÇÃO PARA VISUALIZAR OS (DETALHES)
+    // Visualizar OS
     window.visualizarOS = function(os) {
         let msg = "📋 ORDEM DE SERVIÇO\n";
         msg += "━━━━━━━━━━━━━━━━━━━━━━\n";
@@ -879,15 +987,15 @@ async function registrarAcessoApp() {
         msg += `Observações: ${os.detalhe || 'Nenhuma'}\n`;
         msg += `Laudo: ${os.incluirlaudo ? 'Solicitado' : 'Não solicitado'}\n`;
         if(os.data_agendamento) {
-            msg += `📅 Visita Técnica: ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}\n`;
+            msg += `📅 Visita: ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}\n`;
         }
         msg += "━━━━━━━━━━━━━━━━━━━━━━\n";
-        msg += "ONS OdontoTecnica";
+        msg += "ONS OdontoTecnica - (35) 9 2000-4813";
         
         alert(msg);
     }
 
-    // FUNÇÃO PARA ENVIAR OS VIA WHATSAPP
+    // Enviar OS via WhatsApp
     window.enviarOSWhatsApp = function(os) {
         if(!usuarioAtual) {
             alert("Faça login primeiro!");
@@ -903,129 +1011,109 @@ async function registrarAcessoApp() {
         texto += `*Data Abertura:* ${new Date(os.created_at).toLocaleDateString('pt-BR')}\n`;
         
         if(os.data_agendamento) {
-            texto += `*📅 Visita Técnica:* ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}\n`;
+            texto += `*📅 Visita:* ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}\n`;
         }
         
         texto += `*Observações:* ${os.detalhe || 'Nenhuma'}\n`;
-        texto += `*Laudo Técnico:* ${os.incluirlaudo ? 'Solicitado' : 'Não solicitado'}\n\n`;
+        texto += `*Laudo:* ${os.incluirlaudo ? 'Solicitado' : 'Não solicitado'}\n\n`;
         texto += `🔗 *Protocolo:* OS-${os.id}\n\n`;
-        texto += `---\nONS OdontoTecnica - Manutenção de Qualidade`;
+        texto += `---\nONS OdontoTecnica - Manutenção de Qualidade\n(35) 9 2000-4813`;
         
         let telefone = "35920004813";
         let url = `https://wa.me/55${telefone}?text=${encodeURIComponent(texto)}`;
         window.open(url, '_blank');
     }
 
-    // FUNÇÃO PARA ENVIAR EMERGÊNCIA
-    window.enviarUltimaOS = function() {
-        console.log("Botão EMERGENCIA clicado!");
-        
+    // Enviar emergência
+    window.enviarEmergencia = function() {
         if(!usuarioAtual) {
-            alert("Acesso negado. Realize o login primeiro para utilizar o atendimento de emergencia.");
+            alert("Acesso negado. Realize o login primeiro.");
             return;
         }
         
         let confirmar = confirm(
-            "ATENDIMENTO PRIORITARIO\n\n" +
-            "Clinica: " + usuarioAtual.clinicaNome + "\n" +
+            "🚨 ATENDIMENTO DE EMERGÊNCIA 🚨\n\n" +
+            "Clínica: " + usuarioAtual.clinicaNome + "\n" +
             "Telefone: " + usuarioAtual.telefone + "\n\n" +
-            "Ao confirmar, sua clinica recebera prioridade de atendimento.\n" +
-            "Um tecnico sera acionado imediatamente.\n\n" +
-            "Confirmar atendimento de emergencia?"
+            "⚠️ ATENÇÃO: Este é um chamado PRIORITÁRIO!\n\n" +
+            "Um técnico será acionado imediatamente.\n\n" +
+            "Confirmar atendimento de emergência?"
         );
         
-        if(!confirmar) {
-            alert("Atendimento de emergencia cancelado.");
-            return;
-        }
+        if(!confirmar) return;
         
         let telefone = "35920004813";
         let agora = new Date();
-        let dataHora = agora.toLocaleString('pt-BR');
         let protocolo = "EMG" + agora.getFullYear() + 
                         String(agora.getMonth() + 1).padStart(2,'0') + 
                         String(agora.getDate()).padStart(2,'0') + 
                         String(agora.getHours()).padStart(2,'0') +
-                        String(agora.getMinutes()).padStart(2,'0') +
-                        String(agora.getSeconds()).padStart(2,'0');
+                        String(agora.getMinutes()).padStart(2,'0');
         
-        let text = "ONS ODONTOTECNICA - ATENDIMENTO DE EMERGENCIA\n\n";
-        text += "----------------------------------------\n";
-        text += "PRIORIDADE: MAXIMA (NIVEL 1)\n";
-        text += "----------------------------------------\n\n";
+        let text = "🚨 ONS ODONTOTECNICA - EMERGÊNCIA 🚨\n\n";
+        text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        text += "PRIORIDADE: MÁXIMA (NÍVEL 1)\n";
+        text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
         
-        text += "INFORMACOES DO CLIENTE:\n";
-        text += "Clinica: " + usuarioAtual.clinicaNome + "\n";
-        text += "Telefone: " + usuarioAtual.telefone + "\n";
-        text += "Data/Hora: " + dataHora + "\n";
-        text += "Protocolo: " + protocolo + "\n\n";
+        text += "INFORMAÇÕES DO CLIENTE:\n";
+        text += `Clínica: ${usuarioAtual.clinicaNome}\n`;
+        text += `Telefone: ${usuarioAtual.telefone}\n`;
+        text += `Protocolo: ${protocolo}\n\n`;
         
-        text += "----------------------------------------\n";
-        text += "STATUS DO ATENDIMENTO\n";
-        text += "----------------------------------------\n";
-        text += "Tipo: Emergencia\n";
-        text += "Prioridade: Alta\n";
-        text += "Acao: Acionamento imediato\n";
-        text += "Tempo de resposta: Até 30 minutos\n\n";
+        text += "AÇÃO REQUERIDA:\n";
+        text += "✅ Acionamento imediato da equipe técnica\n";
+        text += "✅ Contatar cliente em até 15 minutos\n\n";
         
-        text += "----------------------------------------\n";
-        text += "OBSERVACOES\n";
-        text += "----------------------------------------\n";
-        text += "Cliente aguarda atendimento presencial urgente.\n";
-        text += "Equipamento paralisado.\n";
-        text += "Necessita suporte tecnico imediato.\n\n";
-        
-        text += "----------------------------------------\n";
+        text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
         text += "ONS OdontoTecnica\n";
-        text += "Manutencao de Qualidade\n";
-        text += "----------------------------------------\n";
-        text += "Mensagem automatica de emergencia.\n";
-        text += "Priorizar este atendimento.";
+        text += "(35) 9 2000-4813\n";
+        text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
         
         const url = "https://wa.me/55" + telefone + "?text=" + encodeURIComponent(text);
+        window.open(url, '_blank');
         
-        console.log("Protocolo de emergencia:", protocolo);
-        console.log("URL gerada:", url);
-        
-        let enviar = confirm(
-            "PRONTO PARA ENVIAR EMERGENCIA\n\n" +
-            "Protocolo: " + protocolo + "\n\n" +
-            "A mensagem de prioridade maxima sera enviada agora.\n\n" +
-            "Clique em OK para enviar."
-        );
-        
-        if(enviar) {
-            window.open(url, '_blank');
-            
-            setTimeout(function() {
-                alert(
-                    "EMERGENCIA ENVIADA COM SUCESSO\n\n" +
-                    "Protocolo: " + protocolo + "\n" +
-                    "Clinica: " + usuarioAtual.clinicaNome + "\n\n" +
-                    "Sua clinica foi marcada como prioridade.\n" +
-                    "Aguarde em contato.\n\n" +
-                    "ONS OdontoTecnica - Manutenção de Qualidade"
-                );
-            }, 500);
-        }
+        mostrarNotificacao('🚨 Emergência enviada! Aguarde contato.', 'info');
     }
 
-    // FUNÇÃO PARA RENDERIZAR RELATÓRIOS
+    // Contato suporte
+    window.contatoSuporte = function() {
+        window.open('https://wa.me/5535920004813?text=Olá! Preciso de suporte técnico.', '_blank');
+    }
+
+    // Mostrar notificação
+    function mostrarNotificacao(msg, tipo = 'sucesso') {
+        // Criar notificação temporária
+        const notif = document.createElement('div');
+        notif.className = `notificacao ${tipo}`;
+        notif.textContent = msg;
+        notif.style.position = 'fixed';
+        notif.style.bottom = '20px';
+        notif.style.left = '20px';
+        notif.style.right = '20px';
+        notif.style.zIndex = '9999';
+        document.body.appendChild(notif);
+        
+        setTimeout(() => {
+            notif.remove();
+        }, 3000);
+    }
+
+    // Renderizar relatórios
     function renderRelatorios() {
         const container = document.getElementById('listaOSContainer');
         if(!container) return;
         
         if(ordensServico.length === 0) {
-            container.innerHTML = '<div class="card" style="text-align:center; color:#8a9aa5;">Nenhuma ordem de serviço registrada.</div>';
+            container.innerHTML = '<div class="card" style="text-align:center; color:#8a9aa5;">📭 Nenhuma ordem de serviço registrada.</div>';
             return;
         }
         
         let html = '';
         ordensServico.forEach(os => {
             let statusClass = '';
-            if(os.status === 'Aberto') statusClass = 'status-aberto';
-            else if(os.status === 'Em andamento') statusClass = 'status-em-andamento';
-            else statusClass = 'status-finalizado';
+            if(os.status === 'Aberto' || os.status === 'Em andamento') statusClass = 'status-em-andamento';
+            else if(os.status === 'Finalizado') statusClass = 'status-finalizado';
+            else statusClass = 'status-aberto';
             
             const osJson = JSON.stringify(os).replace(/'/g, "&#39;").replace(/"/g, '&quot;');
             
@@ -1044,7 +1132,6 @@ async function registrarAcessoApp() {
                         <span>📅 ${os.created_at ? new Date(os.created_at).toLocaleDateString('pt-BR') : 'N/A'}</span>
                         <span>⚠️ ${os.prioridade || 'Normal'}</span>
                         ${visitaInfo}
-                        <span>📝 ${os.detalhe ? os.detalhe.substring(0, 30) : '---'}</span>
                     </div>
                     <div class="os-actions-compact">
                         <button class="small-btn verOS" onclick="visualizarOS(${osJson})">👁️ Visualizar</button>
@@ -1058,7 +1145,7 @@ async function registrarAcessoApp() {
         container.innerHTML = html;
     }
 
-    // VERIFICAR USUÁRIO AO CARREGAR
+    // Verificar usuário ao carregar
     const storedUser = localStorage.getItem('ons_usuario');
     if(storedUser) {
         usuarioAtual = JSON.parse(storedUser);
@@ -1066,8 +1153,14 @@ async function registrarAcessoApp() {
         document.getElementById('mainSystem').classList.remove('hidden');
         document.getElementById('displayNomeClinica').innerHTML = usuarioAtual.clinicaNome + '<br><small>' + usuarioAtual.telefone + '</small>';
         carregarOS();
-         registrarAcessoApp();
+        registrarAcessoApp();
     }
+    
+    // Adicionar ícones FontAwesome
+    const fontAwesome = document.createElement('link');
+    fontAwesome.rel = 'stylesheet';
+    fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+    document.head.appendChild(fontAwesome);
 </script>
 </body>
 </html>
