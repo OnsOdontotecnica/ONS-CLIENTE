@@ -546,38 +546,94 @@
         // ============================================
     // FUNÇÃO PARA REGISTRAR ACESSO/INSTALAÇÃO
     // ============================================
-    async function registrarAcessoApp() {
-        if (!usuarioAtual) return;
+  // ============================================
+// FUNÇÃO PARA REGISTRAR ACESSO/INSTALAÇÃO
+// ============================================
+async function registrarAcessoApp() {
+    if (!usuarioAtual) return;
+    
+    const ultimoRegistro = localStorage.getItem('ons_ultimo_registro');
+    const hoje = new Date().toDateString();
+    
+    // Evita registrar múltiplas vezes no mesmo dia
+    if (ultimoRegistro === hoje) return;
+    
+    try {
+        // Coletar informações do dispositivo
+        const dispositivoInfo = {
+            userAgent: navigator.userAgent,
+            plataforma: navigator.platform,
+            tela: `${window.screen.width}x${window.screen.height}`,
+            idioma: navigator.language,
+            online: navigator.onLine,
+            dataHora: new Date().toISOString()
+        };
         
-        const ultimoRegistro = localStorage.getItem('ons_ultimo_registro');
-        const hoje = new Date().toDateString();
+        // Verificar se já existe registro para esta clínica
+        const { data: existing, error: searchError } = await supabaseClient
+            .from('instalacoes_app')
+            .select('id, status')
+            .eq('clinica_nome', usuarioAtual.clinicaNome)
+            .maybeSingle(); // Usar maybeSingle para não dar erro se não encontrar
         
-        if (ultimoRegistro === hoje) return;
+        if (searchError && searchError.code !== 'PGRST116') {
+            console.error("Erro na busca:", searchError);
+        }
         
-        try {
-            const dispositivoInfo = {
-                userAgent: navigator.userAgent,
-                plataforma: navigator.platform,
-                tela: `${window.screen.width}x${window.screen.height}`
-            };
+        if (existing) {
+            // Verificar se está bloqueado
+            if (existing.status === 'bloqueado') {
+                alert('⚠️ Seu acesso foi bloqueado. Entre em contato com o suporte: (35) 9 2000-4813');
+                logout();
+                return;
+            }
             
-            await supabaseClient
+            // Atualizar registro existente
+            const { error: updateError } = await supabaseClient
+                .from('instalacoes_app')
+                .update({
+                    ultimo_login: new Date().toISOString(),
+                    dispositivo_info: JSON.stringify(dispositivoInfo),
+                    versao_app: "1.0.1",
+                    status: 'ativo'
+                })
+                .eq('id', existing.id);
+            
+            if (updateError) console.error("Erro ao atualizar:", updateError);
+            else console.log("✅ Registro atualizado");
+            
+        } else {
+            // Criar novo registro
+            const { error: insertError } = await supabaseClient
                 .from('instalacoes_app')
                 .insert([{
                     clinica_nome: usuarioAtual.clinicaNome,
                     telefone: usuarioAtual.telefone,
+                    primeira_instalacao: new Date().toISOString(),
                     ultimo_login: new Date().toISOString(),
-                    versao_app: "1.0.0",
+                    versao_app: "1.0.1",
                     dispositivo_info: JSON.stringify(dispositivoInfo),
                     status: 'ativo'
                 }]);
             
-            localStorage.setItem('ons_ultimo_registro', hoje);
-            console.log("✅ Acesso registrado");
-        } catch(err) {
-            console.error("Erro ao registrar:", err);
+            if (insertError) {
+                console.error("Erro ao inserir:", insertError);
+            } else {
+                console.log("✅ Nova instalação registrada");
+                // Mostrar mensagem apenas na primeira instalação
+                setTimeout(() => {
+                    alert("✅ Instalação registrada com sucesso!\n\nA ONS OdontoTecnica agradece a preferência.");
+                }, 500);
+            }
         }
+        
+        // Marcar que já registrou hoje
+        localStorage.setItem('ons_ultimo_registro', hoje);
+        
+    } catch(err) {
+        console.error("Erro geral ao registrar:", err);
     }
+}
 
     // FUNÇÃO PARA MUDAR ABA
     window.mudarAba = function(abaId) {
