@@ -3,7 +3,7 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1e3a5f">
+    <meta name="theme-color" content="#0c3f5a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="icon" type="image/jpeg" href="icon.jpg">
@@ -33,16 +33,13 @@
             background: #e8edf2;
             min-height: 100vh;
             position: relative;
-            font-size: 16px;
         }
 
         /* Header */
         .header {
-            background: linear-gradient(135deg, #0c3f5a 0%, #1a5a7a 100%);
+            background: #0c3f5a;
             padding: 20px 16px;
-            border-radius: 0 0 28px 28px;
             margin-bottom: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .logo-area {
@@ -55,50 +52,43 @@
 
         .logo-title h1 {
             color: #f0b606;
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
         }
 
         .logo-title .subtitle {
-            color: #f0b606;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 3px;
-            opacity: 0.9;
-        }
-
-        .logo-title .sub2 {
-            color: rgba(240,182,6,0.8);
-            font-size: 0.65rem;
+            color: rgba(240,182,6,0.85);
+            font-size: 0.7rem;
+            font-weight: 500;
             margin-top: 2px;
         }
 
         .user-info {
-            background: rgba(240,182,6,0.15);
+            background: rgba(240,182,6,0.12);
             padding: 6px 12px;
-            border-radius: 24px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #f0b606;
         }
         
         .logout-btn {
-            background: rgba(240,182,6,0.25);
-            border: none;
+            background: transparent;
+            border: 1px solid rgba(240,182,6,0.4);
             color: #f0b606;
-            padding: 5px 12px;
-            border-radius: 20px;
+            padding: 4px 10px;
+            border-radius: 4px;
             font-size: 0.7rem;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
         }
         
         .logout-btn:hover {
-            background: rgba(240,182,6,0.4);
+            background: rgba(240,182,6,0.2);
         }
 
         /* Navegação */
@@ -106,20 +96,20 @@
             display: flex;
             background: white;
             margin: 12px 12px 0 12px;
-            border-radius: 40px;
+            border-radius: 8px;
             padding: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         
         .tab-btn {
             flex: 1;
             text-align: center;
-            padding: 12px 0;
-            font-size: 0.9rem;
+            padding: 10px 0;
+            font-size: 0.85rem;
             font-weight: 600;
             background: transparent;
             border: none;
-            border-radius: 36px;
+            border-radius: 6px;
             color: #5a6e7a;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -128,7 +118,6 @@
         .tab-btn.active {
             background: #0c3f5a;
             color: #f0b606;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
 
         /* Conteúdo */
@@ -139,21 +128,22 @@
         
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.25s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* Cards */
         .card {
             background: white;
-            border-radius: 20px;
+            border-radius: 8px;
             padding: 20px;
             margin-bottom: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
         }
         
         .field-group {
@@ -161,19 +151,21 @@
         }
         
         label {
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.75rem;
+            font-weight: 600;
             color: #0c3f5a;
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
         
         select, input, textarea {
             width: 100%;
-            padding: 12px 14px;
-            font-size: 0.95rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            border: 1px solid #d1d9e6;
+            border-radius: 6px;
             background: #ffffff;
             font-family: inherit;
             transition: all 0.2s;
@@ -182,26 +174,26 @@
         select:focus, input:focus, textarea:focus {
             outline: none;
             border-color: #f0b606;
-            box-shadow: 0 0 0 3px rgba(240,182,6,0.1);
+            box-shadow: 0 0 0 2px rgba(240,182,6,0.1);
         }
         
         textarea {
-            border-radius: 14px;
+            border-radius: 6px;
             resize: vertical;
         }
         
         .checkbox-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
             margin-top: 6px;
         }
         
         .checkbox-item {
             background: #f8fafc;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 0.85rem;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -216,52 +208,49 @@
         }
         
         .checkbox-item input {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             margin: 0;
             accent-color: #f0b606;
         }
         
         /* Botões */
         .btn-primary {
-            background: linear-gradient(135deg, #0c3f5a 0%, #1a5a7a 100%);
-            color: #f0b606;
+            background: #0c3f5a;
+            color: white;
             border: none;
-            padding: 14px;
-            width: 100%;
-            border-radius: 40px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: all 0.2s;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(12,63,90,0.3);
-        }
-        
-        .btn-primary:disabled {
-            opacity: 0.6;
-            transform: none;
-        }
-        
-        .btn-secondary {
-            background: #fef5e0;
-            color: #0c3f5a;
-            border: 1px solid #f0b606;
             padding: 12px;
-            border-radius: 40px;
-            font-size: 0.9rem;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             margin-top: 8px;
             transition: all 0.2s;
         }
         
+        .btn-primary:hover {
+            background: #f0b606;
+            color: #0c3f5a;
+        }
+        
+        .btn-secondary {
+            background: #f8fafc;
+            color: #0c3f5a;
+            border: 1px solid #d1d9e6;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        
         .btn-secondary:hover {
             background: #f0b606;
+            border-color: #f0b606;
             color: #0c3f5a;
         }
         
@@ -269,58 +258,59 @@
             background: #f0b606;
             color: #0c3f5a;
             border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-size: 0.85rem;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.75rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         
         /* Lista de OS */
-        .os-item-compact {
+        .os-item {
             background: white;
-            border-radius: 16px;
+            border-radius: 8px;
             padding: 14px;
             margin-bottom: 12px;
-            border-left: 4px solid #f0b606;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            border-left: 3px solid #f0b606;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            border-left-width: 3px;
             transition: all 0.2s;
         }
         
-        .os-item-compact:hover {
-            transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        .os-item:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
         
-        .os-header-line {
+        .os-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             flex-wrap: wrap;
             gap: 8px;
         }
         
         .os-equipamento {
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #0c3f5a;
             background: #eef2f5;
-            padding: 4px 14px;
-            border-radius: 30px;
+            padding: 4px 12px;
+            border-radius: 4px;
         }
         
         .status-badge {
-            font-size: 0.7rem;
-            padding: 4px 14px;
-            border-radius: 30px;
+            font-size: 0.65rem;
+            padding: 3px 10px;
+            border-radius: 4px;
             font-weight: 600;
         }
         
-        .status-aberto {
+        .status-aguardando {
             background: #fef5e0;
             color: #c98f0a;
             border: 1px solid #f0b606;
@@ -329,16 +319,11 @@
         .status-finalizado {
             background: #e0ece8;
             color: #0c3f5a;
+            border: 1px solid #b8d4d0;
         }
         
-        .status-em-andamento {
-            background: #e3f2fd;
-            color: #1565c0;
-            border: 1px solid #42a5f5;
-        }
-        
-        .os-info-mini {
-            font-size: 0.75rem;
+        .os-info {
+            font-size: 0.7rem;
             color: #5a6e7a;
             margin-bottom: 8px;
             display: flex;
@@ -346,19 +331,19 @@
             gap: 12px;
         }
         
-        .os-actions-compact {
+        .os-actions {
             display: flex;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
         
         .small-btn {
             background: #f0f2f4;
             border: none;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.75rem;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.7rem;
             font-weight: 500;
             cursor: pointer;
             color: #0c3f5a;
@@ -367,17 +352,17 @@
         
         .small-btn:hover {
             background: #e0e4e8;
-            transform: translateY(-1px);
         }
         
         /* Footer */
         .footer {
             text-align: center;
-            font-size: 0.7rem;
-            color: #5a6e7a;
-            background: rgba(12,63,90,0.05);
+            font-size: 0.65rem;
+            color: #8a9aa5;
+            background: rgba(12,63,90,0.03);
             padding: 16px;
             margin-top: 16px;
+            border-top: 1px solid #e2e8f0;
         }
         
         /* Tela de Login */
@@ -391,11 +376,12 @@
         
         .login-card {
             background: white;
-            border-radius: 32px;
+            border-radius: 12px;
             padding: 32px 24px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
             max-width: 400px;
             width: 100%;
+            border: 1px solid #e2e8f0;
         }
         
         .login-logo {
@@ -405,14 +391,14 @@
         
         .login-logo h1 {
             color: #0c3f5a;
-            font-size: 2.2rem;
-            font-weight: 800;
+            font-size: 1.8rem;
+            font-weight: 700;
         }
         
         .login-logo .logo-accent {
             color: #f0b606;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
             font-weight: 600;
         }
         
@@ -422,7 +408,7 @@
         }
         
         small.hint {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #8a9aa5;
             display: block;
             margin-top: 4px;
@@ -432,14 +418,14 @@
             text-align: center;
             padding: 30px;
             color: #5a6e7a;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         .loading-spinner {
             display: inline-block;
-            width: 30px;
-            height: 30px;
-            border: 3px solid #e2e8f0;
+            width: 28px;
+            height: 28px;
+            border: 2px solid #e2e8f0;
             border-top-color: #f0b606;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
@@ -447,6 +433,28 @@
         
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            z-index: 9999;
+            animation: slideUp 0.25s ease;
+        }
+        
+        .notification.success { background: #28a745; color: white; }
+        .notification.error { background: #dc3545; color: white; }
+        .notification.info { background: #0c3f5a; color: #f0b606; }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         
         /* Responsivo */
@@ -464,11 +472,11 @@
                 padding: 16px 12px;
             }
             .logo-title h1 {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
             .tab-btn {
-                padding: 10px 0;
-                font-size: 0.85rem;
+                padding: 8px 0;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -481,22 +489,22 @@
         <div class="login-card">
             <div class="login-logo">
                 <h1>ONS</h1>
-                <div class="logo-accent">OdontoTecnica</div>
-                <p style="font-size:0.8rem; color:#5a6e7a; margin-top:8px;">Manutenção de Qualidade</p>
+                <div class="logo-accent">ODONTOTECNICA</div>
+                <p style="font-size:0.7rem; color:#8a9aa5; margin-top:8px;">Sistema de Manutenção</p>
             </div>
             <div class="field-group">
-                <label>🏥 Clínica / Consultório</label>
-                <input type="text" id="loginClinica" placeholder="Ex: Sorriso Odonto" autocomplete="off">
+                <label>Clínica / Consultório</label>
+                <input type="text" id="loginClinica" placeholder="Nome da clínica" autocomplete="off">
             </div>
             <div class="field-group">
-                <label>📞 Telefone (com DDD)</label>
+                <label>Telefone (com DDD)</label>
                 <input type="tel" id="loginTelefone" placeholder="(11) 91234-5678" autocomplete="off">
             </div>
             <button class="btn-primary" id="btnLogin" onclick="fazerLogin()">
-                <i class="fas fa-sign-in-alt"></i> Acessar Sistema
+                Acessar Sistema
             </button>
-            <p style="text-align: center; margin-top: 16px; font-size: 0.7rem; color: #8a9aa5;">
-                <i class="fas fa-shield-alt"></i> Ambiente seguro
+            <p style="text-align: center; margin-top: 16px; font-size: 0.65rem; color: #8a9aa5;">
+                Ambiente seguro
             </p>
         </div>
     </div>
@@ -508,25 +516,24 @@
                 <div class="logo-title">
                     <h1>ONS ODONTOTECNICA</h1>
                     <p class="subtitle">Sistema Técnico de Manutenção</p>
-                    <p class="sub2">Controle de Ordens de Serviço</p>
                 </div>
                 <div class="user-info">
                     <span id="displayNomeClinica"></span>
-                    <button class="logout-btn" id="logoutBtn" onclick="logout()">Sair</button>
+                    <button class="logout-btn" onclick="logout()">Sair</button>
                 </div>
             </div>
         </div>
 
         <div class="nav-tabs">
-            <button class="tab-btn active" data-tab="tabNovaOS" onclick="mudarAba('tabNovaOS')">📝 Nova OS</button>
-            <button class="tab-btn" data-tab="tabRelatorios" onclick="mudarAba('tabRelatorios')">📋 Relatórios</button>
+            <button class="tab-btn active" data-tab="tabNovaOS" onclick="mudarAba('tabNovaOS')">Nova OS</button>
+            <button class="tab-btn" data-tab="tabRelatorios" onclick="mudarAba('tabRelatorios')">Relatórios</button>
         </div>
 
         <!-- ABA NOVA OS -->
         <div id="tabNovaOS" class="tab-content active">
             <div class="card">
                 <div class="field-group">
-                    <label>🔧 Equipamento</label>
+                    <label>Equipamento</label>
                     <select id="equipamentoSelect">
                         <option value="">Selecione um equipamento</option>
                         <option>Cadeira Odontológica</option>
@@ -547,21 +554,21 @@
                     </select>
                 </div>
                 <div class="field-group">
-                    <label>📝 Observação do equipamento</label>
-                    <textarea id="obsEquipamento" rows="2" placeholder="Caso não esteja na lista ou detalhes adicionais..."></textarea>
+                    <label>Observação</label>
+                    <textarea id="obsEquipamento" rows="2" placeholder="Detalhes adicionais..."></textarea>
                 </div>
 
                 <div class="field-group">
-                    <label>⚠️ Prioridade</label>
+                    <label>Prioridade</label>
                     <div class="checkbox-grid">
-                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Alta"> 🔴 Alta (parado)</label>
-                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Media"> 🟡 Média (falhas)</label>
-                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Baixa"> 🟢 Baixa (preventiva)</label>
+                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Alta"> Alta</label>
+                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Media"> Média</label>
+                        <label class="checkbox-item"><input type="checkbox" name="prioridade" value="Baixa"> Baixa</label>
                     </div>
                 </div>
 
                 <div class="field-group">
-                    <label>🛠️ Serviços Adicionais</label>
+                    <label>Serviços Adicionais</label>
                     <div class="checkbox-grid">
                         <label class="checkbox-item"><input type="checkbox" id="servHigGeral"> Higienização geral</label>
                         <label class="checkbox-item"><input type="checkbox" id="servHigTecnica"> Higienização técnica</label>
@@ -569,27 +576,26 @@
                 </div>
 
                 <div class="field-group">
-                    <label>📅 Agendar Visita Técnica</label>
-                    <input type="date" id="dataAgendamento" style="font-size:0.95rem;">
-                    <small class="hint">Geral: limpeza caixa d'água/filtros / Técnica: ar condicionado, sanitização</small>
+                    <label>Agendar Visita Técnica</label>
+                    <input type="date" id="dataAgendamento">
                 </div>
 
                 <div class="field-group">
-                    <div class="checkbox-grid">
-                        <label class="checkbox-item"><input type="checkbox" id="incluirLaudo"> 📄 Incluir laudo técnico</label>
-                    </div>
+                    <label class="checkbox-item" style="background:transparent; padding-left:0;">
+                        <input type="checkbox" id="incluirLaudo"> Incluir laudo técnico
+                    </label>
                 </div>
 
                 <div class="field-group">
-                    <label>📝 Observações gerais da OS</label>
+                    <label>Observações</label>
                     <textarea id="observacoesGerais" rows="2" placeholder="Informações adicionais..."></textarea>
                 </div>
 
-                <button class="btn-primary" id="btnCriarOS" onclick="criarOS()">
-                    <i class="fas fa-save"></i> Criar Ordem de Serviço
+                <button class="btn-primary" onclick="criarOS()">
+                    Criar Ordem de Serviço
                 </button>
-                <button class="btn-secondary" id="btnWhatsAppRapido" onclick="enviarEmergencia()">
-                    <i class="fab fa-whatsapp"></i> Atendimento de Emergência
+                <button class="btn-secondary" onclick="enviarEmergencia()">
+                    Atendimento de Emergência
                 </button>
             </div>
         </div>
@@ -597,11 +603,11 @@
         <!-- ABA RELATÓRIOS -->
         <div id="tabRelatorios" class="tab-content">
             <div style="display: flex; justify-content: space-between; margin-bottom: 12px; gap: 10px;">
-                <button class="btn-reload" id="btnRecarregarOS" onclick="carregarOS()">
-                    <i class="fas fa-sync-alt"></i> Recarregar
+                <button class="btn-reload" onclick="carregarOS()">
+                    Recarregar
                 </button>
-                <button class="btn-reload" id="btnContatoSuporte" onclick="contatoSuporte()" style="background: #25D366; color: white;">
-                    <i class="fab fa-whatsapp"></i> Suporte
+                <button class="btn-reload" onclick="contatoSuporte()" style="background: #25D366; color: white;">
+                    Suporte
                 </button>
             </div>
             <div id="listaOSContainer"></div>
@@ -610,7 +616,7 @@
         <div class="footer">
             ONS OdontoTecnica - Manutenção de Equipamentos Odontológicos
             <br>
-            <small>Suporte: (35) 9 2000-4813</small>
+            Suporte: (35) 9 2000-4813
         </div>
     </div>
 </div>
@@ -627,23 +633,29 @@
     // Inicializar Supabase
     try {
         supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        console.log("✅ Supabase inicializado!");
+        console.log("Supabase inicializado");
     } catch(err) {
-        console.error("❌ Erro ao iniciar Supabase:", err);
+        console.error("Erro ao iniciar Supabase:", err);
     }
 
-    // ==================== REGISTRO DE INSTALAÇÃO (MELHORADO) ====================
+    function mostrarNotificacao(msg, tipo = 'success') {
+        const notif = document.createElement('div');
+        notif.className = `notification ${tipo}`;
+        notif.textContent = msg;
+        document.body.appendChild(notif);
+        setTimeout(() => notif.remove(), 3000);
+    }
+
+    // ==================== REGISTRO DE INSTALAÇÃO ====================
     async function registrarAcessoApp() {
         if (!usuarioAtual) return;
         
         const ultimoRegistro = localStorage.getItem('ons_ultimo_registro');
         const hoje = new Date().toDateString();
         
-        // Evita registrar múltiplas vezes no mesmo dia
         if (ultimoRegistro === hoje) return;
         
         try {
-            // Coletar informações do dispositivo
             const dispositivoInfo = {
                 userAgent: navigator.userAgent,
                 plataforma: navigator.platform,
@@ -653,35 +665,22 @@
                 dataHora: new Date().toISOString()
             };
             
-            // Verificar se já existe registro para esta clínica
-            const { data: existing, error: searchError } = await supabaseClient
+            const { data: existing } = await supabaseClient
                 .from('instalacoes_app')
-                .select('id, status')
+                .select('id')
                 .eq('clinica_nome', usuarioAtual.clinicaNome)
                 .maybeSingle();
             
             if (existing) {
-                // Verificar se está bloqueado
-                if (existing.status === 'bloqueado') {
-                    alert('⚠️ SEU ACESSO FOI BLOQUEADO!\n\nEntre em contato com o suporte:\n(35) 9 2000-4813');
-                    logout();
-                    return false;
-                }
-                
-                // Atualizar registro existente
                 await supabaseClient
                     .from('instalacoes_app')
                     .update({
                         ultimo_login: new Date().toISOString(),
                         dispositivo_info: JSON.stringify(dispositivoInfo),
-                        versao_app: "1.0.2",
-                        status: 'ativo'
+                        versao_app: "1.0.3"
                     })
                     .eq('id', existing.id);
-                
-                console.log("✅ Registro atualizado");
             } else {
-                // Criar novo registro
                 await supabaseClient
                     .from('instalacoes_app')
                     .insert([{
@@ -689,31 +688,22 @@
                         telefone: usuarioAtual.telefone,
                         primeira_instalacao: new Date().toISOString(),
                         ultimo_login: new Date().toISOString(),
-                        versao_app: "1.0.2",
+                        versao_app: "1.0.3",
                         dispositivo_info: JSON.stringify(dispositivoInfo),
                         status: 'ativo'
                     }]);
-                
-                console.log("✅ Nova instalação registrada");
-                // Mostrar mensagem de boas-vindas apenas na primeira vez
-                setTimeout(() => {
-                    alert("✅ Bem-vindo ao sistema ONS OdontoTecnica!\n\nSeu acesso foi registrado com sucesso.");
-                }, 500);
             }
             
             localStorage.setItem('ons_ultimo_registro', hoje);
             return true;
-            
         } catch(err) {
             console.error("Erro ao registrar acesso:", err);
-            // Não impede o login se o registro falhar
             return true;
         }
     }
 
     // ==================== FUNÇÕES PRINCIPAIS ====================
     
-    // Mudar aba
     window.mudarAba = function(abaId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -728,58 +718,44 @@
         }
     }
 
-    // Fazer Login
     window.fazerLogin = async function() {
         const clinica = document.getElementById('loginClinica').value.trim();
         const telefone = document.getElementById('loginTelefone').value.trim();
         
         if(!clinica || !telefone) { 
-            alert("❌ Preencha o nome da clínica e o telefone."); 
+            mostrarNotificacao("Preencha o nome da clínica e o telefone.", 'error'); 
             return; 
         }
         
-        // Mostrar loading
         const btnLogin = document.getElementById('btnLogin');
         const textoOriginal = btnLogin.innerHTML;
-        btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+        btnLogin.innerHTML = 'Carregando...';
         btnLogin.disabled = true;
         
         try {
             usuarioAtual = { clinicaNome: clinica, telefone: telefone };
             
-            // Verificar se pode acessar (registro de instalação)
-            const podeAcessar = await registrarAcessoApp();
+            await registrarAcessoApp();
             
-            if (podeAcessar === false) {
-                // Usuário bloqueado
-                btnLogin.innerHTML = textoOriginal;
-                btnLogin.disabled = false;
-                return;
-            }
-            
-            // Salvar no localStorage
             localStorage.setItem('ons_usuario', JSON.stringify(usuarioAtual));
             
-            // Mostrar interface principal
             document.getElementById('loginArea').classList.add('hidden');
             document.getElementById('mainSystem').classList.remove('hidden');
-            document.getElementById('displayNomeClinica').innerHTML = clinica + '<br><small>' + telefone + '</small>';
+            document.getElementById('displayNomeClinica').innerHTML = clinica;
             
-            // Carregar dados
             await carregarOS();
             
-            alert("✅ Login realizado com sucesso!");
+            mostrarNotificacao("Login realizado com sucesso!", 'success');
             
         } catch(err) {
             console.error("Erro no login:", err);
-            alert("Erro ao fazer login. Tente novamente.");
+            mostrarNotificacao("Erro ao fazer login.", 'error');
         } finally {
             btnLogin.innerHTML = textoOriginal;
             btnLogin.disabled = false;
         }
     }
     
-    // Logout
     window.logout = function() {
         usuarioAtual = null;
         localStorage.removeItem('ons_usuario');
@@ -787,14 +763,13 @@
         document.getElementById('mainSystem').classList.add('hidden');
         document.getElementById('loginClinica').value = '';
         document.getElementById('loginTelefone').value = '';
-        mostrarNotificacao('Logout realizado com sucesso!', 'info');
+        mostrarNotificacao('Logout realizado', 'info');
     }
     
-    // Carregar OS do cliente
     window.carregarOS = async function() {
         if(!usuarioAtual) return;
         if(!supabaseClient) {
-            mostrarNotificacao('Erro de conexão com o servidor', 'erro');
+            mostrarNotificacao('Erro de conexão', 'error');
             return;
         }
         
@@ -808,37 +783,32 @@
                 .eq('clinica', usuarioAtual.clinicaNome)
                 .order('created_at', { ascending: false });
            
-            if(error) {
-                console.error("Erro ao carregar:", error);
-                if(container) container.innerHTML = '<div class="loading">❌ Erro ao carregar OS. Tente novamente.</div>';
-                return;
-            }
+            if(error) throw error;
             
             ordensServico = data || [];
             renderRelatorios();
             
         } catch(err) {
             console.error("Erro:", err);
-            if(container) container.innerHTML = '<div class="loading">❌ Erro de conexão.</div>';
+            if(container) container.innerHTML = '<div class="loading">Erro ao carregar OS.</div>';
         }
     }
 
-    // Criar OS
     window.criarOS = async function() {
         if(!usuarioAtual) {
-            alert("Faça login primeiro!");
+            mostrarNotificacao("Faça login primeiro!", 'error');
             return;
         }
         
         if(!supabaseClient) {
-            alert("Erro de conexão com o servidor.");
+            mostrarNotificacao("Erro de conexão.", 'error');
             return;
         }
         
         const btn = document.getElementById('btnCriarOS');
         if(btn) {
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVIANDO...';
+            btn.innerHTML = 'Enviando...';
         }
 
         try {
@@ -846,8 +816,7 @@
             let obsEquip = document.getElementById('obsEquipamento').value;
 
             if (!eqBase && !obsEquip.trim()) {
-                alert("❌ Selecione um equipamento ou descreva o problema.");
-                document.getElementById('equipamentoSelect').focus();
+                mostrarNotificacao("Selecione um equipamento ou descreva o problema.", 'error');
                 if(btn) {
                     btn.disabled = false;
                     btn.innerHTML = "Criar Ordem de Serviço";
@@ -870,14 +839,13 @@
             let dataAgendamento = document.getElementById('dataAgendamento').value;
             let dataFinal = (dataAgendamento && dataAgendamento !== "") ? dataAgendamento : null;
 
-            // Capturar serviços extras
             let servicosExtras = [];
             if(document.getElementById('servHigGeral').checked) servicosExtras.push("Higienização geral");
             if(document.getElementById('servHigTecnica').checked) servicosExtras.push("Higienização técnica");
             
             let observacaoCompleta = observacoesGerais;
             if(servicosExtras.length > 0) {
-                observacaoCompleta = observacoesGerais + "\n\n🛠️ SERVIÇOS EXTRAS: " + servicosExtras.join(', ');
+                observacaoCompleta = observacoesGerais + "\n\nSERVIÇOS EXTRAS: " + servicosExtras.join(', ');
             }
 
             const novaOS = {
@@ -886,22 +854,20 @@
                 equipamento: equipamentoFinal,
                 prioridade: prioridadeTxt,
                 detalhe: observacaoCompleta,
-                status: 'Em andamento',
+                status: 'aguardando',
                 incluirlaudo: incluirLaudo,
                 created_at: new Date().toISOString(),
                 data_agendamento: dataFinal
             };
 
-            const { data, error } = await supabaseClient
+            const { error } = await supabaseClient
                 .from('chamados')
-                .insert([novaOS])
-                .select();
+                .insert([novaOS]);
 
             if (error) throw error;
 
-            alert("✅ Ordem de Serviço criada com sucesso!");
+            mostrarNotificacao("Ordem de Serviço criada com sucesso!", 'success');
             
-            // Limpar formulário
             document.getElementById('equipamentoSelect').value = "";
             document.getElementById('obsEquipamento').value = "";
             document.getElementById('observacoesGerais').value = "";
@@ -913,16 +879,12 @@
             
             await carregarOS();
             
-            // Mudar para aba de relatórios
             const tabRelatorios = document.querySelector('.tab-btn[data-tab="tabRelatorios"]');
             if(tabRelatorios) tabRelatorios.click();
             
-            mostrarNotificacao('OS criada com sucesso!', 'sucesso');
-            
         } catch (err) {
-            console.error("❌ Erro:", err);
-            alert("Erro ao criar OS: " + err.message);
-            mostrarNotificacao('Erro ao criar OS', 'erro');
+            console.error("Erro:", err);
+            mostrarNotificacao("Erro ao criar OS: " + err.message, 'error');
         } finally {
             if(btn) {
                 btn.disabled = false;
@@ -931,7 +893,6 @@
         }
     }
 
-    // Atualizar status
     window.atualizarStatus = async function(id, novoStatus) {
         if(!supabaseClient) return;
         
@@ -944,17 +905,16 @@
             
             if(error) throw error;
             
-            mostrarNotificacao(`Status atualizado para: ${novoStatus}`, 'sucesso');
+            mostrarNotificacao(`Status atualizado: ${novoStatus}`, 'success');
             await carregarOS();
         } catch(err) {
-            console.error("Erro ao atualizar:", err);
-            mostrarNotificacao('Erro ao atualizar status', 'erro');
+            console.error("Erro:", err);
+            mostrarNotificacao('Erro ao atualizar status', 'error');
         }
     }
 
-    // Excluir OS
     window.excluirOS = async function(id) {
-        if(!confirm("⚠️ Tem certeza que deseja excluir esta OS permanentemente?")) return;
+        if(!confirm("Tem certeza que deseja excluir esta OS?")) return;
         if(!supabaseClient) return;
         
         try {
@@ -966,78 +926,74 @@
             
             if(error) throw error;
             
-            mostrarNotificacao('OS excluída com sucesso!', 'sucesso');
+            mostrarNotificacao('OS excluída com sucesso!', 'success');
             await carregarOS();
         } catch(err) {
-            console.error("Erro ao excluir:", err);
-            mostrarNotificacao('Erro ao excluir OS', 'erro');
+            console.error("Erro:", err);
+            mostrarNotificacao('Erro ao excluir OS', 'error');
         }
     }
 
-    // Visualizar OS
     window.visualizarOS = function(os) {
-        let msg = "📋 ORDEM DE SERVIÇO\n";
-        msg += "━━━━━━━━━━━━━━━━━━━━━━\n";
+        let msg = "ORDEM DE SERVICO\n";
+        msg += "--------------------------------\n";
         msg += `Equipamento: ${os.equipamento}\n`;
         msg += `Prioridade: ${os.prioridade}\n`;
         msg += `Status: ${os.status}\n`;
         msg += `Data: ${os.created_at && !isNaN(new Date(os.created_at)) 
             ? new Date(os.created_at).toLocaleDateString('pt-BR') 
             : 'N/A'}\n`;
-        msg += `Observações: ${os.detalhe || 'Nenhuma'}\n`;
-        msg += `Laudo: ${os.incluirlaudo ? 'Solicitado' : 'Não solicitado'}\n`;
+        msg += `Observacoes: ${os.detalhe || 'Nenhuma'}\n`;
+        msg += `Laudo: ${os.incluirlaudo ? 'Solicitado' : 'Nao solicitado'}\n`;
         if(os.data_agendamento) {
-            msg += `📅 Visita: ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}\n`;
+            msg += `Visita: ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}\n`;
         }
-        msg += "━━━━━━━━━━━━━━━━━━━━━━\n";
+        msg += "--------------------------------\n";
         msg += "ONS OdontoTecnica - (35) 9 2000-4813";
         
         alert(msg);
     }
 
-    // Enviar OS via WhatsApp
     window.enviarOSWhatsApp = function(os) {
         if(!usuarioAtual) {
-            alert("Faça login primeiro!");
+            mostrarNotificacao("Faça login primeiro!", 'error');
             return;
         }
         
-        let texto = `🛠️ *ONS ODONTOTECNICA - ORDEM DE SERVIÇO* 🛠️\n\n`;
-        texto += `*Clínica:* ${usuarioAtual.clinicaNome}\n`;
-        texto += `*Telefone:* ${usuarioAtual.telefone}\n`;
-        texto += `*Equipamento:* ${os.equipamento}\n`;
-        texto += `*Prioridade:* ${os.prioridade}\n`;
-        texto += `*Status:* ${os.status}\n`;
-        texto += `*Data Abertura:* ${new Date(os.created_at).toLocaleDateString('pt-BR')}\n`;
+        let texto = `ONS ODONTOTECNICA - ORDEM DE SERVICO\n\n`;
+        texto += `Clinica: ${usuarioAtual.clinicaNome}\n`;
+        texto += `Telefone: ${usuarioAtual.telefone}\n`;
+        texto += `Equipamento: ${os.equipamento}\n`;
+        texto += `Prioridade: ${os.prioridade}\n`;
+        texto += `Status: ${os.status}\n`;
+        texto += `Data Abertura: ${new Date(os.created_at).toLocaleDateString('pt-BR')}\n`;
         
         if(os.data_agendamento) {
-            texto += `*📅 Visita:* ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}\n`;
+            texto += `Visita: ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}\n`;
         }
         
-        texto += `*Observações:* ${os.detalhe || 'Nenhuma'}\n`;
-        texto += `*Laudo:* ${os.incluirlaudo ? 'Solicitado' : 'Não solicitado'}\n\n`;
-        texto += `🔗 *Protocolo:* OS-${os.id}\n\n`;
-        texto += `---\nONS OdontoTecnica - Manutenção de Qualidade\n(35) 9 2000-4813`;
+        texto += `Observacoes: ${os.detalhe || 'Nenhuma'}\n`;
+        texto += `Laudo: ${os.incluirlaudo ? 'Solicitado' : 'Nao solicitado'}\n\n`;
+        texto += `Protocolo: OS-${os.id}\n\n`;
+        texto += `ONS OdontoTecnica - (35) 9 2000-4813`;
         
         let telefone = "35920004813";
         let url = `https://wa.me/55${telefone}?text=${encodeURIComponent(texto)}`;
         window.open(url, '_blank');
     }
 
-    // Enviar emergência
     window.enviarEmergencia = function() {
         if(!usuarioAtual) {
-            alert("Acesso negado. Realize o login primeiro.");
+            mostrarNotificacao("Acesso negado.", 'error');
             return;
         }
         
         let confirmar = confirm(
-            "🚨 ATENDIMENTO DE EMERGÊNCIA 🚨\n\n" +
-            "Clínica: " + usuarioAtual.clinicaNome + "\n" +
+            "ATENDIMENTO DE EMERGENCIA\n\n" +
+            "Clinica: " + usuarioAtual.clinicaNome + "\n" +
             "Telefone: " + usuarioAtual.telefone + "\n\n" +
-            "⚠️ ATENÇÃO: Este é um chamado PRIORITÁRIO!\n\n" +
-            "Um técnico será acionado imediatamente.\n\n" +
-            "Confirmar atendimento de emergência?"
+            "ATENCAO: Este e um chamado PRIORITARIO!\n\n" +
+            "Confirmar atendimento de emergencia?"
         );
         
         if(!confirmar) return;
@@ -1046,98 +1002,76 @@
         let agora = new Date();
         let protocolo = "EMG" + agora.getFullYear() + 
                         String(agora.getMonth() + 1).padStart(2,'0') + 
-                        String(agora.getDate()).padStart(2,'0') + 
+                        String(agora.getDate()).padStart(2,'0') +
                         String(agora.getHours()).padStart(2,'0') +
                         String(agora.getMinutes()).padStart(2,'0');
         
-        let text = "🚨 ONS ODONTOTECNICA - EMERGÊNCIA 🚨\n\n";
-        text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        text += "PRIORIDADE: MÁXIMA (NÍVEL 1)\n";
-        text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+        let text = "ONS ODONTOTECNICA - EMERGENCIA\n\n";
+        text += "--------------------------------\n";
+        text += "PRIORIDADE: MAXIMA (NIVEL 1)\n";
+        text += "--------------------------------\n\n";
         
-        text += "INFORMAÇÕES DO CLIENTE:\n";
-        text += `Clínica: ${usuarioAtual.clinicaNome}\n`;
+        text += "INFORMACOES DO CLIENTE:\n";
+        text += `Clinica: ${usuarioAtual.clinicaNome}\n`;
         text += `Telefone: ${usuarioAtual.telefone}\n`;
         text += `Protocolo: ${protocolo}\n\n`;
         
-        text += "AÇÃO REQUERIDA:\n";
-        text += "✅ Acionamento imediato da equipe técnica\n";
-        text += "✅ Contatar cliente em até 15 minutos\n\n";
+        text += "ACAO REQUERIDA:\n";
+        text += "Acionamento imediato da equipe tecnica\n";
+        text += "Contatar cliente em ate 15 minutos\n\n";
         
-        text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        text += "--------------------------------\n";
         text += "ONS OdontoTecnica\n";
         text += "(35) 9 2000-4813\n";
-        text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+        text += "--------------------------------";
         
         const url = "https://wa.me/55" + telefone + "?text=" + encodeURIComponent(text);
         window.open(url, '_blank');
         
-        mostrarNotificacao('🚨 Emergência enviada! Aguarde contato.', 'info');
+        mostrarNotificacao("Emergencia enviada! Aguarde contato.", 'info');
     }
 
-    // Contato suporte
     window.contatoSuporte = function() {
         window.open('https://wa.me/5535920004813?text=Olá! Preciso de suporte técnico.', '_blank');
     }
 
-    // Mostrar notificação
-    function mostrarNotificacao(msg, tipo = 'sucesso') {
-        // Criar notificação temporária
-        const notif = document.createElement('div');
-        notif.className = `notificacao ${tipo}`;
-        notif.textContent = msg;
-        notif.style.position = 'fixed';
-        notif.style.bottom = '20px';
-        notif.style.left = '20px';
-        notif.style.right = '20px';
-        notif.style.zIndex = '9999';
-        document.body.appendChild(notif);
-        
-        setTimeout(() => {
-            notif.remove();
-        }, 3000);
-    }
-
-    // Renderizar relatórios
     function renderRelatorios() {
         const container = document.getElementById('listaOSContainer');
         if(!container) return;
         
         if(ordensServico.length === 0) {
-            container.innerHTML = '<div class="card" style="text-align:center; color:#8a9aa5;">📭 Nenhuma ordem de serviço registrada.</div>';
+            container.innerHTML = '<div class="card" style="text-align:center; color:#8a9aa5;">Nenhuma ordem de servico registrada.</div>';
             return;
         }
         
         let html = '';
         ordensServico.forEach(os => {
-            let statusClass = '';
-            if(os.status === 'Aberto' || os.status === 'Em andamento') statusClass = 'status-em-andamento';
-            else if(os.status === 'Finalizado') statusClass = 'status-finalizado';
-            else statusClass = 'status-aberto';
+            let statusClass = os.status === 'aguardando' ? 'status-aguardando' : 'status-finalizado';
+            let statusText = os.status === 'aguardando' ? 'Em andamento' : 'Finalizado';
             
             const osJson = JSON.stringify(os).replace(/'/g, "&#39;").replace(/"/g, '&quot;');
             
             let visitaInfo = '';
             if(os.data_agendamento) {
-                visitaInfo = `<span>📅 Visita: ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}</span>`;
+                visitaInfo = `<span>Visita: ${new Date(os.data_agendamento).toLocaleDateString('pt-BR')}</span>`;
             }
             
             html += `
-                <div class="os-item-compact" data-id="${os.id}">
-                    <div class="os-header-line">
+                <div class="os-item">
+                    <div class="os-header">
                         <span class="os-equipamento">${os.equipamento ? (os.equipamento.length > 35 ? os.equipamento.substring(0,32)+'...' : os.equipamento) : 'N/A'}</span>
-                        <span class="status-badge ${statusClass}">${os.status || 'Em andamento'}</span>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
                     </div>
-                    <div class="os-info-mini">
-                        <span>📅 ${os.created_at ? new Date(os.created_at).toLocaleDateString('pt-BR') : 'N/A'}</span>
-                        <span>⚠️ ${os.prioridade || 'Normal'}</span>
+                    <div class="os-info">
+                        <span>${os.created_at ? new Date(os.created_at).toLocaleDateString('pt-BR') : 'N/A'}</span>
+                        <span>Prioridade: ${os.prioridade || 'Normal'}</span>
                         ${visitaInfo}
                     </div>
-                    <div class="os-actions-compact">
-                        <button class="small-btn verOS" onclick="visualizarOS(${osJson})">👁️ Visualizar</button>
-                        <button class="small-btn excluirOS" onclick="excluirOS(${os.id})">🗑️ Excluir</button>
-                        <button class="small-btn whatsOS" onclick="enviarOSWhatsApp(${osJson})">📱 WhatsApp</button>
-                        ${os.status !== 'Finalizado' ? `<button class="small-btn finalizarOS" onclick="atualizarStatus(${os.id}, 'Finalizado')">✅ Finalizar</button>` : ''}
+                    <div class="os-actions">
+                        <button class="small-btn" onclick="visualizarOS(${osJson})">Visualizar</button>
+                        <button class="small-btn" onclick="excluirOS(${os.id})">Excluir</button>
+                        <button class="small-btn" onclick="enviarOSWhatsApp(${osJson})">WhatsApp</button>
+                        ${os.status !== 'finalizado' ? `<button class="small-btn" onclick="atualizarStatus(${os.id}, 'finalizado')">Finalizar</button>` : ''}
                     </div>
                 </div>
             `;
@@ -1151,16 +1085,10 @@
         usuarioAtual = JSON.parse(storedUser);
         document.getElementById('loginArea').classList.add('hidden');
         document.getElementById('mainSystem').classList.remove('hidden');
-        document.getElementById('displayNomeClinica').innerHTML = usuarioAtual.clinicaNome + '<br><small>' + usuarioAtual.telefone + '</small>';
+        document.getElementById('displayNomeClinica').innerHTML = usuarioAtual.clinicaNome;
         carregarOS();
         registrarAcessoApp();
     }
-    
-    // Adicionar ícones FontAwesome
-    const fontAwesome = document.createElement('link');
-    fontAwesome.rel = 'stylesheet';
-    fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-    document.head.appendChild(fontAwesome);
 </script>
 </body>
 </html>
